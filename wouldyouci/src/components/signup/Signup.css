@@ -1,0 +1,18 @@
+div.logo{
+  margin-top: 50px;
+  text-align: center;
+}
+
+img.logo{
+  width: 80px;
+  height: 50px;
+}
+
+div.title{
+  text-align: center;
+}
+
+img.title{
+  width: 200px;
+  height: 200px;
+}
