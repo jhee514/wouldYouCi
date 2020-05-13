@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "dev": "lite-server"
   },
   "dependencies": {
     "core-js": "^3.6.4",
@@ -15,6 +16,7 @@
     "vuex": "^3.4.0"
   },
   "devDependencies": {
+    "lite-server": "^2.4.0",
     "@vue/cli-plugin-babel": "~4.3.0",
     "@vue/cli-plugin-eslint": "~4.3.0",
     "@vue/cli-service": "~4.3.0",

@@ -1,0 +1,15 @@
+{
+    "name":"pwa offline web",
+    "Content-Security-Policy": "default-src https://cdn.example.net; child-src 'none'; object-src 'none'",
+    "icons":[
+        {
+            "src" : "",
+            "type" :"",
+            "size":""
+        }
+    ],
+    "background_color":"#FDFDFD",
+    "start_url":"./",
+    "display":"standalone",
+    "orientation":"portrait"
+}
