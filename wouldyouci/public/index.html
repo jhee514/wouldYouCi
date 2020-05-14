@@ -20,5 +20,16 @@
     </div>
     우주씨네 온걸!! 환영해!!! 
     <!-- built files will be auto injected -->
+    <script>
+      if('serviceWorker' in navigator){
+        navigator.serviceWorker.register('sw.js')//serviceWorker등록 
+        .then(function(success){
+            console.log('Service Worker 등록 완료', success);
+        })
+        .catch(function(){
+            console.log('Service Worker 등록 실패', error);
+        })
+      }
+    </script>
   </body>
 </html>
