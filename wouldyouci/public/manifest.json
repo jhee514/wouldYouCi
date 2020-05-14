@@ -1,5 +1,6 @@
 {
-    "name":"pwa offline web",
+    "name":"우주씨!!! 안녕하세요!!!!",
+    "short_name": "would you~?",
     "Content-Security-Policy": "default-src https://cdn.example.net; child-src 'none'; object-src 'none'",
     "icons":[
         {
@@ -8,8 +9,9 @@
             "size":""
         }
     ],
+    "theme_color": "#fff",
     "background_color":"#FDFDFD",
-    "start_url":"./",
+    "start_url":"./signup",
     "display":"standalone",
     "orientation":"portrait"
 }
