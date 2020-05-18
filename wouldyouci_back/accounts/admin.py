@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .forms import UserChangeForm, UserCreationForm
-from .models import User
+from .models import User, Rating
 
 
 class UserAdmin(BaseUserAdmin):
@@ -31,3 +31,10 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.register(User, UserAdmin)
 admin.site.unregister(Group)
+
+
+class RatingModelAdmin(admin.ModelAdmin):
+    list_display = 'id', 'movie', 'score'
+
+
+admin.site.register(Rating, RatingModelAdmin)
