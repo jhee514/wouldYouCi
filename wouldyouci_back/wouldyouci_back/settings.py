@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    'movies',
 ]
 
 MIDDLEWARE = [
@@ -144,7 +145,7 @@ USE_L10N = True
 USE_TZ = True
 
 # TODO User 모델 우리가 만들 거라서
-# AUTH_USER_MODEL = 'accounts.User'
+AUTH_USER_MODEL = 'accounts.User'
 
 CACHES = {
     'default': {
