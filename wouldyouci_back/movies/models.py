@@ -2,14 +2,11 @@ from django.db import models
 
 
 class Genre(models.Model):
-    genre = models.CharField(max_length=150)
+    name = models.CharField(max_length=150)
 
 
 class People(models.Model):
     name = models.CharField(max_length=50)
-    # 일단 넣어는 놨는디 뺄까?
-    name_eng = models.CharField(max_length=50)
-    role = models.CharField(max_length=50)
 
 
 class Movie(models.Model):
