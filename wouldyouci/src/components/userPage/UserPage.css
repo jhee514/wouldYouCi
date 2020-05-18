@@ -1,3 +1,16 @@
 .userPage{
-  height: 86vh;
+  /* min-height: 82vh;
+  height: auto; */
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  margin-left: 5vw;
+  margin-right: 5vw;
+}
+
+.settingIcon{
+  text-align: right;
+}
+
+span{
+  font-size: 2.5vh;
 }

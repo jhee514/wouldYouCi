@@ -3,17 +3,18 @@
     grow
     color="teal"
     height="7vh"
+    fixed
   >
-    <v-btn>
-      <v-icon @click="goMap">fas fa-map-marked-alt</v-icon>
+    <v-btn @click="goMap">
+      <v-icon>fas fa-map-marked-alt</v-icon>
     </v-btn>
 
-    <v-btn>
-      <v-icon @click="goSearch">fas fa-film</v-icon>
+    <v-btn @click="goSearch">
+      <v-icon>fas fa-film</v-icon>
     </v-btn>
 
-    <v-btn>
-      <v-icon @click="goUserPage">fas fa-user</v-icon>
+    <v-btn @click="goUserPage">
+      <v-icon>fas fa-user</v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>
@@ -30,12 +31,14 @@ export default {
     goSearch() {
       const link = document.location.href.split("/");
       if (link[link.length - 1] !== "search") {
+        console.log('?')
         router.push('/search');
       }
     },
     goUserPage() {
       const link = document.location.href.split("/");
       if (link[link.length - 1] !== "userPage") {
+        console.log('?')
         router.push('/userPage');
       }
     }
