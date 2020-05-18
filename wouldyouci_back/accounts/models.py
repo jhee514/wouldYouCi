@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
+from movies.models import Movie
 
 
 class MyUserManager(BaseUserManager):
@@ -56,3 +57,16 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
+
+
+class Rating(models.Model):
+    comment = models.TextField(blank=True, null=True)
+    rating = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='ratings')  # movie.ratings
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')  # user.ratings
+
+
+# class LikeMovie(models.Model):
+#     pass
