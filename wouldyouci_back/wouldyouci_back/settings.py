@@ -147,6 +147,7 @@ USE_TZ = True
 # TODO User 모델 우리가 만들 거라서
 AUTH_USER_MODEL = 'accounts.User'
 
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
