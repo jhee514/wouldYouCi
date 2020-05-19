@@ -3,7 +3,7 @@
     <img class="userImage" @click="isShow = !isShow" src="../../../assets/basicUserImage.png" />
     <v-dialog v-model="isShow">
       <v-row justify="center">
-        <img class="bigUserImage" src="../../../assets/basicUserImage.png">
+        <img class="bigUserImage" src="../../../assets/basicUserImage.png" />
       </v-row>
     </v-dialog>
     <span class="userName">userName</span>

@@ -31,14 +31,12 @@ export default {
     goSearch() {
       const link = document.location.href.split("/");
       if (link[link.length - 1] !== "search") {
-        console.log('?')
         router.push('/search');
       }
     },
     goUserPage() {
       const link = document.location.href.split("/");
       if (link[link.length - 1] !== "userPage") {
-        console.log('?')
         router.push('/userPage');
       }
     }
