@@ -1,10 +1,10 @@
 <template>
   <div class='signup'>
     <div class='logo'>
-      <img class='logo' src='../../assets/saturn-309071_640.png'>
+      <img class='logo' src='../../assets/saturn-309071_640.png' />
     </div>
     <div class='title'>
-      <img class='title' src='../../assets/title.png'>
+      <img class='title' src='../../assets/title.png' />
     </div>
     <LoginForm v-if="isLoginMode" />
     <SignupForm v-else />
