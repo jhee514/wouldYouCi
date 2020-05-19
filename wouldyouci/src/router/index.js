@@ -5,13 +5,14 @@ import MovieDetail from '../components/movieDetail/MovieDetail.vue';
 import Search from '../components/search/Search.vue';
 import Signup from '../components/signup/Signup.vue';
 import UserPage from '../components/userPage/UserPage.vue';
+import FirstRating from '../components/firstRating/FirstRating.vue';
 
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/mainMap',
+    path: '/',
     name: 'MainMap',
     component: MainMap
   },
@@ -34,6 +35,11 @@ const routes = [
     path: '/userPage',
     name: 'UserPage',
     component: UserPage
+  },
+  {
+    path: '/firstRating',
+    name: 'FirstRating',
+    component: FirstRating
   }
 ];
 
