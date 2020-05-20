@@ -10,7 +10,7 @@
       비밀번호 변경
     </div>
     <v-divider></v-divider>
-    <div @click="closeDialog">
+    <div @click="logout">
       <v-icon>fas fa-sign-out-alt</v-icon>
       로그아웃
     </div>
@@ -18,9 +18,12 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'settingCard',
   methods: {
+    ...mapActions(["logout"]),
     closeDialog() {
       this.$emit("settingCard", "close")
     },

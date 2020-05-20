@@ -15,6 +15,8 @@
   import LoginForm from './forms/LoginForm.vue';
   import SignupForm from './forms/SignupForm.vue';
   import { mapGetters } from 'vuex';
+  import router from "../../router";
+
   export default {
     name: 'Signup',
     components: {
@@ -22,7 +24,12 @@
       LoginForm
     },
     computed: {
-      ...mapGetters(['isLoginMode'])
+      ...mapGetters(['isLoginMode', 'isLoggedIn'])
+    },
+    created() {
+      if (this.isLoggedIn) {
+        router.push('/');
+      }
     }
   }
 </script>
