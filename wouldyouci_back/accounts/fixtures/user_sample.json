@@ -1,0 +1,15 @@
+[
+{
+    "model": "accounts.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$180000$zSy1SfdmlRPA$SrsLo8KA42gajN/1soHgL/j4Y2568HmFcOTYtHVyGvM=",
+        "last_login": null,
+        "username": "testerjay",
+        "email": "jay.hyundong@gmail.com",
+        "get_agreement": true,
+        "is_active": true,
+        "is_admin": false
+    }
+}
+]

@@ -1,0 +1,9 @@
+[
+{
+    "model": "movies.genre",
+    "pk": 1,
+    "fields": {
+        "name": "\ud14c\uc2a4\ud2b8\uc7a5\ub974"
+    }
+}
+]

@@ -1,7 +1,7 @@
 [
 {
     "model": "movies.movie",
-    "pk": 1,
+    "pk": 152691,
     "fields": {
         "name": "\uace0\uc591\uc774 \uc9d1\uc0ac",
         "name_eng": "Our Cat",
