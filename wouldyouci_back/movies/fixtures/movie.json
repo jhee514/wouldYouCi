@@ -11,7 +11,9 @@
         "open_date": "2020-05-14",
         "trailer": "https://tv.naver.com/embed/13771927?autoPlay=true",
         "poster": "https://movie-phinf.pstatic.net/20200427_139/1587954977691kaCua_JPEG/movie_image.jpg",
-        "director": 1,
+        "directors": [
+            1
+        ],
         "genres": [
             1
         ],

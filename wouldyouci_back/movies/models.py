@@ -20,6 +20,6 @@ class Movie(models.Model):
     trailer = models.CharField(max_length=200, blank=True, null=True)
     poster = models.CharField(max_length=200, blank=True, null=True)
 
-    director = models.ForeignKey(People, on_delete=models.CASCADE, related_name='movies')
+    directors = models.ManyToManyField(People, related_name='movie_directors')
     genres = models.ManyToManyField(Genre, related_name='movie_genres')
     actors = models.ManyToManyField(People, related_name='movie_actors')
