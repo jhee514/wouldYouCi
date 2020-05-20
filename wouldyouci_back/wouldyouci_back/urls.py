@@ -11,20 +11,19 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Snippets API",
+      title="WouldYouCi API",
       default_version='v1',
-      description="Test description",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@snippets.local"),
-      license=openapi.License(name="BSD License"),
+      description="우리 주변 씨네마 API",
+      contact=openapi.Contact(email="jay.hyundong@gmail.com"),
+      license=openapi.License(name="SSAFY License"),
    ),
 )
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api-token-auth/', obtain_jwt_token),
-    path('api/v1/users/', include('accounts.urls')),
+
+    path('user/', include('accounts.urls')),
 
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
