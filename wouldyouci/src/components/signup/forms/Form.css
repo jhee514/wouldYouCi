@@ -1,0 +1,14 @@
+.form{
+  width: 80vw;
+  margin-left: 10vw;
+  margin-bottom: 7vh;
+}
+
+.v-btn{
+  margin-right: 3vh;
+}
+
+.errors{
+  margin-left: 3vw;
+  color: #FF5654;
+}

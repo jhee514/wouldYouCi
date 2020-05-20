@@ -1,54 +1,42 @@
 <template>
-  <v-app id="inspire">
-    <v-content>
-      <v-container
-        fluid
-      >
-        <v-row
-          align="center"
-          justify="center"
-        >
-          <v-col
-            cols="12"
-            sm="8"
-            md="4"
-          >
-            <v-card>
-              <v-card-title>Login</v-card-title>
-              <v-card-text>
-                <v-form>
-                  <v-text-field
-                    label="Id"
-                    name="Id"
-                    prepend-icon="fas fa-user"
-                    type="text"
-                    v-model="userInfo.userName"
-                  ></v-text-field>
-                  <v-text-field
-                    id="password"
-                    label="Password"
-                    name="password"
-                    prepend-icon="fas fa-lock"
-                    type="password"
-                    v-model="userInfo.password"
-                  ></v-text-field>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn @click.prevent="login(userInfo)">Submit</v-btn>
-                <v-btn @click="setLoginMode">Signup</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-content>
-  </v-app>
+  <v-card class="form" outlined>
+    <v-card-title>Login</v-card-title>
+    <v-card-text>
+      <v-form>
+        <div v-if="getErrors.length" class="errors">
+          <ul>
+            <li v-for="(error, idx) in getErrors" :key="idx">{{ error }}</li>
+          </ul>
+        </div>
+        <v-text-field
+          label="Id"
+          name="Id"
+          prepend-icon="fas fa-user"
+          type="text"
+          v-model="userInfo.userName"
+          :rules="[rules.required]"
+        ></v-text-field>
+        <v-text-field
+          id="password"
+          label="Password"
+          name="password"
+          prepend-icon="fas fa-lock"
+          type="password"
+          v-model="userInfo.password"
+          :rules="[rules.required]"
+        ></v-text-field>
+      </v-form>
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn text @click.prevent="login(userInfo)">Submit</v-btn>
+      <v-btn text @click="setLoginMode">Signup</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
-  import { mapMutations, mapActions } from 'vuex';
+  import { mapGetters, mapMutations, mapActions } from 'vuex';
   export default {
     name: 'LoginForm',
     data() {
@@ -56,14 +44,23 @@
         userInfo: {
           userName: '',
           password: '',
+        },
+        rules: {
+          required: value => !!value || '필수 항목입니다.'
         }
       }
     },
+    computed: {
+      ...mapGetters(['getErrors'])
+    },
     methods: {
-      ...mapMutations(['setLoginMode']),
+      ...mapMutations(['setLoginMode', 'clearErrors']),
       ...mapActions(['login'])
+    },
+    created() {
+      this.clearErrors();
     }
   }
 </script>
 
-<style></style>
+<style src="./Form.css" scoped></style>

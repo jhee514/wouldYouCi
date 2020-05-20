@@ -6,17 +6,21 @@
         <img class="bigUserImage" src="../../../assets/basicUserImage.png" />
       </v-row>
     </v-dialog>
-    <span class="userName">userName</span>
+    <span class="userName">{{ getUserName }}</span>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   name: 'UserInfo',
   data() {
     return {
       isShow: false
     }
+  },
+  computed: {
+    ...mapGetters(['getUserName'])
   }
 }
 </script>
