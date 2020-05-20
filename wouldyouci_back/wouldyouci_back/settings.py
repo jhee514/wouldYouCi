@@ -10,7 +10,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['[::1]', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['[::1]', 'localhost', '127.0.0.1', 'bc5c20d4.ngrok.io']
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'corsheaders',
+    'drf_yasg',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
