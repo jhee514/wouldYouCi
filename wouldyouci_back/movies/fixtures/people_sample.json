@@ -1,0 +1,16 @@
+[
+{
+    "model": "movies.people",
+    "pk": 1,
+    "fields": {
+        "name": "\ud14c\uc2a4\ud2b8\uc0ac\ub78c1"
+    }
+},
+{
+    "model": "movies.people",
+    "pk": 2,
+    "fields": {
+        "name": "\ud14c\uc2a4\ud2b8\uc0ac\ub78c2"
+    }
+}
+]
