@@ -5,6 +5,8 @@ from django.contrib.auth.models import (
 from movies.models import Movie
 
 
+
+
 class MyUserManager(BaseUserManager):
     def create_user(self, username, email, get_agreement, password=None):
         if not username:
@@ -20,11 +22,12 @@ class MyUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, email, password=None):
+    def create_superuser(self, username, get_agreement, email, password=None):
         user = self.create_user(
             username,
             email=email,
             password=password,
+            get_agreement=get_agreement,
         )
 
         user.is_admin = True
