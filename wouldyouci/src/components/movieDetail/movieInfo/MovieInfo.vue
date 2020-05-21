@@ -1,8 +1,7 @@
 <template>
 
   <div class="movieInfo">
-    <!-- <p>trailer</p>
-    <p>poster</p> -->
+    <!-- <p>trailer</p> -->
 
     <p>개봉 {{ movie.fields.open_date }}</p>
     <p>장르 {{ movie.fields.genres }} | {{ movie.fields.running_time }}</p>
@@ -20,7 +19,6 @@ export default {
   props:["movie"],
   data() {
     return {
-      
     }
   }
 }

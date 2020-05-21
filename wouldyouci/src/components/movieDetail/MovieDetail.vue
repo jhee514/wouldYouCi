@@ -5,18 +5,18 @@
       <v-list-item two-line>
         <v-list-item-content>
           <iframe 
-            title=movie.fields.name
+            title=details.fields.name
             height=auto
             width=auto
-            :src=movie.fields.trailer
+            :src=details.fields.trailer
             allowfullscreen 
             frameborder="0" 
             scrolling="no" 
             allow="autoplay"
             ></iframe>
-          <v-list-item-title class="headline">{{ movie.fields.name }}</v-list-item-title>
-          <v-list-item-subtitle>{{ movie.fields.name_eng }}</v-list-item-subtitle>
-          <v-list-item-subtitle>{{ movie.fields.watch_grade }}</v-list-item-subtitle>
+          <v-list-item-title class="headline">{{ details.fields.name }}</v-list-item-title>
+          <v-list-item-subtitle>{{ details.fields.name_eng }}</v-list-item-subtitle>
+          <v-list-item-subtitle>{{ details.fields.watch_grade }}</v-list-item-subtitle>
           <v-list-item-subtitle>
             <v-rating
               :value=rating
@@ -27,9 +27,8 @@
               readonly
               size="14"></v-rating>
           </v-list-item-subtitle>
-          <v-list-item-subtitle>
-            {{ movie.fields.summary }}
-          </v-list-item-subtitle>
+
+            {{ details.fields.summary }}
 
           <v-card>
             <v-tabs
@@ -53,7 +52,7 @@
               >
                 <v-card flat>
                   <v-card-text>
-                    <component v-bind:is="item.component" :movie="movie"></component>
+                    <component v-bind:is="item.component" :movie="details"></component>
                   </v-card-text>
                 </v-card>
               </v-tab-item>
@@ -87,7 +86,7 @@ export default {
         {tab: 'Reviews', component: "MovieReview"}
       ],
       rating: 1.5,
-      movie: {
+      details: {
         "pk": 152691,
         "fields": {
           "name": "\uace0\uc591\uc774 \uc9d1\uc0ac",
