@@ -1,65 +1,67 @@
 <template>
   <v-app>
     <Title />
+    <div class="movieDetail">
+      <v-list-item two-line>
+        <v-list-item-content>
+          <iframe 
+            title=movie.fields.name
+            height=auto
+            width=auto
+            :src=movie.fields.trailer
+            allowfullscreen 
+            frameborder="0" 
+            scrolling="no" 
+            allow="autoplay"
+            ></iframe>
+          <v-list-item-title class="headline">{{ movie.fields.name }}</v-list-item-title>
+          <v-list-item-subtitle>{{ movie.fields.name_eng }}</v-list-item-subtitle>
+          <v-list-item-subtitle>{{ movie.fields.watch_grade }}</v-list-item-subtitle>
+          <v-list-item-subtitle>
+            <v-rating
+              :value=rating
+              background-color="orange lighten-3"
+              color="amber"
+              dense
+              half-increments
+              readonly
+              size="14"></v-rating>
+          </v-list-item-subtitle>
+          <v-list-item-subtitle>
+            {{ movie.fields.summary }}
+          </v-list-item-subtitle>
 
-    <v-list-item two-line>
-      <v-list-item-content>
-        <iframe 
-          title=movie.fields.name
-          height=auto
-          width=auto
-          :src=movie.fields.trailer
-          allowfullscreen 
-          frameborder="0" 
-          scrolling="no" 
-          allow="autoplay"
-          ></iframe>
-        <v-list-item-title class="headline">{{ movie.fields.name }}</v-list-item-title>
-        <v-list-item-subtitle>{{ movie.fields.name_eng}}</v-list-item-subtitle>
-        <v-list-item-subtitle>{{ movie.fields.watch_grade}}</v-list-item-subtitle>
-        <v-list-item-subtitle>
-          <v-rating
-            :value=rating
-            background-color="orange lighten-3"
-            color="amber"
-            dense
-            half-increments
-            readonly
-            size="14"></v-rating>
-        </v-list-item-subtitle>
-        {{ movie.fields.summary }}
-      <v-card>
-        <v-tabs
-          fixed-tabs
-          v-model="tab"
-          background-color="orange lighten-3"
-          dark
-        >
-          <v-tab
-            v-for="item in items"
-            :key="item.tab"
-          >
-            {{ item.tab }}
-          </v-tab>
-        </v-tabs>
+          <v-card>
+            <v-tabs
+              fixed-tabs
+              v-model="tab"
+              background-color="orange lighten-3"
+              dark
+            >
+              <v-tab
+                v-for="item in items"
+                :key="item.tab"
+              >
+                {{ item.tab }}
+              </v-tab>
+            </v-tabs>
 
-        <v-tabs-items v-model="tab">
-          <v-tab-item
-            v-for="item in items"
-            :key="item.tab"
-          >
-            <v-card flat>
-              <v-card-text>
-                <component v-bind:is="item.component" :movie="movie"></component>
-              </v-card-text>
-            </v-card>
-          </v-tab-item>
-        </v-tabs-items>
-    
-      </v-card>
-      </v-list-item-content>
-    </v-list-item>
-    
+            <v-tabs-items v-model="tab">
+              <v-tab-item
+                v-for="item in items"
+                :key="item.tab"
+              >
+                <v-card flat>
+                  <v-card-text>
+                    <component v-bind:is="item.component" :movie="movie"></component>
+                  </v-card-text>
+                </v-card>
+              </v-tab-item>
+            </v-tabs-items>
+          </v-card>
+        </v-list-item-content>
+      </v-list-item>
+    </div>
     <Nav />
   </v-app>
 </template>
