@@ -6,6 +6,7 @@ import Search from '../components/search/Search.vue';
 import Signup from '../components/signup/Signup.vue';
 import UserPage from '../components/userPage/UserPage.vue';
 import FirstRating from '../components/firstRating/FirstRating.vue';
+import CinemaDetail from '../components/cinemaDetail/CinemaDetail';
 
 
 Vue.use(VueRouter);
@@ -40,7 +41,13 @@ const routes = [
     path: '/firstRating',
     name: 'FirstRating',
     component: FirstRating
-  }
+  },
+  {
+    path: '/cinema',
+    name: 'CinemaDetail',
+    component: CinemaDetail
+  },
+  
 ];
 
 const router = new VueRouter({
