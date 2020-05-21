@@ -1,4 +1,7 @@
 from django.db import models
+# from accounts.models import Rating
+# from django.contrib.auth import get_user_model
+# User = get_user_model()
 
 
 class Genre(models.Model):
@@ -23,3 +26,5 @@ class Movie(models.Model):
     directors = models.ManyToManyField(People, related_name='movie_directors')
     genres = models.ManyToManyField(Genre, related_name='movie_genres')
     actors = models.ManyToManyField(People, related_name='movie_actors')
+
+    # ratings = models.ManyToManyField(User, through='Rating')
