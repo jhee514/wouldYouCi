@@ -27,16 +27,6 @@ button.v-btn.v-btn--depressed.v-btn--flat.v-btn--outlined.theme--light.v-size--s
 .movieCard{
   position: absolute;
   bottom: 10vh;
-  left: 10vw;
-  width: 80vw;
-}
-
-.movieDetail{
-  height: 20vh;
-}
-
-.close{
-  position: absolute;
-  top: 1vh;
-  right: 1vw;
+  left: 2.5vw;
+  width: 95vw;
 }

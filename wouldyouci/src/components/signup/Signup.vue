@@ -8,6 +8,9 @@
     </div>
     <LoginForm v-if="isLoginMode" />
     <SignupForm v-else />
+    <div class="goMapBtn">
+      <v-btn text @click="goMainMap">비회원으로 사용하기<v-icon small>fas fa-arrow-right</v-icon></v-btn>
+    </div>
   </div>
 </template>
 
@@ -25,6 +28,11 @@
     },
     computed: {
       ...mapGetters(['isLoginMode', 'isLoggedIn'])
+    },
+    methods: {
+      goMainMap() {
+        router.push('/');
+      }
     },
     created() {
       if (this.isLoggedIn) {

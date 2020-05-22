@@ -70,7 +70,7 @@ const actions = {
           router.push("/");
         })
         .catch(err => {
-          if (err.response.data.non_field_errors.length) {
+          if (err.response && err.response.data.non_field_errors.length) {
             commit("pushError", "아이디 혹은 패스워드가 올바르지 않습니다.")
           }
         })
@@ -127,7 +127,7 @@ const actions = {
           })
           .catch(err => {
             console.log(err.response);
-            if (err.response.data.message.username){
+            if (err.response && err.response.data.message.username){
               for (let i=0; i<err.response.data.message.username.length; i++){
                 if (err.response.data.message.username[i] === "user의 username은/는 이미 존재합니다.") {
                   commit("pushError", "이미 존재하는 아이디입니다.");
@@ -138,12 +138,12 @@ const actions = {
                 }
               }
             }
-            if (err.response.data.message.email) {
+            if (err.response && err.response.data.message.email) {
               for (let i=0; i<err.response.data.message.email.length; i++){
                 commit("pushError", err.response.data.message.email[i]);
               }
             }
-            if (err.response.data.message.password) {
+            if (err.response && err.response.data.message.password) {
               for (let i=0; i<err.response.data.message.password.length; i++) {
                 commit("pushError", err.response.data.message.password[i]);
               }

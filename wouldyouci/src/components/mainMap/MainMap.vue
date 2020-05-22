@@ -25,12 +25,7 @@
       </v-btn>
     </div>
     <div class="movieCard" v-if="showMovieCard">
-      <v-card class="movieDetail">
-        영화 정보
-        <v-card-actions>
-          <v-icon class="close" @click="closeMovieCard">fas fa-times-circle</v-icon>
-        </v-card-actions>
-      </v-card>
+      <TheaterMovie v-bind:theaterMovieList="theaterMovieList"/>
     </div>
     <Nav />
   </div>
@@ -40,6 +35,7 @@
 import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import TimeSelector from './timeSelector/TimeSelector.vue';
+import TheaterMovie from './theaterMovie/TheaterMovie.vue';
 import { mapActions } from 'vuex';
 
 export default {
@@ -47,7 +43,8 @@ export default {
   components: {
     Nav,
     Title,
-    TimeSelector
+    TimeSelector,
+    TheaterMovie
   },
   data() {
     return {
@@ -64,8 +61,9 @@ export default {
       cardInfo: null,
       showMovieCard: null,
       loading: false,
-      bound: null,
-      timeSelector: false
+      mapCenter: null,
+      timeSelector: false,
+      theaterMovieList: ['배고파...', '집이지만', '집에 가고파', '금요일', '불금', '놀고싶다']
     }
   },
   methods: {
@@ -75,20 +73,27 @@ export default {
         if (value.type === 'user') {
           const marker = new this.google.maps.Marker({position: v, map: this.map, icon: value.icon})
           this.google.maps.event.addListener(marker, 'click', function() {
+            if (this.showMovieCard) {
+              this.closeMovieCard();
+            }
             const infoWindow = new window.google.maps.InfoWindow;
-            infoWindow.setPosition({lat: v.lat + 0.003, lng: v.lng});
+            infoWindow.setPosition({lat: v.lat, lng: v.lng});
             infoWindow.setContent('현재 위치입니다. 실제 위치와 500m 정도 차이가 날 수 있습니다.');
             infoWindow.open(this.map);
-          })
+          }.bind(this))
         } else {
           const marker = new this.google.maps.Marker({position: v, map: this.map, icon: value.icon, label:'cgv', animation: this.google.maps.Animation.DROP})
           this.google.maps.event.addListener(marker, 'click', function() {
-            if (this.cardInfo) {
+            if (this.cardInfo && this.cardInfo !== marker) {
               this.toggleBounce(this.cardInfo);
+              this.toggleBounce(marker);
+              this.cardInfo = marker;
+              this.showMovieCard = true;
+            } else if (!this.cardInfo) {
+              this.toggleBounce(marker);
+              this.cardInfo = marker;
+              this.showMovieCard = true;
             }
-            this.toggleBounce(marker);
-            this.cardInfo = marker;
-            this.showMovieCard = true;
           }.bind(this))
         }
       }
@@ -104,6 +109,7 @@ export default {
     toggleBounce(marker) {
       if (marker.getAnimation() !== null) {
         marker.setAnimation(null);
+        this.cardInfo = null;
       } else {
         marker.setAnimation(window.google.maps.Animation.BOUNCE);
       }
@@ -111,15 +117,15 @@ export default {
     closeMovieCard() {
       this.showMovieCard = false;
       this.toggleBounce(this.cardInfo);
-      this.cardInfo = null;
     },
     changeLoading() {
       this.loading = true;
       setTimeout(function() {
         this.loading = false;
-        const bound = this.map.getBounds();
-        console.log(bound)
-        this.bound = bound;
+        const center = this.map.getCenter()
+        const centerValue = {lat: center.lat(), lng: center.lng()};
+        console.log(centerValue)
+        this.mapCenter = centerValue;
       }.bind(this), 1000)
     },
     changeTime(targetTime) {
@@ -139,6 +145,11 @@ export default {
         zoom: 14,
         disableDefaultUI: true
       });
+      this.google.maps.event.addListener(this.map, 'click', function() {
+        if (this.showMovieCard) {
+          this.closeMovieCard();
+        }
+      }.bind(this))
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
           const pos = {
@@ -157,9 +168,9 @@ export default {
           this.marking({type: 'user', position: [pos], icon: hereIcon});
           this.marking({type: 'theater', position: this.positions, icon: theaterIcon});
           this.map.setCenter(pos);
-          let bound = this.map.getBounds();
-          console.log(bound);
-          this.bound = bound;
+          // let bound = this.map.getBounds();
+          // console.log(bound);
+          // this.bound = bound;
         }.bind(this), function() {
           this.handleLocationError(true, this.map.getCenter());
         })
