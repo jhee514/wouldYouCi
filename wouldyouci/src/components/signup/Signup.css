@@ -16,3 +16,17 @@ img.title{
   width: 200px;
   height: 200px;
 }
+
+.goMapBtn{
+  text-align: right;
+  margin-right: 10vw;
+}
+
+#app > div > div.goMapBtn > button {
+  padding-right: 0;
+  margin-bottom: 1vh;
+}
+
+#app > div > div.goMapBtn > button > span > i {
+  margin-left: 3vw;
+}
