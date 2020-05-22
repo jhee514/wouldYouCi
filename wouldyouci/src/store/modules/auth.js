@@ -40,7 +40,7 @@ const actions = {
       commit("setUserName", userName);
     }
   },
-  login: ({ commit, getters }, userInfo) => {
+  login: ({ getters, commit, dispatch }, userInfo) => {
     if (getters.isLoggedIn) {
       router.push("/");
     } else {
@@ -65,11 +65,15 @@ const actions = {
       } else {
         axios.post(`${HOST}/user/login/`, data, options)
         .then(res => {
+          console.log(res)
           commit("setToken", res.data.token);
           commit("setUserName", userInfo.userName);
-          router.push("/");
+          dispatch("checkRating");
+          // router.push("/firstRating");
         })
         .catch(err => {
+          console.log(err)
+          console.log(userInfo)
           if (err.response && err.response.data.non_field_errors.length) {
             commit("pushError", "아이디 혹은 패스워드가 올바르지 않습니다.")
           }
@@ -127,6 +131,7 @@ const actions = {
           })
           .catch(err => {
             console.log(err.response);
+            console.log(userInfo);
             if (err.response && err.response.data.message.username){
               for (let i=0; i<err.response.data.message.username.length; i++){
                 if (err.response.data.message.username[i] === "user의 username은/는 이미 존재합니다.") {
@@ -158,6 +163,29 @@ const actions = {
     sessionStorage.removeItem("jwt");
     sessionStorage.removeItem("name");
     router.push("/signup");
+  },
+  checkRating: ({ getters }) => {
+    getters;
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`
+      }
+    }
+    axios.get(`${HOST}/user/login/rating/`, options)
+      .then(res => {
+        if (!res.data.rating_tf) {
+          console.log('평가 안 함');
+          router.push('/firstRating');
+        } else {
+          console.log('평가 함');
+          router.push('/');
+        }
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
 };
 
