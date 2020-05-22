@@ -1,0 +1,42 @@
+.time{
+  margin-top: 2vh;
+  margin-bottom: 1vh;
+}
+
+button.v-btn.v-btn--depressed.v-btn--flat.v-btn--outlined.theme--light.v-size--small{
+  padding-left: 2vw;
+  padding-right: 1vw;
+}
+
+.angleDown{
+  margin-left: 2vw;
+}
+
+#map {
+  height: 79vh;
+  border-radius: 3% 3% 0 0;
+  background: gray;
+}
+
+.nowArea{
+  position: absolute;
+  top: 15vh;
+  right: 2vw;
+}
+
+.movieCard{
+  position: absolute;
+  bottom: 10vh;
+  left: 10vw;
+  width: 80vw;
+}
+
+.movieDetail{
+  height: 20vh;
+}
+
+.close{
+  position: absolute;
+  top: 1vh;
+  right: 1vw;
+}

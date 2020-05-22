@@ -26,7 +26,10 @@ export default {
   name: 'Nav',
   methods: {
     goMap() {
-      router.push('/');
+      const link = document.location.href.split("/");
+      if (link[link.length - 1]) {
+        router.push('/');
+      }
     },
     goSearch() {
       const link = document.location.href.split("/");
