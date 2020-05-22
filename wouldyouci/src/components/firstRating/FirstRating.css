@@ -1,0 +1,22 @@
+.firstRating{
+  margin-bottom: 7vh;
+}
+
+.explanation{
+  margin-top: 3vh;
+  margin-right: 3vh;
+  margin-left: 3vh;
+}
+
+.next{
+  margin-right: 3vw;
+}
+
+#app > div > div.firstRating > div.container.container--fluid > div:nth-child(1) > button > span > i{
+  margin-left: 3vw;
+}
+
+.v-btn{
+  margin-top: 1vh;
+  margin-right: 3vw;
+}

@@ -1,0 +1,24 @@
+.userInfo{
+  margin-bottom: 3vh;
+}
+
+.userImage{
+  width: 10vh;
+  height: 10vh;
+  margin-top: 0.5vh;
+  margin-left: 0.5vh;
+  border-radius: 70%;
+  border: 0.15vh solid;
+  vertical-align: middle;
+}
+
+.userName{
+  margin-left: 5vh;
+  vertical-align: middle;
+  font-size: 3vh;
+}
+
+.bigUserImage{
+  width: auto;
+  height: 50vh;
+}
