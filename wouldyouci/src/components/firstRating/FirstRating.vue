@@ -10,6 +10,12 @@
         </v-card-text>
       </v-card>
       <v-container fluid>
+        <v-row justify="end">
+          <v-spacer></v-spacer>
+          <v-btn class="next" text @click="goMap">
+            다음에 하기<v-icon small>fas fa-arrow-right</v-icon>
+          </v-btn>
+        </v-row>
         <v-row dense justify="center">
           <v-col
             v-for="card in cards"
@@ -40,7 +46,7 @@
         <v-row justify="end">
           <v-spacer></v-spacer>
           <v-btn text>제출</v-btn>
-          <v-btn class="next" text>다음에 하기</v-btn>
+          <!-- <v-btn class="next" text @click="goMap">다음에 하기</v-btn> -->
         </v-row>
       </v-container>
     </div>
@@ -51,6 +57,7 @@
 <script>
 import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
+import router from '../../router';
 
 export default {
   name: 'UserPage',
@@ -65,6 +72,11 @@ export default {
         { src: 'https://movie-phinf.pstatic.net/20200428_196/1588038709486FYyHu_JPEG/movie_image.jpg', rating: 0},
         { src: 'https://movie-phinf.pstatic.net/20200429_215/15881414327594O6hj_JPEG/movie_image.jpg', rating: 0},
       ],
+    }
+  },
+  methods: {
+    goMap() {
+      router.push('/');
     }
   }
 }

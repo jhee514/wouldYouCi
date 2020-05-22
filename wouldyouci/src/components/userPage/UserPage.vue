@@ -24,8 +24,14 @@
       <span>나에게 추천하는 영화</span>
       <MovieList v-bind:CinemaList="recommendedMovies"/>
       <span>내 영화 스타일</span>
-      <div style="height:50vh; margin-bottom: 10vh; margin-top: 3vh">
-        <img src="../../assets/space.png" style="height:50vh;"/>
+      <div style="height:50vh; margin-bottom: 10vh; margin-top: 3vh; background-color:#FFC9E1; text-align:center; padding-top:5vh;">
+        현재 데이터가 부족해 내 영화 스타일에 대한 분석이 불가능 합니다.
+        <div style="padding-top:5vh;">
+          <v-btn text @click="goFirstRating">
+            영화 평가하러 가기
+            <v-icon small style="margin-left:3vw;">fas fa-arrow-right</v-icon>
+          </v-btn>
+        </div>
       </div>
     </div>
     <Nav />
@@ -40,6 +46,7 @@ import MovieList from './movieList/MovieList.vue';
 import SettingCard from './settingCard/SettingCard.vue';
 import ChangeUserImage from './changeUserInfo/ChangeUserImage.vue';
 import ChangeUserPass from './changeUserInfo/ChangeUserPass.vue';
+import router from '../../router';
 
 export default {
   name: 'UserPage',
@@ -79,6 +86,9 @@ export default {
     closeChangePassDialog(type) {
       type;
       this.isShowChangePassDialog = false;
+    },
+    goFirstRating() {
+      router.push('/firstRating');
     }
   }
 }

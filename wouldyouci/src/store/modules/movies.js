@@ -11,15 +11,18 @@ const initPromise = new Promise((resolve, reject) => {
 });
 
 const state = {
-  initialized: !!window.google
+  initialized: !!window.google,
+  searchMode: "before"
 };
 
 const getters = {
-  getInitialized: state => state.initialized
+  getInitialized: state => state.initialized,
+  getSearchMode: state => state.searchMode
 };
 
 const mutations = {
-  setInitialized: (state, value) => state.initialized = value
+  setInitialized: (state, value) => state.initialized = value,
+  setSearchMode: (state, mode) => state.searchMode = mode
 };
 
 const actions = {
