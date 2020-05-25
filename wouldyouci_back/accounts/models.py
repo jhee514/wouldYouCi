@@ -5,8 +5,6 @@ from django.contrib.auth.models import (
 from movies.models import Movie
 
 
-
-
 class MyUserManager(BaseUserManager):
     def create_user(self, username, email, get_agreement, password=None):
         if not username:
