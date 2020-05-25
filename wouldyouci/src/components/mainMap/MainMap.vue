@@ -9,10 +9,18 @@
         {{ time }}
         <v-icon class="angleDown">fas fa-angle-down</v-icon>
       </v-btn>
-      기준 영화입니다.
+      기준 반경
+      <v-btn outlined small color="#000000" @click="kmSelector=!kmSelector">
+        {{ km }}
+        <v-icon class="angleDown">fas fa-angle-down</v-icon>
+      </v-btn>
+      Km
     </div>
     <v-dialog v-model="timeSelector">
       <TimeSelector v-bind:nowTime="time" @targetTime="changeTime"/>
+    </v-dialog>
+    <v-dialog v-model="kmSelector">
+      <KmSelector v-bind:nowKm="km" @targetKm="changeKm"/>
     </v-dialog>
     <div id="map" ref="map">
     </div>
@@ -35,8 +43,9 @@
 import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import TimeSelector from './timeSelector/TimeSelector.vue';
+import KmSelector from './timeSelector/KmSelector.vue';
 import TheaterMovie from './theaterMovie/TheaterMovie.vue';
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'MainMap',
@@ -44,6 +53,7 @@ export default {
     Nav,
     Title,
     TimeSelector,
+    KmSelector,
     TheaterMovie
   },
   data() {
@@ -51,38 +61,39 @@ export default {
       map: null,
       google: null,
       nowHere: null,
-      positions: [
-        {lat: 37.498, lng: 127.04},
-        {lat: 37.500, lng: 127.055},
-        {lat: 37.510, lng: 127.06},
-        {lat: 37.505, lng: 127.05}
-      ],
       time: new Date().toLocaleTimeString(),
+      km: 3,
       cardInfo: null,
       showMovieCard: null,
       loading: false,
       mapCenter: null,
       timeSelector: false,
-      theaterMovieList: ['배고파...', '집이지만', '집에 가고파', '금요일', '불금', '놀고싶다']
+      kmSelector: false,
+      theaterMovieList: []
+
     }
   },
+  computed: {
+    ...mapGetters(['getTheaterMovies'])
+  },
   methods: {
-    ...mapActions(['init']),
+    ...mapActions(['init', 'bringHereCinema']),
     marking(value) {
-      for (const v of value.position) {
-        if (value.type === 'user') {
-          const marker = new this.google.maps.Marker({position: v, map: this.map, icon: value.icon})
-          this.google.maps.event.addListener(marker, 'click', function() {
-            if (this.showMovieCard) {
-              this.closeMovieCard();
-            }
-            const infoWindow = new window.google.maps.InfoWindow;
-            infoWindow.setPosition({lat: v.lat, lng: v.lng});
-            infoWindow.setContent('현재 위치입니다. 실제 위치와 500m 정도 차이가 날 수 있습니다.');
-            infoWindow.open(this.map);
-          }.bind(this))
-        } else {
-          const marker = new this.google.maps.Marker({position: v, map: this.map, icon: value.icon, label:'cgv', animation: this.google.maps.Animation.DROP})
+      console.log(value)
+      if (value.type === 'user') {
+        const marker = new this.google.maps.Marker({position: value.position, map: this.map, icon: value.icon})
+        this.google.maps.event.addListener(marker, 'click', function() {
+          if (this.showMovieCard) {
+            this.closeMovieCard();
+          }
+          const infoWindow = new window.google.maps.InfoWindow;
+          infoWindow.setPosition({lat: value.position.lat, lng: value.position.lng});
+          infoWindow.setContent('현재 위치입니다. 실제 위치와 500m 정도 차이가 날 수 있습니다.');
+          infoWindow.open(this.map);
+        }.bind(this))
+      } else {
+        for (const v of value.position) {
+          const marker = new this.google.maps.Marker({position: {lat: Number(v.y), lng: Number(v.x)}, map: this.map, icon: value.icon, label:v.name, animation: this.google.maps.Animation.DROP})
           this.google.maps.event.addListener(marker, 'click', function() {
             if (this.cardInfo && this.cardInfo !== marker) {
               this.toggleBounce(this.cardInfo);
@@ -102,7 +113,7 @@ export default {
       const infoWindow = new window.google.maps.InfoWindow;
       infoWindow.setPosition(pos);
       infoWindow.setContent(browserHasGeolocation?
-                              '오류: 지리적 위치 서비스가 실패했습니다.':
+                              '오류: 지리적 위치 서비스가 실패했습니다. 위치 제공을 허용해주세요':
                               '오류: 브라우저가 지리적 위치를 지원하지 않습니다.');
       infoWindow.open(this.map)
     },
@@ -134,6 +145,10 @@ export default {
     },
     setNowTime() {
       this.time = new Date().toLocaleTimeString();
+    },
+    changeKm(targetKm) {
+      this.kmSelector = false;
+      this.km = targetKm;
     }
   },
   async mounted() {
@@ -151,12 +166,15 @@ export default {
         }
       }.bind(this))
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
+        navigator.geolocation.getCurrentPosition(async function(position) {
           const pos = {
             lat: position.coords.latitude,
             lng: position.coords.longitude
           };
-          this.nowHere = pos
+          await this.bringHereCinema({center: pos, radius: 3})
+          this.theaterMovieList = this.getTheaterMovies;
+          console.log(this.theaterMovieList);
+          this.nowHere = pos;
           const hereIcon = {
             url : "https://image.flaticon.com/icons/svg/684/684908.svg",
             scaledSize: new this.google.maps.Size(40, 40)
@@ -165,15 +183,15 @@ export default {
             url: "https://image.flaticon.com/icons/svg/2892/2892617.svg",
             scaledSize: new this.google.maps.Size(40, 40)
           }
-          this.marking({type: 'user', position: [pos], icon: hereIcon});
-          this.marking({type: 'theater', position: this.positions, icon: theaterIcon});
+          this.marking({type: 'user', position: pos, icon: hereIcon});
+          this.marking({type: 'theater', position: this.theaterMovieList, icon: theaterIcon});
           this.map.setCenter(pos);
           // let bound = this.map.getBounds();
           // console.log(bound);
           // this.bound = bound;
         }.bind(this), function() {
           this.handleLocationError(true, this.map.getCenter());
-        })
+        }.bind(this))
       }
     } catch (error) {
       console.log(error);
