@@ -13,7 +13,7 @@ import datetime
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def get_cinema(request):
+def get_cinema_center(request):
     x = float(request.query_params.get('x'))
     y = float(request.query_params.get('y'))
     radius = request.query_params.get('radius')
@@ -49,9 +49,36 @@ def get_cinema(request):
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
+def get_cinema_width(request):
+    x1 = float(request.query_params.get('x1'))
+    x2 = float(request.query_params.get('x2'))
+    y1 = float(request.query_params.get('y1'))
+    y2 = float(request.query_params.get('y2'))
+
+    if not x1 or not x2 or not y1 or not y2:
+        return Response(status=400, data={'message': 'x, y 값은 필수입니다.'})
+
+    cinemas = Cinema.objects.filter(
+        Q(y__range=(y1 - 0.005, y2 + 0.005)) |
+        Q(x__range=(x1 - 0.008, x2 + 0.008))
+    )
+
+    serializer = SimpleCinemaSerializer(cinemas, many=True)
+
+    datasets = {
+        'meta': {
+            'total': cinemas.count()
+        },
+        'documents': serializer.data
+    }
+
+    return Response(status=200, data=datasets, content_type='application.json')
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
 def get_fast_movie(request, cinema_id):
-    date = request.query_params.get('date')
-    date = date if date else datetime.date.today()
+    date = datetime.date.today()
     start_time = request.query_params.get('start_time')
     start_time = start_time if start_time else datetime.datetime.now().time()
 

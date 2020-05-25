@@ -137,7 +137,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ko-kr'
 
-# Todo MySQL AWS 연동 시 MySQL 서버 시간도 변경 해주어야 함
 TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
@@ -146,7 +145,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-# TODO User 모델 우리가 만들 거라서
 AUTH_USER_MODEL = 'accounts.User'
 
 
@@ -167,7 +165,7 @@ ROOT_DIR = os.path.dirname(BASE_DIR)
 STATIC_URL = '/static/'
 # STATIC_DIR = os.path.join(BASE_DIR, 'static')
 # STATICFILES_DIRS = [STATIC_DIR, ]
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
