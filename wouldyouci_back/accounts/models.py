@@ -68,6 +68,9 @@ class Rating(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='ratings')  # movie.ratings
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')  # user.ratings
 
+    class Meta:
+        ordering = ('-updated_at',)
+
 
 # class LikeMovie(models.Model):
 #     pass

@@ -25,3 +25,11 @@ class RatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
         fields = '__all__'
+
+
+class MovieRatingSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Rating
+        fields = ('id', 'comment', 'score', 'updated_at', 'user')
