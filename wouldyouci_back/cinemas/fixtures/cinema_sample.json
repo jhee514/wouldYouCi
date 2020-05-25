@@ -1,6 +1,6 @@
 [
 	{
-		"model": "movies.cinema",
+		"model": "cinemas.cinema",
 		"pk": 1,
 		"fields": {
 			"region": "서울",
