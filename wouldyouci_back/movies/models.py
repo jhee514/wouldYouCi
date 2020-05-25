@@ -1,4 +1,6 @@
 from django.db import models
+
+
 # from accounts.models import Rating
 # from django.contrib.auth import get_user_model
 # User = get_user_model()
@@ -29,6 +31,7 @@ class Movie(models.Model):
 
     # ratings = models.ManyToManyField(User, through='Rating')
 
+
 class Cinema(models.Model):
     region = models.CharField(max_length=30)
     area = models.CharField(max_length=30)
@@ -44,12 +47,13 @@ class Cinema(models.Model):
     type = models.CharField(default='기타')
     img = models.URLField(max_length=250, blank=True, null=True)
 
-class Onscreen(models.Model) :
-    # movie = models.ManyToManyField(Movie)
-    # cinema = models.ManyToManyField(Cinema)
+
+class Onscreen(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE)
     date = models.DateField()
-    start_time : models.CharField(max_length=10)
+    start_time: models.CharField(max_length=10)
     end_time: models.CharField(max_length=10)
     total_seats: models.CharField(max_length=5)
     seats: models.CharField(max_length=5)
-    url : models.URLField(max_length=250, blank=True, null=True)
+    url: models.URLField(max_length=250, blank=True, null=True)
