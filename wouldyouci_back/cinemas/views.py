@@ -5,22 +5,12 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import viewsets, permissions
 from movies.models import Onscreen
+from movies.serializers import OnscreenSerializer
 from .models import Cinema
 from .serializers import SimpleCinemaSerializer
+import datetime
 
-# SELECT name,
-# 	(6371*acos(cos(radians(37.5611326))*cos(radians(cinema.y))*cos(radians(cinema.x)
-# 	-radians(127.033311))+sin(radians(37.5611326))*sin(radians(cinema.y))))
-# 	AS distance
-# FROM wouldyouci.movies_cinema AS cinema
-# HAVING distance <= 1
-# ORDER BY distance
-# LIMIT 0,10
 
-# x = 127.033311 = 'longitude' = '경도'
-# y = 37.5611326 = 'latitude' = '위도'
-# longitude = float(request.GET.get('longitude', None))
-# latitude = float(request.GET.get('latitude', None))
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_cinema(request):
@@ -28,9 +18,6 @@ def get_cinema(request):
     y = float(request.query_params.get('y'))
     radius = request.query_params.get('radius')
     radius = int(radius) if radius else 1
-    # x = 127.033311
-    # y = 37.5611326
-    # radius = 1
 
     if not x or not y:
         return Response(status=400, data={'message': 'x, y 값은 필수입니다.'})
@@ -63,5 +50,22 @@ def get_cinema(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_fast_movie(request, cinema_id):
-    onscreen = Onscreen.objects.filter(cinema=cinema_id)
-    pass
+    date = request.query_params.get('date')
+    date = date if date else datetime.date.today()
+    start_time = request.query_params.get('start_time')
+    start_time = start_time if start_time else datetime.datetime.now().time()
+
+    onscreen = Onscreen.objects.filter(cinema=cinema_id,
+                                       date=date,
+                                       start_time__gte=start_time)
+
+    serializer = OnscreenSerializer(onscreen, many=True)
+
+    datasets = {
+        'meta': {
+            'total': onscreen.count()
+        },
+        'documents': serializer.data
+    }
+
+    return Response(status=200, data=datasets, content_type='application.json')
