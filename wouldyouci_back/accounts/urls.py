@@ -10,9 +10,9 @@ urlpatterns = [
     # path('', views.signup),
     path('login/', obtain_jwt_token),
     path('', views.AccountView.as_view()),
-    # path(r'^/test/', include(router.urls)),
-] + [
-    # Mixin
-    # path('mixin/post/', views.PostListMixins.as_view()),
-    # path('mixin/post/<int:pk>/', views.PostDetailMixins.as_view()),
+
+    # 회원가입시 최초 레이팅 페이지
+    # path('rating/init/'),
+    path('login/rating/', views.get_rating_tf, name='get_rating_tf'),
+    # 로그인시 레이팅 페이지
 ]

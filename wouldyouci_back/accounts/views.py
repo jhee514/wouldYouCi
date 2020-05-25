@@ -5,6 +5,9 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 from utils import success_collection as success, error_collection as error
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from .models import Rating
 
 
 class AccountView(APIView):
@@ -24,3 +27,13 @@ class AccountView(APIView):
             return Response(status=200, data={'message': success.ACCOUNTS_SUCCESS.message})
 
         return Response(status=400, data={'message': serializer.errors})
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_rating_tf(request):
+    user = request.user
+    if Rating.objects.filter(user=user.pk).count() > 4:
+        return Response(status=200, data={'rating_tf': True})
+    else:
+        return Response(status=200, data={'rating_tf': False})
