@@ -25,6 +25,7 @@ urlpatterns = [
 
     path('user/', include('accounts.urls')),
     path('movie/', include('movies.urls')),
+    path('cinema/', include('cinemas.urls')),
 
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]

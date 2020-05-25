@@ -1,7 +1,5 @@
 from django.db import models
-# from accounts.models import Rating
-# from django.contrib.auth import get_user_model
-# User = get_user_model()
+from cinemas.models import Cinema
 
 
 class Genre(models.Model):
@@ -27,4 +25,17 @@ class Movie(models.Model):
     genres = models.ManyToManyField(Genre, related_name='movie_genres')
     actors = models.ManyToManyField(People, related_name='movie_actors')
 
-    # ratings = models.ManyToManyField(User, through='Rating')
+
+class Onscreen(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE)
+    info = models.CharField(max_length=50)
+    date = models.DateField(auto_now_add=False, auto_now=False)
+    start_time = models.TimeField(auto_now_add=False, auto_now=False)
+    end_time = models.TimeField(auto_now_add=False, auto_now=False)
+    total_seats = models.CharField(max_length=5)
+    seats = models.CharField(max_length=5)
+    url = models.URLField(max_length=250, blank=True, null=True)
+
+    class Meta:
+        ordering = ('start_time',)

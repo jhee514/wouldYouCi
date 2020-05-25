@@ -5,8 +5,6 @@ from django.contrib.auth.models import (
 from movies.models import Movie
 
 
-
-
 class MyUserManager(BaseUserManager):
     def create_user(self, username, email, get_agreement, password=None):
         if not username:
@@ -69,6 +67,9 @@ class Rating(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='ratings')  # movie.ratings
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')  # user.ratings
+
+    class Meta:
+        ordering = ('-updated_at',)
 
 
 # class LikeMovie(models.Model):
