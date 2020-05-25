@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Movie
 from accounts.models import Rating
-from accounts.serializers import RatingSerializer
+from accounts.serializers import MovieRatingSerializer
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -22,7 +22,7 @@ class MovieSerializer(serializers.ModelSerializer):
         read_only=True,
         slug_field='name'
      )
-    ratings = RatingSerializer(many=True, read_only=True)
+    ratings = MovieRatingSerializer(many=True, read_only=True)
 
     class Meta:
         model = Movie

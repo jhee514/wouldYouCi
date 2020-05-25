@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import viewsets, permissions
+from movies.models import Onscreen
 from .models import Cinema
 from .serializers import SimpleCinemaSerializer
 
@@ -59,3 +60,8 @@ def get_cinema(request):
     return Response(status=200, data=datasets, content_type='application.json')
 
 
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_fast_movie(request, cinema_id):
+    onscreen = Onscreen.objects.filter(cinema=cinema_id)
+    pass
