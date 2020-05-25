@@ -14,19 +14,22 @@ const initPromise = new Promise((resolve, reject) => {
 const state = {
   initialized: !!window.google,
   searchMode: "before",
-  theaterMovies: []
+  theaterMovies: [],
+  movies: []
 };
 
 const getters = {
   getInitialized: state => state.initialized,
   getSearchMode: state => state.searchMode,
-  getTheaterMovies: state => state.theaterMovies
+  getTheaterMovies: state => state.theaterMovies,
+  getMovies: state => state.movies
 };
 
 const mutations = {
   setInitialized: (state, value) => state.initialized = value,
   setSearchMode: (state, mode) => state.searchMode = mode,
-  setTheaterMovies: (state, theaterMovies) => state.theaterMovies = theaterMovies
+  setTheaterMovies: (state, theaterMovies) => state.theaterMovies = theaterMovies,
+  setMovies: (state, movies) => state.movies = movies
 };
 
 const actions = {
@@ -56,26 +59,39 @@ const actions = {
     }
     return new Promise(function(resolve, reject) {
       axios.get(`${HOST}/cinema/map/`, params)
-      .then(res => {
-        console.log(res);
-        commit('setTheaterMovies', res.data.documents);
-        resolve('ok');
-      })
-      .catch(err => {
-        console.log(err);
-        reject(Error('error'))
-      })
+        .then(res => {
+          console.log(res);
+          commit('setTheaterMovies', res.data.documents);
+          resolve('ok');
+        })
+        .catch(err => {
+          console.log(err);
+          reject(Error('error'))
+        })
     })
-    // axios.get(`${HOST}/cinema/map/`, params)
-    //   .then(res => {
-    //     console.log(res);
-    //     commit('setTheaterMovies', res.data.documents);
-    //     // return initPromise;
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //     // return initPromise;
-    //   })
+  },
+  bringMovies: ({ commit }, {theaterID, time}) => {
+    let params = null;
+    if (time) {
+      console.log('time 없다')
+      params = {
+        params: {
+          start_time: time
+        }
+      };
+    }
+    return new Promise(function(resolve, reject) {
+      axios.get(`${HOST}/cinema/map/${theaterID}/movie/`, params)
+        .then(res => {
+          console.log(res);
+          commit('setMovies', res.data.documents);
+          resolve('ok');
+        })
+        .catch(err => {
+          console.log(err);
+          reject(Error('error'))
+        })
+    })
   }
 };
 

@@ -33,7 +33,7 @@
       </v-btn>
     </div>
     <div class="movieCard" v-if="showMovieCard">
-      <TheaterMovie v-bind:theaterMovieList="theaterMovieList"/>
+      <TheaterMovie v-bind:theaterMovieList="getMovies"/>
     </div>
     <Nav />
   </div>
@@ -69,15 +69,16 @@ export default {
       mapCenter: null,
       timeSelector: false,
       kmSelector: false,
-      theaterMovieList: []
-
+      theaterMovieList: [],
+      markers: [],
+      // movieList: []
     }
   },
   computed: {
-    ...mapGetters(['getTheaterMovies'])
+    ...mapGetters(['getTheaterMovies', 'getMovies'])
   },
   methods: {
-    ...mapActions(['init', 'bringHereCinema']),
+    ...mapActions(['init', 'bringHereCinema', 'bringMovies']),
     marking(value) {
       console.log(value)
       if (value.type === 'user') {
@@ -94,7 +95,11 @@ export default {
       } else {
         for (const v of value.position) {
           const marker = new this.google.maps.Marker({position: {lat: Number(v.y), lng: Number(v.x)}, map: this.map, icon: value.icon, label:v.name, animation: this.google.maps.Animation.DROP})
-          this.google.maps.event.addListener(marker, 'click', function() {
+          this.markers.push(marker);
+          this.google.maps.event.addListener(marker, 'click', async function() {
+            console.log(v)
+            await this.bringMovies({theaterID: v.id, time: null});
+            console.log(this.getMovies);
             if (this.cardInfo && this.cardInfo !== marker) {
               this.toggleBounce(this.cardInfo);
               this.toggleBounce(marker);
@@ -129,15 +134,20 @@ export default {
       this.showMovieCard = false;
       this.toggleBounce(this.cardInfo);
     },
-    changeLoading() {
+    async changeLoading() {
       this.loading = true;
-      setTimeout(function() {
-        this.loading = false;
-        const center = this.map.getCenter()
-        const centerValue = {lat: center.lat(), lng: center.lng()};
-        console.log(centerValue)
-        this.mapCenter = centerValue;
-      }.bind(this), 1000)
+      this.clearMarker();
+      const center = this.map.getCenter();
+      const centerValue = {lat: center.lat(), lng: center.lng()};
+      this.mapCenter = centerValue;
+      await this.bringHereCinema({center: centerValue, radius: this.km});
+      this.theaterMovieList = this.getTheaterMovies;
+      const theaterIcon = {
+        url: "https://image.flaticon.com/icons/svg/2892/2892617.svg",
+        scaledSize: new this.google.maps.Size(40, 40)
+      }
+      this.marking({type: 'theater', position: this.theaterMovieList, icon: theaterIcon});
+      this.loading = false;
     },
     changeTime(targetTime) {
       this.timeSelector = false;
@@ -149,6 +159,12 @@ export default {
     changeKm(targetKm) {
       this.kmSelector = false;
       this.km = targetKm;
+      this.changeLoading();
+    },
+    clearMarker() {
+      for (const marker of this.markers) {
+        marker.setMap(null);
+      }
     }
   },
   async mounted() {

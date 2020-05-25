@@ -1,0 +1,13 @@
+#app > div > div.movieCard > div > div > div.v-slide-group__wrapper > div > div > div > div:nth-child(1) {
+  padding: 0;
+}
+
+#app > div > div.movieCard > div > div > div.v-slide-group__wrapper > div > div > div > div:nth-child(2) > div {
+  padding: 0;
+}
+
+#app > div > div.movieCard > div > div > div {
+  text-align: center;
+  position: relative;
+  top: 13vh;
+}
