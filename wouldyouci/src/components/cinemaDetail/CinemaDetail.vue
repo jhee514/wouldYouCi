@@ -1,25 +1,14 @@
 <template>
   <v-app>
     <Title />
-
     <div class="cinemaInfo">
       <v-list-item two-line>
         <v-list-item-content>
-          <v-img :src=details.fields.image />
-          
-          <v-list-item-title class="headline">{{ details.fields.name }}</v-list-item-title>
-          
-          <v-list-item-subtitle>{{ details.fields.name_eng }}</v-list-item-subtitle>
-          
+          <v-img :src=details.image />
+          <v-list-item-title class="headline">{{ details.name }}</v-list-item-title>
+          <v-list-item-subtitle>{{ details.address }}</v-list-item-subtitle>
           <v-list-item-subtitle>
-            <v-rating
-              :value=rating
-              background-color="orange lighten-3"
-              color="amber"
-              dense
-              half-increments
-              readonly
-              size="14" />
+            <Rating :rating="avgRating"/>
           </v-list-item-subtitle>
 
           <v-card>
@@ -41,7 +30,7 @@
                 :key="item.tab">
                 <v-card flat>
                   <v-card-text>
-                    <component v-bind:is="item.component" :movie="details"></component>
+                    <component v-bind:is="item.component" :details="details"></component>
                   </v-card-text>
                 </v-card>
               </v-tab-item>
@@ -59,42 +48,40 @@
 import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import CinemaInfo from './cinemaInfo/CinemaInfo';
+import CinemaRatings from './cinemaRatings/CinemaRatings';
+import Rating from '../movieDetail/rating/Rating';
+import { fetchCinema } from '@/api/index';
+
 export default {
   name: 'CinemaDetail',
   components: {
     Nav,
     Title,
-		CinemaInfo,
+    CinemaInfo,
+    CinemaRatings,
+    Rating,
   },
   data() {
     return {
       tab: null,
       items: [
         {tab: 'Info', component: "CinemaInfo"},
-        {tab: 'Reviews', component: "MovieReview"}
+        {tab: 'Reviews', component: "CinemaRatings"}
       ],
-      details: {
-        "pk": 152691,
-        "fields": {
-          "name": "\uace0\uc591\uc774 \uc9d1\uc0ac",
-          "name_eng": "Our Cat",
-          "watch_grade": "\uc804\uccb4 \uad00\ub78c\uac00",
-          "running_time": "97\ubd84",
-          "open_date": "2020-05-14",
-          "image": "http://img.cgv.co.kr/Theater/Theater/2014/1211/CGVgangnam.jpg",
-          "directors": [
-              1
-          ],
-          "genres": [
-              1
-          ],
-          "actors": [
-              2
-          ]
-        }
-      }
+      details: []
     }
   },
+
+  methods: {
+    async fetchData() {
+      const { data } = await fetchCinema(this.$route.params.id);
+      this.details = data 
+    }
+  },
+
+  created() {
+      this.fetchData();
+    },
 }
 </script>
 

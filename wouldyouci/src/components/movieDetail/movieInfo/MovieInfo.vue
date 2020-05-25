@@ -1,14 +1,57 @@
 <template>
-
   <div class="movieInfo">
-    <!-- <p>trailer</p> -->
-
-    <p>개봉 {{ movie.fields.open_date }}</p>
-    <p>장르 {{ movie.fields.genres }} | {{ movie.fields.running_time }}</p>
-    <p>등급 {{ movie.fields.watch_grade }}</p>
+    <p>
+      <span class="item">
+        개봉 
+      </span>
+      <span class="content">
+      {{ details.open_date }}
+      </span>
+    </p>
+    <p>
+      <span class="item">
+        장르 
+      </span>
+      <span 
+        class="content"
+        v-for="(genre, index) in details.genres"
+        :key="index"
+        >
+      {{ genre }}
+      </span>
+    </p>
+    <p>
+      <span class="item">
+        등급 
+      </span>
+      <span class="content">
+      {{ details.watch_grade }} | {{ details.running_time }}
+      </span>
+      </p>
     
-    <p>감독 {{ movie.fields.directors }}</p>
-    <p>출연 {{ movie.fields.actors }}</p>
+    <p>
+      <span class="item">
+        감독
+      </span>
+      <span 
+        class="content"
+        v-for="(director, index) in details.directors"
+        :key="index"
+        >
+      {{ director }}
+      </span>
+      </p>
+    <p>
+      <span class="item">
+        출연  
+      </span>
+      <span class="content"
+        v-for="(actor, index) in details.actors"
+        :key="index"
+        >
+      {{ actor }}, 
+      </span>
+    </p>
 
   </div>
 </template>
@@ -16,7 +59,7 @@
 <script>
 export default {
   name: 'MovieInfo',
-  props:["movie"],
+  props:["details"],
   data() {
     return {
     }

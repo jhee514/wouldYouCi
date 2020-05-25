@@ -18,7 +18,7 @@ const routes = [
     component: MainMap
   },
   {
-    path: '/movieDetail',
+    path: '/movie/:id',
     name: 'MovieDetail',
     component: MovieDetail
   },
@@ -43,7 +43,7 @@ const routes = [
     component: FirstRating
   },
   {
-    path: '/cinema',
+    path: '/cinema/:id',
     name: 'CinemaDetail',
     component: CinemaDetail
   },
