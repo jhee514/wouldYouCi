@@ -30,3 +30,9 @@ button.v-btn.v-btn--depressed.v-btn--flat.v-btn--outlined.theme--light.v-size--s
   left: 2.5vw;
   width: 95vw;
 }
+
+#app > div > div.v-progress-circular {
+  position: absolute;
+  top: 45vh;
+  right: 38vw;
+}
