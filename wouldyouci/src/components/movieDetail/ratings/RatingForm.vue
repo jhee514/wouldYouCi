@@ -8,17 +8,6 @@
         dense
         half-increments
         size="20"></v-rating>
-      <v-slider
-        v-model="score"
-        dense
-        min="0"
-        max="5"
-        step="0.5"
-        :thumb-size="24"
-        thumb-label="always"
-        color="orange darken-3"
-        track-color="orange lighten-3"
-        ></v-slider>
     </div>
     <div class="comment">
       <v-textarea
