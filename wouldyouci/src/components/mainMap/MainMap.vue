@@ -18,7 +18,6 @@
     </div>
     <v-overlay :value="cardLoading">
       <v-progress-circular
-        :value="cardLoading"
         :size="70"
         :width="7"
         color="#4520EA"
