@@ -7,6 +7,7 @@ import Signup from '../components/signup/Signup.vue';
 import UserPage from '../components/userPage/UserPage.vue';
 import FirstRating from '../components/firstRating/FirstRating.vue';
 import CinemaDetail from '../components/cinemaDetail/CinemaDetail';
+import NotFound from '../components/notFound/NotFound';
 
 
 Vue.use(VueRouter);
@@ -46,6 +47,15 @@ const routes = [
     path: '/cinema/:id',
     name: 'CinemaDetail',
     component: CinemaDetail
+  },
+  {
+    path: '/404',
+    name: 'NotFound', 
+    component: NotFound
+  },
+  {
+    path: '*',
+    redirect: '/404',
   },
   
 ];

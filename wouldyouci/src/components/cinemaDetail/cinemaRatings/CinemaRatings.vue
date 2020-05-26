@@ -15,7 +15,7 @@
 
           <v-list-item-content>
             <v-list-item-title>
-              <Rating :rating="rating.score" />
+              <Score :score="rating.score" />
               <span align-end>{{ rating.user.username }}</span>
             </v-list-item-title>
               {{ rating.comment}}
@@ -29,13 +29,13 @@
 </template>
 
 <script>
-import Rating from '../../movieDetail/rating/Rating';
+import Score from '../../movieDetail/score/Score';
 
 export default {
   name: 'CinemaRatings',
   props:["details"],
   components: {
-    Rating,
+    Score,
   },
 
   data() {

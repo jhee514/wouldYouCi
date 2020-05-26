@@ -1,14 +1,14 @@
 <template>
   <v-app>
     <Title />
-    <div class="cinemaInfo">
+    <div class="body">
       <v-list-item two-line>
         <v-list-item-content>
           <v-img :src=details.image />
           <v-list-item-title class="headline">{{ details.name }}</v-list-item-title>
           <v-list-item-subtitle>{{ details.address }}</v-list-item-subtitle>
           <v-list-item-subtitle>
-            <Rating :rating="avgRating"/>
+            <Score :score="rating.score" />
           </v-list-item-subtitle>
 
           <v-card>
@@ -48,8 +48,8 @@
 import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import CinemaInfo from './cinemaInfo/CinemaInfo';
-import CinemaRatings from './cinemaRatings/CinemaRatings';
-import Rating from '../movieDetail/rating/Rating';
+import Ratings from '../movieDetail/ratings/Ratings';
+import Score from '../movieDetail/score/Score';
 import { fetchCinema } from '@/api/index';
 
 export default {
@@ -58,15 +58,15 @@ export default {
     Nav,
     Title,
     CinemaInfo,
-    CinemaRatings,
-    Rating,
+    Ratings,
+    Score,
   },
   data() {
     return {
       tab: null,
       items: [
         {tab: 'Info', component: "CinemaInfo"},
-        {tab: 'Reviews', component: "CinemaRatings"}
+        {tab: 'Reviews', component: "Ratings"}
       ],
       details: []
     }
