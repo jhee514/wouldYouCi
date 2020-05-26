@@ -73,13 +73,29 @@ const actions = {
   bringMovies: ({ commit }, {theaterID, time}) => {
     let params = null;
     if (time) {
-      console.log('time 없다')
+      const amPm = time.split(' ')[0];
+      const times = time.split(' ')[1].split(':');
+      let startH = null;
+      if (amPm === '오전') {
+        if (times[0] === '12') {
+          startH = '24'
+        } else {
+          startH = '0'+times[0];
+        }
+      } else {
+        if (times[0] === '12') {
+          startH = times[0];
+        } else {
+          startH = String(Number(times[0])+12);
+        }
+      }
       params = {
         params: {
-          start_time: time
+          start_time: `${startH}:${times[1]}`
         }
       };
     }
+    console.log(params);
     return new Promise(function(resolve, reject) {
       axios.get(`${HOST}/cinema/map/${theaterID}/movie/`, params)
         .then(res => {

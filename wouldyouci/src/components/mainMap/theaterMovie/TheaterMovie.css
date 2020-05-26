@@ -1,5 +1,7 @@
 #app > div > div.movieCard > div > div > div.v-slide-group__wrapper > div > div > div > div:nth-child(1) {
-  padding: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-right: 0;
 }
 
 #app > div > div.movieCard > div > div > div.v-slide-group__wrapper > div > div > div > div:nth-child(2) > div {

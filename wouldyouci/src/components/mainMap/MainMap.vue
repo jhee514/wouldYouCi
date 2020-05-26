@@ -16,6 +16,15 @@
     </v-dialog>
     <div id="map" ref="map">
     </div>
+    <v-overlay :value="cardLoading">
+      <v-progress-circular
+        :value="cardLoading"
+        :size="70"
+        :width="7"
+        color="#4520EA"
+        indeterminate
+      ></v-progress-circular>
+    </v-overlay>
     <div class="nowArea">
       <v-btn v-if="loading" fab height="30" width="30" loading>
         <v-icon small>fas fa-undo-alt</v-icon>
@@ -52,6 +61,7 @@ export default {
       google: null,
       nowHere: null,
       time: new Date().toLocaleTimeString(),
+      isTimeChange: false,
       cardInfo: null,
       showMovieCard: null,
       loading: false,
@@ -59,7 +69,8 @@ export default {
       timeSelector: false,
       theaterMovieList: [],
       markers: [],
-      // movieList: []
+      theaterId: null,
+      cardLoading: false
     }
   },
   computed: {
@@ -81,24 +92,36 @@ export default {
           infoWindow.open(this.map);
         }.bind(this))
       } else {
-        for (const v of value.position) {
-          const marker = new this.google.maps.Marker({position: {lat: Number(v.y), lng: Number(v.x)}, map: this.map, icon: value.icon, label:v.name, animation: this.google.maps.Animation.DROP})
-          this.markers.push(marker);
-          this.google.maps.event.addListener(marker, 'click', async function() {
-            console.log(v)
-            await this.bringMovies({theaterID: v.id, time: null});
-            console.log(this.getMovies);
-            if (this.cardInfo && this.cardInfo !== marker) {
-              this.toggleBounce(this.cardInfo);
-              this.toggleBounce(marker);
-              this.cardInfo = marker;
-              this.showMovieCard = true;
-            } else if (!this.cardInfo) {
-              this.toggleBounce(marker);
-              this.cardInfo = marker;
-              this.showMovieCard = true;
-            }
-          }.bind(this))
+        if (value.position.length) {
+          for (const v of value.position) {
+            const marker = new this.google.maps.Marker({position: {lat: Number(v.y), lng: Number(v.x)}, map: this.map, icon: value.icon, label:v.name, animation: this.google.maps.Animation.DROP})
+            this.markers.push(marker);
+            this.google.maps.event.addListener(marker, 'click', async function() {
+              console.log(v)
+              this.theaterId = v.id;
+              this.cardLoading = true;
+              console.log(this.theaterId)
+              if (this.isTimeChange) {
+                await this.bringMovies({theaterID: v.id, time: this.time});
+              } else {
+                await this.bringMovies({theaterID: v.id, time: null});
+              }
+              this.cardLoading = false;
+              if (this.cardInfo && this.cardInfo !== marker) {
+                this.toggleBounce(this.cardInfo);
+                this.toggleBounce(marker);
+                this.cardInfo = marker;
+                this.showMovieCard = true;
+              } else if (!this.cardInfo) {
+                this.toggleBounce(marker);
+                this.cardInfo = marker;
+                this.showMovieCard = true;
+              }
+            }.bind(this))
+          }
+        }
+        else{
+          alert('해당 지역에는 영화관이 없습니다.\n지역을 다시 설정해주세요.')
         }
       }
     },
@@ -143,12 +166,28 @@ export default {
       this.marking({type: 'theater', position: this.theaterMovieList, icon: theaterIcon});
       this.loading = false;
     },
-    changeTime(targetTime) {
+    async changeTime(targetTime) {
       this.timeSelector = false;
-      this.time = targetTime;
+      const targetTimes = targetTime.split(' ');
+      const times = targetTime.split(' ')[1].split(':')
+      if (targetTimes[0] !== 'null' && times[0] !== 'null' && times[1] !== 'null') {
+        this.time = targetTime;
+        this.isTimeChange = true;
+        if (this.showMovieCard) {
+          this.cardLoading = true;
+          await this.bringMovies({theaterID: this.theaterId, time: this.time});
+          this.cardLoading = false;
+        }
+      }
     },
-    setNowTime() {
+    async setNowTime() {
       this.time = new Date().toLocaleTimeString();
+      this.isTimeChange = false;
+      if (this.showMovieCard) {
+        this.cardLoading = true;
+        await this.bringMovies({theaterID: this.theaterId, time: null});
+        this.cardLoading = false;
+      }
     },
     clearMarker() {
       for (const marker of this.markers) {

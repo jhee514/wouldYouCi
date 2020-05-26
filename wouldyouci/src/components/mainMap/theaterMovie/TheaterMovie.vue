@@ -12,7 +12,7 @@
         <v-card
           class="ma-4"
           height="30vh"
-          width="80vw"
+          width="85vw"
           style="margin-right:2vh"
           @click="goSite(movie.url)"
         >
