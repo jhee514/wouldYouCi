@@ -1,8 +1,8 @@
 <template>
-  <form class="ratingForm" @submit.prevent="submitRating">
+  <form class="ratingForm" @submit.prevent="postRating(rating)">
     <div class="score">
       <v-rating
-        :value=score
+        :value=rating.score
         background-color="orange lighten-3"
         color="amber"
         dense
@@ -11,7 +11,7 @@
     </div>
     <div class="comment">
       <v-textarea
-        v-model="comment"
+        v-model="rating.comment"
         clearable
         clear-icon="fas fa-times small"
         label="관람평"
@@ -34,7 +34,7 @@
 
 <script>
 
-import { postRating } from '@/api/index';
+import { mapActions } from 'vuex';
 
 export default {
   name: "RatingForm",
@@ -46,23 +46,15 @@ export default {
         value => !!value || '점수를 입력해주세요.',
         value => ( value <= 5 ) || '최대 점수는 5점입니다.',
       ],
-      score: null,
-      comment: '',
-
+      rating: {
+        score: null,
+        comment: '',
+      },
     }
   },
   methods: {
-    async submitRating() {
-      const rating = {
-        score: this.score,
-        comment: this.comment,
-      };
-      const { data } = await postRating(rating);
-      console.log("form 제출 !!!!", data);
+    ...mapActions(['postRating']),
       
-    }
   },
-
-
 }
 </script>

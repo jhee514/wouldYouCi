@@ -66,7 +66,8 @@ import Title from '../nav/Title.vue';
 import MovieInfo from './movieInfo/MovieInfo';
 import Ratings from './ratings/Ratings';
 import Score from './score/Score';
-import { fetchMovie } from '@/api/index';
+import { mapGetters, mapActions } from 'vuex';
+
 
 export default {
   name: 'MovieDetail',
@@ -79,47 +80,33 @@ export default {
   },
    
   data() {
-      return {
-        tab: null,
-        items: [
-          {tab: 'Info', component: "MovieInfo"},
-          {tab: 'Reviews', component: "Ratings"}
-        ],
-        avgRating: null,
-        details: [],
-      }
-  },
-
-  methods: {
-    async fetchData() {
-      try {
-        const { data } = await fetchMovie(this.$route.params.id);
-        this.details = data
-      } catch (err) {
-        console.log("errrrrrrrrrr");
-        console.log(err);
-        console.log(err.response);
-      }
-    },
-    getAvgRating() {
-      let sum = 0;
-      for (let i = 0; i <= this.details.reviews.length; i++) {
-        sum += this.details.reviews[i].score
-        console.log(sum)
-      } 
-      this.avgRating = sum / this.details.reviews.length
+    return {
+      tab: null,
+      items: [
+        {tab: 'Info', component: "MovieInfo"},
+        {tab: 'Reviews', component: "Ratings"}
+      ],
+      avgRating: null,
+      // details: [],
     }
   },
 
-  created() {
-      this.fetchData();
-      this.getAvgRating;
-    },
-  
   computed: {
-  }
-  
+    ...mapGetters({
+      details: 'getMovieDetail'
+    })
+  },
 
+   methods: {
+     ...mapActions(['fetchMovieDetail']),
+  },
+  async created() {
+    try {
+      await this.fetchMovieDetail(this.$route.params.id)
+    } catch (err) {
+      console.log(err);
+    }
+  },
 }
 </script>
 
