@@ -1,39 +1,29 @@
 from rest_framework.response import Response
 from django.shortcuts import HttpResponse, get_object_or_404
-
-from .serializers import UserCreationSerializer, RatingSerializer
+import os
+from wouldyouci_back.settings import MEDIA_ROOT
+from .serializers import UserCreationSerializer, RatingSerializer, UserDetailSerializer, ProfileSerializer
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 User = get_user_model()
-from utils import success_collection as success, error_collection as error
-from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from .models import Rating
+from .models import Rating, Profile
 
 
-class AccountView(APIView):
-
-    @swagger_auto_schema(
-        operation_description='회원가입',
-        request_body=UserCreationSerializer,
-        responses={200: success.ACCOUNTS_SUCCESS.as_md(),
-                   400: error.ACCOUNTS_USERNAME.as_md() + error.ACCOUNTS_EMAIL.as_md() + error.ACCOUNTS_MULTI.as_md()}
-    )
-    def post(self, request):
+@api_view(['POST', 'PATCH'])
+@permission_classes([AllowAny])
+def create_user(request):
+    if request.method == 'POST':
         serializer = UserCreationSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
             user.set_password(user.password)
             user.save()
-            return Response(status=200, data={'message': success.ACCOUNTS_SUCCESS.message})
+            return Response(status=200, data={'message': '회원가입 되었습니다.'})
 
         return Response(status=400, data={'message': serializer.errors})
-
-
-
-
 
 
 @api_view(['GET'])
@@ -46,32 +36,51 @@ def get_rating_tf(request):
         return Response(status=200, data={'rating_tf': False})
 
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def create_rating(request):
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def user_detail(request):
     # user = get_object_or_404(User, id=9000000)
-    serializer = RatingSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save(user=request.user)
-        return Response(serializer.data)
-    return Response(status=400, data=serializer.errors)
+    serializer = UserDetailSerializer(request.user.id)
+
+    return Response(status=200, data=serializer.data)
 
 
-@api_view(['PATCH', 'DELETE'])
+@api_view(['POST', 'DELETE'])
 @permission_classes([IsAuthenticated])
-def patch_delete_rating(request, rating_id):
-    # user_id = 9000001
-    rating = get_object_or_404(Rating, id=rating_id)
-    if rating.user.id == request.user.id:
-        if request.method == 'PATCH':
-            serializer = RatingSerializer(instance=rating, data=request.data)
+def change_profile(request):
+    user = request.user
+    if Profile.objects.filter(user=user.id).exists():
+        profile = Profile.objects.get(user=user.id)
+        os.remove(os.path.join(MEDIA_ROOT, f"{profile.file}"))
+        profile.delete()
+    if request.method == 'POST':
+        if request.FILES:
+            serializer = ProfileSerializer(request.POST, request.FILES)
             if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            return Response(status=400, data=serializer.errors)
+                profile = serializer.create(serializer.validated_data)
+                profile.user_id = user.id
+                profile.save()
+                return Response(status=200, data={'file': f"media/{profile.file}"})
+            return Response(status=400, data={'message': '유효하지 않은 파일입니다.'})
+        return Response(status=403, data={'message': '이미지는 필수입니다.'})
+    elif request.method == 'DELETE':
+        return Response(status=204)
 
-        elif request.method == 'DELETE':
-            rating.delete()
-            return Response(status=204)
 
-    return Response(status=400, data={'message': '권한이 없습니다.'})
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def change_password(request):
+    user = get_object_or_404(User, id=request.user.id)
+    # user = get_object_or_404(User, id=9000000)
+    password = request.POST.get('password')
+    new_password = request.POST.get('new_password')
+
+    if not password or not new_password:
+        return Response(status=400, data={'message': '필수 데이터가 누락되었습니다.'})
+
+    if user.check_password(password):
+        user.set_password(new_password)
+        user.save()
+        return Response(status=203)
+    return Response(status=403, data={'message': '비밀번호가 일치하지 않습니다.'})
+
