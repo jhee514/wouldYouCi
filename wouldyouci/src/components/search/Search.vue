@@ -15,7 +15,7 @@
         </form>
       </v-container>
       <div v-if="getSearchMode">
-        <MainSearch v-if="getSearchMode==='before'" v-bind:CinemaList="cards" />
+        <MainSearch v-if="getSearchMode==='before'" v-bind:CinemaList="cards" v-bind:TheaterList="getNearTheater"/>
         <AfterSearch v-else v-bind:KeyWords="keywordProps" v-bind:CinemaList="cards" />
       </div>
     </div>
@@ -55,7 +55,7 @@ export default {
     keywordProps: null
   }),
   computed: {
-    ...mapGetters(['getSearchMode'])
+    ...mapGetters(['getSearchMode', 'getNearTheater'])
   },
   methods: {
     ...mapMutations(['setSearchMode']),
