@@ -38,43 +38,43 @@ export default {
     },
     goSearch() {
       //실제 출시용 코드
-      // if (this.isLoggedIn) {
-      //   const link = document.location.href.split("/");
-      //   if (link[link.length - 1] !== "search") {
-      //     router.push('/search');
-      //   }
-      //   if (this.getSearchMode === 'after') {
-      //     this.setSearchMode('before');
-      //   }
-      // } else {
-      //   router.push('/signup');
-      // }
+      if (this.isLoggedIn) {
+        const link = document.location.href.split("/");
+        if (link[link.length - 1] !== "search") {
+          router.push('/search');
+        }
+        if (this.getSearchMode === 'after') {
+          this.setSearchMode('before');
+        }
+      } else {
+        router.push('/signup');
+      }
 
       //개발 중 코드
-      const link = document.location.href.split("/");
-      if (link[link.length - 1] !== "search") {
-        router.push('/search');
-      }
-      if (this.getSearchMode === 'after') {
-        this.setSearchMode('before');
-      }
+      // const link = document.location.href.split("/");
+      // if (link[link.length - 1] !== "search") {
+      //   router.push('/search');
+      // }
+      // if (this.getSearchMode === 'after') {
+      //   this.setSearchMode('before');
+      // }
     },
     goUserPage() {
       // 실제 출시용 코드
-      // if (this.isLoggedIn) {
-      //   const link = document.location.href.split("/");
-      //   if (link[link.length - 1] !== "userPage") {
-      //     router.push('/userPage');
-      //   }
-      // } else {
-      //   router.push('signup');
-      // }
+      if (this.isLoggedIn) {
+        const link = document.location.href.split("/");
+        if (link[link.length - 1] !== "userPage") {
+          router.push('/userPage');
+        }
+      } else {
+        router.push('signup');
+      }
 
       // 개발용 코드
-      const link = document.location.href.split("/");
-      if (link[link.length - 1] !== "userPage") {
-        router.push('/userPage');
-      }
+      // const link = document.location.href.split("/");
+      // if (link[link.length - 1] !== "userPage") {
+      //   router.push('/userPage');
+      // }
     }
   }
 }
