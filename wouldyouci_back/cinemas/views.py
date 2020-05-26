@@ -58,10 +58,11 @@ def get_cinema_width(request):
     if not x1 or not x2 or not y1 or not y2:
         return Response(status=400, data={'message': 'x, y 값은 필수입니다.'})
 
-    cinemas = Cinema.objects.filter(
-        Q(y__range=(y1 - 0.005, y2 + 0.005)) |
-        Q(x__range=(x1 - 0.008, x2 + 0.008))
-    )
+    cinemas = Cinema.objects.filter(y__gte=y1,
+                                    y__lte=y2,
+                                    x__gte=x1,
+                                    x__lte=x2
+                                    )
 
     serializer = SimpleCinemaSerializer(cinemas, many=True)
 
