@@ -7,14 +7,16 @@ const state = {
   LoginMode: true,
   token: null,
   userName: null,
-  errors: []
+  errors: [],
+  loading: false
 };
 
 const getters = {
   isLoginMode: state => state.LoginMode,
   isLoggedIn: state => !!state.token,
   getUserName: state => state.userName,
-  getErrors: state => state.errors
+  getErrors: state => state.errors,
+  getLoading: state => state.loading
 };
 
 const mutations = {
@@ -28,7 +30,8 @@ const mutations = {
     sessionStorage.setItem("name", userName);
   },
   pushError: (state, error) => state.errors.push(error),
-  clearErrors: state => state.errors = []
+  clearErrors: state => state.errors = [],
+  setLoading: (state, bool) => state.loading = bool
 };
 
 const actions = {
@@ -63,6 +66,7 @@ const actions = {
       } else if (!userInfo.userName) {
         commit("pushError", "아이디를 입력해주세요.")
       } else {
+        commit('setLoading', true);
         axios.post(`${HOST}/user/login/`, data, options)
         .then(res => {
           console.log(res)
@@ -109,6 +113,7 @@ const actions = {
       if (userInfo.password !== userInfo.passwordConfirm) {
         commit("pushError", "비밀번호가 일치하지 않습니다.")
       } else {
+        commit('setLoading', true);
         const data = {
           username: userInfo.userName,
           password: userInfo.password,
@@ -164,8 +169,7 @@ const actions = {
     sessionStorage.removeItem("name");
     router.push("/signup");
   },
-  checkRating: ({ getters }) => {
-    getters;
+  checkRating: ({ commit }) => {
     const token = sessionStorage.getItem('jwt');
     const options = {
       headers: {
@@ -174,6 +178,7 @@ const actions = {
     }
     axios.get(`${HOST}/user/login/rating/`, options)
       .then(res => {
+        commit('setLoading', false);
         if (!res.data.rating_tf) {
           console.log('평가 안 함');
           router.push('/firstRating');
