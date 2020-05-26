@@ -6,4 +6,4 @@ class SimpleCinemaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cinema
-        fields = ['id', 'name', 'type', 'address', 'tel', 'x', 'y', 'url']
+        fields = ['id', 'name', 'type', 'img', 'address', 'tel', 'x', 'y', 'url']

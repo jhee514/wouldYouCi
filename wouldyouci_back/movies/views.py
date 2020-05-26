@@ -10,4 +10,5 @@ from .serializers import MovieSerializer
 class MovieViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+    permission_classes = [permissions.IsAuthenticated]
 

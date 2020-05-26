@@ -1,10 +1,13 @@
 from rest_framework.response import Response
-from .serializers import UserCreationSerializer
+from django.shortcuts import HttpResponse, get_object_or_404
+
+from .serializers import UserCreationSerializer, RatingSerializer
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 User = get_user_model()
 from utils import success_collection as success, error_collection as error
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework import viewsets, permissions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .models import Rating
@@ -29,6 +32,10 @@ class AccountView(APIView):
         return Response(status=400, data={'message': serializer.errors})
 
 
+
+
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_rating_tf(request):
@@ -37,3 +44,34 @@ def get_rating_tf(request):
         return Response(status=200, data={'rating_tf': True})
     else:
         return Response(status=200, data={'rating_tf': False})
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_rating(request):
+    # user = get_object_or_404(User, id=9000000)
+    serializer = RatingSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save(user=request.user)
+        return Response(serializer.data)
+    return Response(status=400, data=serializer.errors)
+
+
+@api_view(['PATCH', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def patch_delete_rating(request, rating_id):
+    # user_id = 9000001
+    rating = get_object_or_404(Rating, id=rating_id)
+    if rating.user.id == request.user.id:
+        if request.method == 'PATCH':
+            serializer = RatingSerializer(instance=rating, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(status=400, data=serializer.errors)
+
+        elif request.method == 'DELETE':
+            rating.delete()
+            return Response(status=204)
+
+    return Response(status=400, data={'message': '권한이 없습니다.'})
