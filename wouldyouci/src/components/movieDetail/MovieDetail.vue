@@ -1,13 +1,13 @@
 <template>
   <v-app>
     <Title />
-    <div class="movieDetail">
+    <div class="body">
 
       <iframe 
         id="player"
         type="text/html" 
-        width="640" 
-        height="360"
+        width="auto" 
+        height="auto"
         allow="autoplay"
         allowfullscreen
         frameborder= 0;
@@ -20,7 +20,7 @@
           <v-list-item-subtitle>{{ details.name_eng }}</v-list-item-subtitle>
           <v-list-item-subtitle>{{ details.watch_grade }}</v-list-item-subtitle>
           <v-list-item-subtitle>
-            <Rating :rating="avgRating"/>
+            <Score :score="avgRating"/>
           </v-list-item-subtitle>
           {{ details.summary }}
         </v-list-item-content>
@@ -32,7 +32,7 @@
           v-model="tab"
           background-color="orange lighten-3"
           dark
-          centered="true"
+          centered
         >
           <v-tab
             v-for="item in items"
@@ -64,8 +64,8 @@
 import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import MovieInfo from './movieInfo/MovieInfo';
-import MovieRatings from './MovieRatings/MovieRatings';
-import Rating from './rating/Rating';
+import Ratings from './ratings/Ratings';
+import Score from './score/Score';
 import { fetchMovie } from '@/api/index';
 
 export default {
@@ -74,8 +74,8 @@ export default {
     Nav,
     Title,
     MovieInfo,
-    MovieRatings,
-    Rating,
+    Ratings,
+    Score,
   },
    
   data() {
@@ -83,7 +83,7 @@ export default {
         tab: null,
         items: [
           {tab: 'Info', component: "MovieInfo"},
-          {tab: 'Reviews', component: "MovieRatings"}
+          {tab: 'Reviews', component: "Ratings"}
         ],
         avgRating: null,
         details: [],
@@ -91,13 +91,14 @@ export default {
   },
 
   methods: {
-    async fetchData(commit) {
+    async fetchData() {
       try {
         const { data } = await fetchMovie(this.$route.params.id);
         this.details = data
       } catch (err) {
-        console.log(err)
-        commit("다시 시도해주세요.")
+        console.log("errrrrrrrrrr");
+        console.log(err);
+        console.log(err.response);
       }
     },
     getAvgRating() {

@@ -1,18 +1,22 @@
 const axios = require("axios");
 
 const instance = axios.create({
-  // baseURL: process.env.VUE_APP_SERVER_HOST,
-  // baseURL: "http://62f15d4f.ngrok.io/",
-  baseURL: "https://wouldyouci.ga/",
+  baseURL: process.env.VUE_APP_SERVER_HOST,
   headers: {
-    'Content-Type' : 'application/json'
+    'Content-Type' : 'application/json',
+
   }
 });
 
+
 export function fetchMovie(id) {
-  return instance.get(`/movie/${id}`);
+  return instance.get(`/movie/${id}/`);
 }
 
 export function fetchCinema(id) {
-  return instance.get(`cinema/${id}`);
+  return instance.get(`/cinema/${id}/`);
+}
+
+export function postRating(rating) {
+  return instance.post(`/movie/rating/`, rating);
 }

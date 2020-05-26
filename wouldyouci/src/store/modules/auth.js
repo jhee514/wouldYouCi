@@ -10,7 +10,7 @@ const state = {
   errors: []
 };
 
-const getters = {
+const getters = { 
   isLoginMode: state => state.LoginMode,
   isLoggedIn: state => !!state.token,
   getUserName: state => state.userName,

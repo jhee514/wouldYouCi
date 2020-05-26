@@ -1,9 +1,9 @@
 
-.movieDetail{
+.body{
     min-height: 82vh;
     height: auto;
-    margin-top: 2vh;
-    margin-bottom: 2vh;
+    margin-top: 3vh;
+    margin-bottom: 10vh;
     margin-left: 5vw;
     margin-right: 5vw;
     /* text-align : center; */
