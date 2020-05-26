@@ -1,6 +1,6 @@
 <template>
    <v-rating
-      :value=rating
+      :value=score
       background-color="orange lighten-3"
       color="amber"
       dense
@@ -11,8 +11,8 @@
 
 <script>
 export default {
-  name: 'Rating',
-  props: ["rating"],
+  name: 'Score',
+  props: ["score"],
 
 }
 </script>

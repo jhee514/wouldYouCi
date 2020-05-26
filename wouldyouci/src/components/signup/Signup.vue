@@ -8,6 +8,14 @@
     </div>
     <LoginForm v-if="isLoginMode" />
     <SignupForm v-else />
+    <v-overlay :value="getLoading">
+      <v-progress-circular
+        :size="70"
+        :width="7"
+        color="#4520EA"
+        indeterminate
+      ></v-progress-circular>
+    </v-overlay>
     <div class="goMapBtn">
       <v-btn text @click="goMainMap">비회원으로 사용하기<v-icon small>fas fa-arrow-right</v-icon></v-btn>
     </div>
@@ -27,7 +35,7 @@
       LoginForm
     },
     computed: {
-      ...mapGetters(['isLoginMode', 'isLoggedIn'])
+      ...mapGetters(['isLoginMode', 'isLoggedIn', 'getLoading'])
     },
     methods: {
       goMainMap() {
