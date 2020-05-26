@@ -1,29 +1,58 @@
 <template>
-  <v-slide-group
-    class="pa-4"
-    active-class="success"
-  >
-    <v-slide-item
-      v-for="(title, idx) in theaterMovieList"
-      :key="idx"
+  <div>
+    <v-slide-group
+      class="pa-4"
+      active-class="success"
+      v-if="theaterMovieList && theaterMovieList.length"
     >
-      <v-card
-        class="ma-4"
-        height="25vh"
-        width="50vw"
-        style="margin-right:2vh"
-        @click="goSite('https://www.lottecinema.co.kr/NLCHS/ticketing?movieCd=15834&movieName=%EB%8D%94%20%ED%94%8C%EB%9E%AB%ED%8F%BC')"
+      <v-slide-item
+        v-for="(movie, idx) in theaterMovieList"
+        :key="idx"
       >
-        <v-img 
-          src="https://image.edaily.co.kr/images/Photo/files/NP/S/2019/05/PS19051301305.jpg"
-          height="15vh"
-          width="50vw"
+        <v-card
+          class="ma-4"
+          height="30vh"
+          width="85vw"
+          style="margin-right:2vh"
+          @click="goSite(movie.url)"
         >
-        </v-img>
-        <v-card-text>{{ title }}</v-card-text>
-      </v-card>
-    </v-slide-item>
-  </v-slide-group>
+          <v-row>
+            <v-col>
+              <v-img 
+                :src="movie.movie.poster"
+                height="30vh"
+                width="40vw"
+              >
+              </v-img>
+            </v-col>
+            <v-col>
+              <v-card-text>
+                <h4>{{ movie.movie.name }}</h4><br />
+                <div>
+                  {{ movie.seats }} / {{ movie.total_seats }}<br/>
+                  잔여 좌석 / 전체 좌석
+                </div><br />
+                <div>
+                  {{ movie.start_time }} ~ {{ movie.end_time }}
+                </div>
+              </v-card-text>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-slide-item>
+    </v-slide-group>
+  <v-card
+    class="ma-4 noItem"
+    height="30vh"
+    width="95vw"
+    style="margin-right:2vh"
+    v-else
+  >
+    <div class="noMovie">
+      예매 가능한 영화가 없습니다.
+    </div>
+  </v-card>
+</div>
 </template>
 
 <script>
