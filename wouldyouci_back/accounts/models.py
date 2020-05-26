@@ -3,6 +3,15 @@ from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
 from movies.models import Movie
+from cinemas.models import Cinema
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
+from datetime import datetime
+
+
+def profile_path(instance, filename):
+    filename = datetime.today().strftime('%Y%m%d%H%M%f')
+    return f'profile/{filename}.jpeg'
 
 
 class MyUserManager(BaseUserManager):
@@ -37,6 +46,8 @@ class User(AbstractBaseUser):
     username = models.CharField(max_length=20, unique=True)
     email = models.EmailField()
     get_agreement = models.BooleanField(default=False)
+    pick_movies = models.ManyToManyField(Movie, related_name='pick_users')
+    pick_cinemas = models.ManyToManyField(Cinema, related_name='pick_users')
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
@@ -58,6 +69,19 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
+
+
+class Profile(models.Model):
+    user = models.ForeignKey(User, blank=True, null=True, related_name='file', on_delete=models.CASCADE)
+    file = ProcessedImageField(
+        processors=[ResizeToFill(200, 200)],
+        upload_to=profile_path,
+        format='JPEG',
+        options={'quality': 80},
+    )
+
+    def __str__(self):
+        return 'media/%s' % self.file
 
 
 class Rating(models.Model):
