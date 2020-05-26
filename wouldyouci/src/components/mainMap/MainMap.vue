@@ -55,7 +55,7 @@ export default {
       cardInfo: null,
       showMovieCard: null,
       loading: false,
-      mapCenter: null,
+      mapBound: null,
       timeSelector: false,
       theaterMovieList: [],
       markers: [],
@@ -125,10 +125,16 @@ export default {
     async changeLoading() {
       this.loading = true;
       this.clearMarker();
-      const center = this.map.getCenter();
-      const centerValue = {lat: center.lat(), lng: center.lng()};
-      this.mapCenter = centerValue;
-      await this.bringHereCinema({center: centerValue});
+      const mapBound = this.map.getBounds();
+      this.mapBound = mapBound;
+      console.log(mapBound)
+      const bound = {
+        x1: mapBound.Ua.i,
+        y1: mapBound.Ya.i,
+        x2: mapBound.Ua.j,
+        y2: mapBound.Ya.j
+      }
+      await this.bringHereCinema(bound);
       this.theaterMovieList = this.getTheaterMovies;
       const theaterIcon = {
         url: "https://image.flaticon.com/icons/svg/2892/2892617.svg",
@@ -170,7 +176,9 @@ export default {
             lat: position.coords.latitude,
             lng: position.coords.longitude
           };
-          await this.bringHereCinema({center: pos, radius: 3})
+          this.map.setCenter(pos);
+          const bound = {x1: pos.lng - 0.01544952392, y1: pos.lat - 0.01721547104, x2: pos.lng + 0.01544952392, y2: pos.lat + 0.01721150239};
+          await this.bringHereCinema(bound);
           this.theaterMovieList = this.getTheaterMovies;
           console.log(this.theaterMovieList);
           this.nowHere = pos;
@@ -184,10 +192,6 @@ export default {
           }
           this.marking({type: 'user', position: pos, icon: hereIcon});
           this.marking({type: 'theater', position: this.theaterMovieList, icon: theaterIcon});
-          this.map.setCenter(pos);
-          // let bound = this.map.getBounds();
-          // console.log(bound);
-          // this.bound = bound;
         }.bind(this), function() {
           this.handleLocationError(true, this.map.getCenter());
         }.bind(this))

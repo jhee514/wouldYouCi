@@ -47,14 +47,14 @@ const actions = {
     document.querySelector("body").appendChild(script);
     return initPromise;
   },
-  bringHereCinema: ({ commit }, {center, radius}) => {
-    console.log(radius)
-    console.log(center)
+  bringHereCinema: ({ commit }, bound) => {
+    console.log(bound)
     const params = {
       params: {
-        x: center.lng,
-        y: center.lat,
-        radius: radius
+        x1: bound.x1,
+        y1: bound.y1,
+        x2: bound.x2,
+        y2: bound.y2
       }
     }
     return new Promise(function(resolve, reject) {
