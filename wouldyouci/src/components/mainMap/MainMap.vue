@@ -9,18 +9,10 @@
         {{ time }}
         <v-icon class="angleDown">fas fa-angle-down</v-icon>
       </v-btn>
-      기준 반경
-      <v-btn outlined small color="#000000" @click="kmSelector=!kmSelector">
-        {{ km }}
-        <v-icon class="angleDown">fas fa-angle-down</v-icon>
-      </v-btn>
-      Km
+      기준 영화 정보입니다.
     </div>
     <v-dialog v-model="timeSelector">
       <TimeSelector v-bind:nowTime="time" @targetTime="changeTime"/>
-    </v-dialog>
-    <v-dialog v-model="kmSelector">
-      <KmSelector v-bind:nowKm="km" @targetKm="changeKm"/>
     </v-dialog>
     <div id="map" ref="map">
     </div>
@@ -43,7 +35,6 @@
 import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import TimeSelector from './timeSelector/TimeSelector.vue';
-import KmSelector from './timeSelector/KmSelector.vue';
 import TheaterMovie from './theaterMovie/TheaterMovie.vue';
 import { mapGetters, mapActions } from 'vuex';
 
@@ -53,7 +44,6 @@ export default {
     Nav,
     Title,
     TimeSelector,
-    KmSelector,
     TheaterMovie
   },
   data() {
@@ -62,13 +52,11 @@ export default {
       google: null,
       nowHere: null,
       time: new Date().toLocaleTimeString(),
-      km: 3,
       cardInfo: null,
       showMovieCard: null,
       loading: false,
       mapCenter: null,
       timeSelector: false,
-      kmSelector: false,
       theaterMovieList: [],
       markers: [],
       // movieList: []
@@ -140,7 +128,7 @@ export default {
       const center = this.map.getCenter();
       const centerValue = {lat: center.lat(), lng: center.lng()};
       this.mapCenter = centerValue;
-      await this.bringHereCinema({center: centerValue, radius: this.km});
+      await this.bringHereCinema({center: centerValue});
       this.theaterMovieList = this.getTheaterMovies;
       const theaterIcon = {
         url: "https://image.flaticon.com/icons/svg/2892/2892617.svg",
@@ -155,11 +143,6 @@ export default {
     },
     setNowTime() {
       this.time = new Date().toLocaleTimeString();
-    },
-    changeKm(targetKm) {
-      this.kmSelector = false;
-      this.km = targetKm;
-      this.changeLoading();
     },
     clearMarker() {
       for (const marker of this.markers) {
