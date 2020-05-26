@@ -2,7 +2,7 @@
   <div>
     <div class="content">
       <div style="text-align : left">근처 영화관<br/></div>
-      <CinemaList v-bind:CinemaList="CinemaList" />
+      <TheaterList v-bind:TheaterList="TheaterList" />
     </div>
     <div class="current">
       <div style="text-align : left">현재 상영작 순위<br/></div>
@@ -17,13 +17,15 @@
 
 <script>
 import CinemaList from '../cinemaList/CinemaList.vue';
+import TheaterList from '../cinemaList/TheaterList.vue';
 
 export default {
    name: 'Search',
    components: {
-     CinemaList
+     CinemaList,
+     TheaterList
    },
-   props:['CinemaList']
+   props:['CinemaList', 'TheaterList']
 
 
 }

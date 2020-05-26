@@ -15,21 +15,24 @@ const state = {
   initialized: !!window.google,
   searchMode: "before",
   theaterMovies: [],
-  movies: []
+  movies: [],
+  nearTheater: [],
 };
 
 const getters = {
   getInitialized: state => state.initialized,
   getSearchMode: state => state.searchMode,
   getTheaterMovies: state => state.theaterMovies,
-  getMovies: state => state.movies
+  getMovies: state => state.movies,
+  getNearTheater: state => state.nearTheater
 };
 
 const mutations = {
   setInitialized: (state, value) => state.initialized = value,
   setSearchMode: (state, mode) => state.searchMode = mode,
   setTheaterMovies: (state, theaterMovies) => state.theaterMovies = theaterMovies,
-  setMovies: (state, movies) => state.movies = movies
+  setMovies: (state, movies) => state.movies = movies,
+  setNearTheater: (state, theaters) => state.nearTheater = theaters
 };
 
 const actions = {
@@ -47,7 +50,7 @@ const actions = {
     document.querySelector("body").appendChild(script);
     return initPromise;
   },
-  bringHereCinema: ({ commit }, bound) => {
+  bringHereCinema: ({ getters, commit }, bound) => {
     console.log(bound)
     const params = {
       params: {
@@ -62,6 +65,13 @@ const actions = {
         .then(res => {
           console.log(res);
           commit('setTheaterMovies', res.data.documents);
+          if (!getters.getNearTheater.length) {
+            if (!res.data.documents.length) {
+              commit('setNearTheater', ['Nothing']);
+            } else {
+              commit('setNearTheater', res.data.documents)
+            }
+          }
           resolve('ok');
         })
         .catch(err => {
