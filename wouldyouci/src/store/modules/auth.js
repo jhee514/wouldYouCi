@@ -1,22 +1,24 @@
 import router from "../../router";
-
+const KAKAO_API_KEY = process.env.VUE_APP_KAKAO_API_KEY;
 const HOST = process.env.VUE_APP_SERVER_HOST;
 const axios = require("axios");
 
 const state = {
   LoginMode: true,
   token: null,
-  userName: null,
   errors: [],
-  loading: false
+  loading: false,
+  userInfo: null,
+  nowAddress: null
 };
 
 const getters = { 
   isLoginMode: state => state.LoginMode,
   isLoggedIn: state => !!state.token,
-  getUserName: state => state.userName,
   getErrors: state => state.errors,
-  getLoading: state => state.loading
+  getLoading: state => state.loading,
+  getUserInfo: state => state.userInfo,
+  getNowAddress: state => state.nowAddress
 };
 
 const mutations = {
@@ -25,22 +27,18 @@ const mutations = {
     state.token = token;
     sessionStorage.setItem("jwt", token);
   },
-  setUserName: (state, userName) => {
-    state.userName = userName;
-    sessionStorage.setItem("name", userName);
-  },
   pushError: (state, error) => state.errors.push(error),
   clearErrors: state => state.errors = [],
-  setLoading: (state, bool) => state.loading = bool
+  setLoading: (state, bool) => state.loading = bool,
+  setUserInfo: (state, userInfo) => state.userInfo = userInfo,
+  setNowAddress: (state, address) => state.nowAddress = address
 };
 
 const actions = {
   initialLogin: ({ commit }) => {
     const token = sessionStorage.getItem("jwt");
-    const userName = sessionStorage.getItem("name");
     if (token) {
       commit("setToken", token);
-      commit("setUserName", userName);
     }
   },
   login: ({ getters, commit, dispatch }, userInfo) => {
@@ -71,7 +69,6 @@ const actions = {
         .then(res => {
           console.log(res)
           commit("setToken", res.data.token);
-          commit("setUserName", userInfo.userName);
           dispatch("checkRating");
           // router.push("/firstRating");
         })
@@ -164,9 +161,7 @@ const actions = {
   },
   logout: ({ commit }) => {
     commit("setToken", null);
-    commit("setUserName", null);
     sessionStorage.removeItem("jwt");
-    sessionStorage.removeItem("name");
     router.push("/signup");
   },
   checkRating: ({ commit }) => {
@@ -191,6 +186,114 @@ const actions = {
       .catch(err => {
         console.log(err);
       })
+  },
+  changePassword: ({ getters }, userInfo) => {
+    getters;
+    console.log(userInfo.password)
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`
+      }
+    };
+    const data = {
+      new_password: userInfo.password
+    };
+    axios.patch(`${HOST}/user/password/`, data, options)
+      .then(res => {
+        console.log(res);
+        alert('비밀번호가 변경되었습니다.')
+      })
+      .catch(err => {
+        console.log(err);
+        alert('비밀번호를 변경하는데 오류가 발생하였습니다.')
+      })
+  },
+  registerProfile: ({ getters }, image) => {
+    getters;
+    console.log(image);
+    const data = new FormData();
+    data.append('file', image);
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`,
+        "Content-Type": "multipart/form-data",
+      }
+    }
+    return new Promise(function(resolve, reject) {
+      axios.post(`${HOST}/user/profile/`, data, options)
+        .then(res => {
+          console.log(res);
+          resolve('ok');
+        })
+        .catch(err => {
+          console.log(err);
+          reject(Error('error'));
+        })
+    })
+  },
+  deleteProfile: ({ getters }) => {
+    getters;
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`
+      }
+    };
+    return new Promise(function(resolve, reject) {
+      axios.delete(`${HOST}/user/profile/`, options)
+        .then(res => {
+          console.log(res);
+          resolve('ok');
+        })
+        .catch(err => {
+          console.log(err);
+          reject(Error('error'));
+        })
+    })
+  },
+  bringUserInfo: ({ commit }) => {
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`
+      }
+    };
+    return new Promise(function(resolve, reject) {
+      axios.get(`${HOST}/user/`, options)
+        .then(res => {
+          commit('setUserInfo', res.data)
+          console.log(res);
+          resolve('ok');
+        })
+        .catch(err => {
+          console.log(err);
+          reject(Error('error'));
+        })
+    })
+  },
+  bringAddress: ({ commit }) => {
+    console.log("?")
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        const pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        const options = {
+          headers: {
+            Authorization: `KakaoAK ${KAKAO_API_KEY}`
+          }
+        }
+        axios.get(`https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${pos.lng}&y=${pos.lat}`, options)
+          .then(res => {
+            console.log(res);
+            commit('setNowAddress', res.data.documents[0].address_name);
+          })
+          .catch(err => console.log(err));
+      })
+    }
   }
 };
 

@@ -9,6 +9,7 @@
       dark
       class="pa-4"
       active-class="success"
+      v-if="CinemaList && CinemaList.length"
     >
       <v-slide-item
         v-for="(title, idx) in CinemaList"
@@ -31,6 +32,17 @@
         </v-card>
       </v-slide-item>
     </v-slide-group>
+    <v-card
+      v-else
+      class="ma -4"
+      height="20vh"
+      width="90vw"
+      style="margin-right:2vh"
+    >
+      <div>
+        해당 콘텐츠가 없습니다.
+      </div>
+    </v-card>
   </v-sheet>
 </template>
 

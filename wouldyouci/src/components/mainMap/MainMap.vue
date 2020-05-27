@@ -198,6 +198,7 @@ export default {
     try {
       console.log(this)
       this.google = await this.init();
+      console.log(this.google)
       this.map = new this.google.maps.Map(this.$refs.map, {
         center: { lat: 37.501401, lng: 127.039686 },
         zoom: 14,
