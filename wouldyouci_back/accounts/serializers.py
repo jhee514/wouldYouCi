@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Rating, Profile
+from .models import Rating, Profile, CinemaRating
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -36,16 +36,31 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class RatingSerializer(serializers.ModelSerializer):
     score = serializers.IntegerField(required=True, min_value=0, max_value=5)
+
+    class Meta:
+        model = Rating
+        fields = ('id', 'comment', 'movie', 'score', 'created_at', 'updated_at')
+
+
+class SimpleRatingSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
 
     class Meta:
         model = Rating
-        fields = '__all__'
+        fields = ('id', 'comment', 'score', 'updated_at', 'user')
 
 
-class MovieRatingSerializer(serializers.ModelSerializer):
+class CinemaRatingSerializer(serializers.ModelSerializer):
+    score = serializers.IntegerField(required=True, min_value=0, max_value=5)
+
+    class Meta:
+        model = CinemaRating
+        fields = ('id', 'comment', 'cinema', 'score', 'created_at', 'updated_at')
+
+
+class SimpleCinemaRatingSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
 
     class Meta:
-        model = Rating
+        model = CinemaRating
         fields = ('id', 'comment', 'score', 'updated_at', 'user')
