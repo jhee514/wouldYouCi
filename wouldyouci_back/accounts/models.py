@@ -96,5 +96,13 @@ class Rating(models.Model):
         ordering = ('-updated_at',)
 
 
-# class LikeMovie(models.Model):
-#     pass
+class CinemaRating(models.Model):
+    comment = models.TextField(blank=True, null=True)
+    score = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE, related_name='cinema_ratings')  # movie.ratings
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cinema_ratings')  # user.ratings
+
+    class Meta:
+        ordering = ('-updated_at',)
