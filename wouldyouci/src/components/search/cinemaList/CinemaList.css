@@ -7,11 +7,14 @@ div.v-card__text {
   padding-top: 1vh;
 }
 
-#app > div > div.search > div:nth-child(2) > div > div.content > div.pa-4.cinemaList.v-item-group.theme--light.v-slide-group > div.v-slide-group__wrapper > div > div {
-  text-align: center;
+
+#app > div > div.search > div:nth-child(2) > div > div.content > div.ma-4.v-card.v-sheet.theme--light {
+  margin-top: 2vh;
+  margin-bottom: 2vh;
 }
 
-#app > div > div.search > div:nth-child(2) > div > div.content > div.pa-4.cinemaList.v-item-group.theme--light.v-slide-group.v-slide-group--is-overflowing > div.v-slide-group__wrapper > div > div > div {
+#app > div > div.search > div:nth-child(2) > div > div.content > div.ma-4.v-card.v-sheet.theme--light > div {
+  text-align: center;
   position: relative;
-  top: 35%
+  top: 40%;
 }

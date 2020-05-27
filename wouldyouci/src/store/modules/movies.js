@@ -16,7 +16,7 @@ const state = {
   searchMode: "before",
   theaterMovies: [],
   movies: [],
-  nearTheater: [],
+  nearTheater: []
 };
 
 const getters = {
@@ -24,7 +24,7 @@ const getters = {
   getSearchMode: state => state.searchMode,
   getTheaterMovies: state => state.theaterMovies,
   getMovies: state => state.movies,
-  getNearTheater: state => state.nearTheater
+  getNearTheater: state => state.nearTheater,
 };
 
 const mutations = {
@@ -48,6 +48,7 @@ const actions = {
     script.type="text/javascript"
     script.onerror = rejectInitPromise;
     document.querySelector("body").appendChild(script);
+    // console.log(initPromise)
     return initPromise;
   },
   bringHereCinema: ({ getters, commit }, bound) => {

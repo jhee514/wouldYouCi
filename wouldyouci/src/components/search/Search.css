@@ -3,3 +3,11 @@
   margin-right: 5vw;
   margin-bottom: 10vh;
 }
+
+.now {
+  margin-bottom: 2vh;
+}
+
+#app > div > div.search > div.now > button {
+  padding-left: 0;
+}

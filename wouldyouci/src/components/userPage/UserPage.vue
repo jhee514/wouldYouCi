@@ -8,13 +8,13 @@
           <SettingCard @settingCard="closeDialog" />
         </v-dialog>
         <v-dialog v-model="isShowChangeImgDialog">
-          <ChangeUserImage v-if="isShowChangeImgDialog" @changeUserImage="closeChangeImgDialog"/>
+          <ChangeUserImage v-if="isShowChangeImgDialog" @changeUserImage="closeChangeImgDialog" @changeP="changeP"/>
         </v-dialog>
         <v-dialog v-model="isShowChangePassDialog">
           <ChangeUserPass v-if="isShowChangePassDialog" @changeUserPass="closeChangePassDialog"/>
         </v-dialog>
       </div>
-      <UserInfo />
+      <UserInfo v-bind:UserName="userName" v-bind:UserProfile="profileURL" @deleteP="deleteP"/>
       <span>선호하는 영화관</span>
       <MovieList v-bind:CinemaList="theaterList"/>
       <span>내가 평가한 영화</span>
@@ -47,6 +47,7 @@ import SettingCard from './settingCard/SettingCard.vue';
 import ChangeUserImage from './changeUserInfo/ChangeUserImage.vue';
 import ChangeUserPass from './changeUserInfo/ChangeUserPass.vue';
 import router from '../../router';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'UserPage',
@@ -61,16 +62,22 @@ export default {
   },
   data() {
     return {
-      theaterList: ['강남 CGV', '코엑스 메가박스'],
+      theaterList: null,
       ratedMovies: ['톰보이', '레이니 데이 인 뉴욕', '트롤: 월드 투어', '콜 오브 와일드', '프리즌 이스케이프', '더 플랫폼', '저 산 너머', '씨 피버', '패왕별희'],
-      wishMovies: ['카페 벨에포크', '라스트 풀 메저', '킬러의 보디가드', '루키스', '나는 보리', '비커밍 제인'],
+      wishMovies: null,
       recommendedMovies: ['배고파...', '집이지만', '집에 가고파', '월요병', '스마일감자', '나쁘다....'],
       isShow: false,
       isShowChangeImgDialog: false,
-      isShowChangePassDialog: false
+      isShowChangePassDialog: false,
+      userName: null,
+      profileURL: null
     }
   },
+  computed: {
+    ...mapGetters(['getUserInfo'])
+  },
   methods: {
+    ...mapActions(['bringUserInfo']),
     closeDialog(type) {
       if (type === "image") {
         this.isShowChangeImgDialog = true;
@@ -79,17 +86,43 @@ export default {
       }
       this.isShow = false;
     },
-    closeChangeImgDialog(type) {
-      type;
+    closeChangeImgDialog() {
       this.isShowChangeImgDialog = false;
     },
-    closeChangePassDialog(type) {
-      type;
+    closeChangePassDialog() {
       this.isShowChangePassDialog = false;
     },
     goFirstRating() {
       router.push('/firstRating');
+    },
+    async deleteP() {
+      await this.bringUserInfo();
+      if (this.getUserInfo.file.length) {
+        const HOST = process.env.VUE_APP_SERVER_HOST;
+        this.profileURL = `${HOST}/${this.getUserInfo.file[0]}`;
+      } else {
+        this.profileURL = null;
+      }
+    },
+    async changeP() {
+      await this.bringUserInfo();
+      if (this.getUserInfo.file.length) {
+        const HOST = process.env.VUE_APP_SERVER_HOST;
+        this.profileURL = `${HOST}/${this.getUserInfo.file[0]}`;
+      } else {
+        this.profileURL = null;
+      }
     }
+  },
+  async mounted() {
+    await this.bringUserInfo();
+    const HOST = process.env.VUE_APP_SERVER_HOST;
+    if (this.getUserInfo.file.length) {
+      this.profileURL = `${HOST}/${this.getUserInfo.file[0]}`;
+    }
+    this.userName = this.getUserInfo.username;
+    this.theaterList = this.getUserInfo.pick_cinemas;
+    this.wishMovies = this.getUserInfo.pick_movies;
   }
 }
 </script>
