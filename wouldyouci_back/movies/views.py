@@ -57,6 +57,8 @@ def pick_movie(request, movie_id):
 @permission_classes([IsAuthenticated])
 def create_rating(request):
     # user = get_object_or_404(User, id=9000000)
+    # print(request.body)
+    # print(request.data)
     serializer = RatingSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save(user=request.user)
