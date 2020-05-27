@@ -14,6 +14,12 @@
           ></v-text-field>
         </form>
       </v-container>
+      <div class="now" v-if="getNowAddress">
+        <v-btn small text>
+          <v-icon small>fas fa-crosshairs</v-icon>
+          {{ getNowAddress }}
+        </v-btn>
+      </div>
       <div v-if="getSearchMode">
         <MainSearch v-if="getSearchMode==='before'" v-bind:CinemaList="cards" v-bind:TheaterList="getNearTheater"/>
         <AfterSearch v-else v-bind:KeyWords="keywordProps" v-bind:CinemaList="cards" />
@@ -28,7 +34,7 @@ import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import MainSearch from './mainSearch/MainSearch.vue';
 import AfterSearch from './afterSearch/AfterSearch.vue';
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
    name: 'Search',
@@ -55,15 +61,19 @@ export default {
     keywordProps: null
   }),
   computed: {
-    ...mapGetters(['getSearchMode', 'getNearTheater'])
+    ...mapGetters(['getSearchMode', 'getNearTheater', 'getNowAddress'])
   },
   methods: {
     ...mapMutations(['setSearchMode']),
+    ...mapActions(['bringAddress']),
     changeSearchMode() {
       this.setSearchMode('after');
       this.keywordProps = this.keyword;
       this.keyword = null;
     }
+  },
+  mounted() {
+    this.bringAddress();
   }
 }
 </script>

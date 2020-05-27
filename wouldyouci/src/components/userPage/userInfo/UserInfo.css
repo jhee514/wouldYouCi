@@ -22,3 +22,14 @@
   width: auto;
   height: 50vh;
 }
+
+#app > div.v-dialog__content.v-dialog__content--active > div > div > div {
+  position: relative;
+}
+
+.btnTrash{
+  position: absolute;
+  top: 1vh;
+  right: 0vw;
+  color: grey;
+}

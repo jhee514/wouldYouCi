@@ -76,7 +76,7 @@ export default {
     ...mapGetters(['getTheaterMovies', 'getMovies'])
   },
   methods: {
-    ...mapActions(['init', 'bringHereCinema', 'bringMovies']),
+    ...mapActions(['init', 'initKakao', 'bringHereCinema', 'bringMovies']),
     marking(value) {
       console.log(value)
       if (value.type === 'user') {
@@ -198,6 +198,7 @@ export default {
     try {
       console.log(this)
       this.google = await this.init();
+      console.log(this.google)
       this.map = new this.google.maps.Map(this.$refs.map, {
         center: { lat: 37.501401, lng: 127.039686 },
         zoom: 14,
