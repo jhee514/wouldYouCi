@@ -148,26 +148,40 @@ const actions = {
     })
 
   },
-  postRating: ( rating ) => {
-    const data = {
-      score: rating.score,
-      comment: rating.comment,
-    }
+  postRating: ( {commit}, rating) => {
+    const token = sessionStorage.getItem('jwt');
     const options = {
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json"
+        Authorization: `JWT ${token}`,
       }
     }
-    axios.post(`${HOST}/user/movie/rating/`, data, options)
+    axios.post(`${HOST}/movie/rating/`, rating, options)
       .then(res => {
         console.log(res);
-
+        commit();
       })
       .catch(err => {
         console.log(err);
       })
-  }
+  },
+  delRating: ({dispatch}, ratingId) => {
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`,
+      }
+    }
+    axios.delete(`${HOST}/movie/rating/${ratingId}/`, options)
+      .then(res => {
+        console.log(res);
+        dispatch();
+      })
+      .catch(err => {
+        console.log("erorororororo")
+        console.log(err);
+      })
+  },
 
 };
 

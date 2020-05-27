@@ -2,37 +2,52 @@
   <v-app>
     <Title />
     <div class="body">
+      <v-card elevation=0>
+        <div class="trailer">
+          <iframe 
+            id="player"
+            type="text/html" 
+            width="auto" 
+            height="auto"
+            allow="autoplay"
+            allowfullscreen
+            frameborder=0;
+            :src=details.trailer
+            ></iframe>
+        </div>
+        <v-list-item two-line>
+          <v-list-item-content>
+            <v-list-item-title class="headline">{{ details.name }}</v-list-item-title>
+            <v-list-item-subtitle>{{ details.name_eng }}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{ details.watch_grade }}</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+        
+        <v-card-actions>
+          <!-- TODO 평점 구하는 함수 -->
+          <Score :score="avgScore"/>
+          <v-spacer></v-spacer>
 
-      <iframe 
-        id="player"
-        type="text/html" 
-        width="auto" 
-        height="auto"
-        allow="autoplay"
-        allowfullscreen
-        frameborder= 0;
-        :src=details.trailer
-        ></iframe>
+          <!-- TODO 찜/예매 함수 -->
+          <!-- TODO 상영중 표시 -->
+          <v-btn icon @submit.prevent="toggleWish">
+            <v-icon>mdi-heart</v-icon>
+          </v-btn>
+          <v-btn v-if="details.is_showing" icon>
+            <v-icon @submit.prevent="getTicket">mdi-share-variant</v-icon>
+          </v-btn>
+        </v-card-actions>
 
-      <v-list-item two-line>
-        <v-list-item-content>
-          <v-list-item-title class="headline">{{ details.name }}</v-list-item-title>
-          <v-list-item-subtitle>{{ details.name_eng }}</v-list-item-subtitle>
-          <v-list-item-subtitle>{{ details.watch_grade }}</v-list-item-subtitle>
-          <v-list-item-subtitle>
-            <Score :score="avgRating"/>
-          </v-list-item-subtitle>
-          {{ details.summary }}
-        </v-list-item-content>
-      </v-list-item>
+        <v-card-text>
+        {{ details.summary }}
+        </v-card-text>
 
-      <v-card>
         <v-tabs
-          fixed-tabs
           v-model="tab"
-          background-color="orange lighten-3"
-          dark
+          background-color="white"
+          color="orange dark-3"
           centered
+          fixed-tabs
         >
           <v-tab
             v-for="item in items"
@@ -41,7 +56,6 @@
             {{ item.tab }}
           </v-tab>
         </v-tabs>
-
         <v-tabs-items v-model="tab">
           <v-tab-item
             v-for="item in items"
@@ -54,6 +68,7 @@
             </v-card>
           </v-tab-item>
         </v-tabs-items>
+
       </v-card>
     </div>
     <Nav />
@@ -65,7 +80,7 @@ import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import MovieInfo from './movieInfo/MovieInfo';
 import Ratings from './ratings/Ratings';
-import Score from './score/Score';
+import Score from './ratings/Score';
 import { mapGetters, mapActions } from 'vuex';
 
 
@@ -86,27 +101,40 @@ export default {
         {tab: 'Info', component: "MovieInfo"},
         {tab: 'Reviews', component: "Ratings"}
       ],
-      avgRating: null,
-      // details: [],
+      avgScore: 0,
     }
   },
 
   computed: {
     ...mapGetters({
       details: 'getMovieDetail'
-    })
+      }
+    ),
   },
 
-   methods: {
-     ...mapActions(['fetchMovieDetail']),
+  methods: {
+    ...mapActions(['fetchMovieDetail']),
+    
+
   },
   async created() {
     try {
       await this.fetchMovieDetail(this.$route.params.id)
-    } catch (err) {
-      console.log(err);
+      .then(()=> {
+          // 평점 구하기
+          let sum = 0;
+          for (let i=0; i < this.details.ratings.length; i++) {
+            sum += (this.details.ratings[i].score)
+          }
+          this.avgScore = sum / this.details.ratings.length;
+         }
+        )
+      } catch (err) {
+        console.log(err);
     }
   },
+
+
 }
 </script>
 

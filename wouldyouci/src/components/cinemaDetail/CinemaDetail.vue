@@ -8,7 +8,7 @@
           <v-list-item-title class="headline">{{ details.name }}</v-list-item-title>
           <v-list-item-subtitle>{{ details.address }}</v-list-item-subtitle>
           <v-list-item-subtitle>
-            <Score :score="rating.score" />
+            <Score :score="avgScore" />
           </v-list-item-subtitle>
 
           <v-card>
@@ -49,7 +49,7 @@ import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import CinemaInfo from './cinemaInfo/CinemaInfo';
 import Ratings from '../movieDetail/ratings/Ratings';
-import Score from '../movieDetail/score/Score';
+import Score from '../movieDetail/ratings/Score';
 import { fetchCinema } from '@/api/index';
 
 export default {

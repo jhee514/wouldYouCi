@@ -1,5 +1,6 @@
 <template>
    <v-rating
+      class="score"
       :value=score
       background-color="orange lighten-3"
       color="amber"
@@ -17,3 +18,4 @@ export default {
 }
 </script>
 
+<style src="./Ratings.css" scoped></style>
