@@ -76,7 +76,7 @@ export default {
     ...mapGetters(['getTheaterMovies', 'getMovies'])
   },
   methods: {
-    ...mapActions(['init', 'initKakao', 'bringHereCinema', 'bringMovies']),
+    ...mapActions(['init', 'bringHereCinema', 'bringMovies']),
     marking(value) {
       console.log(value)
       if (value.type === 'user') {
