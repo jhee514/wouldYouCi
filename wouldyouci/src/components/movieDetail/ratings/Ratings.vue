@@ -1,6 +1,6 @@
 <template>
   <div class="ratings">
-    <RatingForm />
+    <RatingForm :id="details.id" />
 
     <v-list v-if="isRatings">
       <template v-for="(rating, index) in details.ratings">
@@ -10,13 +10,24 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>
-              <Score :score="rating.score" />
-            </v-list-item-title>
-              {{ rating.comment}}
-            <v-list-item-subtitle>
-              <span align-end>{{ rating.user.username }} | {{ formatDate(rating.updated_at) }}</span>
-            </v-list-item-subtitle>
+              <div class="infos">
+                <div class="user">
+                 {{ rating.user.username }} | {{ formatDate(rating.updated_at) }}
+                </div>
+                <div class="score">
+                  <Score :score="rating.score" />
+                </div>
+              </div>
+              <div class="content">
+                <p class="comment">{{ rating.comment}}</p>
+                
+                <div v-if="rating.user.username == userName" class="button">
+                  <v-btn icon @click.prevent="deleteRating(rating.id)">
+                    <i class="fas fa-times fa-xs"></i>
+                  </v-btn>
+                </div>
+
+              </div>
           </v-list-item-content>
         </v-list-item>
         <v-divider :key="index"></v-divider>
@@ -30,8 +41,9 @@
 </template>
 
 <script>
-import Score from '../score/Score';
-import RatingForm from '../ratings/RatingForm';
+import Score from './Score';
+import RatingForm from './RatingForm';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'Ratings',
@@ -43,13 +55,29 @@ export default {
 
   data() {
     return {
-      isRatings: this.details.ratings.length
+      isRatings: this.details.ratings.length,
+      buttons: [
+        {method:"delete", icon:"fas fa-times fa-xs"},
+        {method:"edit", icon:"far fa-edit fa-xs"},
+      ]
     }
   },
+  computed: {
+    ...mapGetters({
+      userName: 'getUserName',
+      }
+    ),
+  },
   methods: {
+    ...mapActions(['delRating']),
+
     formatDate(date) {
       var moment = require('moment');
       return moment(date).format('YYYY.MM.DD')
+    },
+    async deleteRating(ratingId) {
+      await this.delRating(ratingId);
+      console.log("deletedd")
     }
   }
 }
