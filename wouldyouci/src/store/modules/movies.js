@@ -148,7 +148,7 @@ const actions = {
     })
 
   },
-  postRating: ( {commit}, rating) => {
+  postRating: ( {dispatch}, rating) => {
     const token = sessionStorage.getItem('jwt');
     const options = {
       headers: {
@@ -159,7 +159,7 @@ const actions = {
     axios.post(`${HOST}/movie/rating/`, rating, options)
       .then(res => {
         console.log(res);
-        commit();
+        dispatch();
       })
       .catch(err => {
         console.log(err);

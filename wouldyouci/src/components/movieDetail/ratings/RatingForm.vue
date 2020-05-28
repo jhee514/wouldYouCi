@@ -1,11 +1,12 @@
 <template>
-  <form class="ratingForm" @submit="submitForm()">
+  <div class="ratingForm">
     <div class="score">
       <v-rating
         v-model="rating.score"
-        background-color="orange lighten-3"
         color="amber"
+        background-color="orange lighten-3"
         half-increments
+        hover
         size="18"></v-rating>
     </div>
     <div class="comment">
@@ -25,11 +26,11 @@
         color="orange darken-3" 
         icon
         text 
-        type="submit"
+        @click.prevent="postRating(this.rating)"
       >등록</v-btn>
     </div>
 
-  </form>
+  </div>
 </template>
 
 <script>
@@ -45,7 +46,8 @@ export default {
     return {
       rules: [
         value => !!value || '점수를 입력해주세요.',
-        value => ( value <= 5 ) || '최대 점수는 5점입니다.',
+        value => ( value <= 5 ) || '최고 점수는 5점입니다.',
+        value => ( value < 1 ) || '최저 점수는 1점입니다.',
       ],
       rating: {
         score: 0,
@@ -56,18 +58,18 @@ export default {
   },
   methods: {
     ...mapActions(['postRating']),
-    async submitForm() {
-      try {
-        await this.postRating(this.rating);
-        this.rating = {
-          score: 0,
-          comment: '',
-          movie: this.id,
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    },    
+    // async submitRating() {
+    //   try {
+    //     console.log('????????');
+    //     await this.postRating(this.rating);
+    //     console.log('!!!!!!!!!!')
+    //     this.rating.score = 0;
+    //     this.rating.comment = '';
+
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // },    
   },
 }
 </script>
