@@ -21,6 +21,12 @@ button.v-btn.v-btn--depressed.v-btn--flat.v-btn--outlined.theme--light.v-size--s
 .nowArea{
   position: absolute;
   top: 15vh;
+  right: 15vw;
+}
+
+.reload {
+  position: absolute;
+  bottom: 8vh;
   right: 2vw;
 }
 

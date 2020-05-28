@@ -65,6 +65,9 @@ export default {
   methods: {
     closeTimeSelector(targetTime) {
       this.$emit('targetTime', targetTime);
+      this.targetType = null,
+      this.targetHours = null,
+      this.targetMins = null
     }
   }
 }

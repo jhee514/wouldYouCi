@@ -24,12 +24,17 @@
         indeterminate
       ></v-progress-circular>
     </v-overlay>
-    <div class="nowArea">
-      <v-btn v-if="loading" fab height="30" width="30" loading>
+    <div class="nowArea" v-if="isChangeLocation">
+      <v-btn v-if="loading" height="30" width="250" loading>
         <v-icon small>fas fa-undo-alt</v-icon>
       </v-btn>
-      <v-btn @click="changeLoading" v-else fab height="30" width="30">
-        <v-icon small>fas fa-undo-alt</v-icon>
+      <v-btn @click="changeLoading" v-else height="30" width="250">
+        <v-icon small>fas fa-undo-alt</v-icon> 현재 지역에서 재검색하기
+      </v-btn>
+    </div>
+    <div class="reload">
+      <v-btn @click="findMyPos" fab height="30" width="30">
+        <v-icon small>fas fa-crosshairs</v-icon>
       </v-btn>
     </div>
     <div class="movieCard" v-if="showMovieCard">
@@ -69,7 +74,9 @@ export default {
       theaterMovieList: [],
       markers: [],
       theaterId: null,
-      cardLoading: false
+      cardLoading: false,
+      isChangeLocation: false,
+      myMarker: null
     }
   },
   computed: {
@@ -81,6 +88,7 @@ export default {
       console.log(value)
       if (value.type === 'user') {
         const marker = new this.google.maps.Marker({position: value.position, map: this.map, icon: value.icon})
+        this.myMarker = marker;
         this.google.maps.event.addListener(marker, 'click', function() {
           if (this.showMovieCard) {
             this.closeMovieCard();
@@ -107,10 +115,13 @@ export default {
               }
               this.cardLoading = false;
               if (this.cardInfo && this.cardInfo !== marker) {
+                this.showMovieCard = false;
                 this.toggleBounce(this.cardInfo);
                 this.toggleBounce(marker);
                 this.cardInfo = marker;
-                this.showMovieCard = true;
+                setTimeout(function() {
+                  this.showMovieCard = true;
+                }.bind(this), 1)
               } else if (!this.cardInfo) {
                 this.toggleBounce(marker);
                 this.cardInfo = marker;
@@ -163,6 +174,7 @@ export default {
         scaledSize: new this.google.maps.Size(40, 40)
       }
       this.marking({type: 'theater', position: this.theaterMovieList, icon: theaterIcon});
+      this.isChangeLocation = false;
       this.loading = false;
     },
     async changeTime(targetTime) {
@@ -173,6 +185,10 @@ export default {
         this.time = targetTime;
         this.isTimeChange = true;
         if (this.showMovieCard) {
+          this.showMovieCard = false;
+          setTimeout(function() {
+            this.showMovieCard = true;
+          }.bind(this), 1);
           this.cardLoading = true;
           await this.bringMovies({theaterID: this.theaterId, time: this.time});
           this.cardLoading = false;
@@ -191,6 +207,46 @@ export default {
     clearMarker() {
       for (const marker of this.markers) {
         marker.setMap(null);
+      }
+    },
+    findMyPos() {
+      this.isChangeLocation = false;
+      this.clearMarker();
+      this.myMarker.setMap(null);
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async function(position) {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          this.map.setCenter(pos);
+          const mapBound = this.map.getBounds();
+          this.mapBound = mapBound;
+          console.log(mapBound)
+          const bound = {
+            x1: mapBound.Ua.i,
+            y1: mapBound.Ya.i,
+            x2: mapBound.Ua.j,
+            y2: mapBound.Ya.j
+          }
+          await this.bringHereCinema(bound);
+          this.theaterMovieList = this.getTheaterMovies;
+          this.nowHere = pos;
+          const hereIcon = {
+            url : "https://image.flaticon.com/icons/svg/684/684908.svg",
+            scaledSize: new this.google.maps.Size(40, 40)
+          }
+          const theaterIcon = {
+            url: "https://image.flaticon.com/icons/svg/2892/2892617.svg",
+            scaledSize: new this.google.maps.Size(40, 40)
+          }
+          this.marking({type: 'user', position: pos, icon: hereIcon});
+          this.marking({type: 'theater', position: this.theaterMovieList, icon: theaterIcon});
+        }.bind(this), function() {
+          this.handleLocationError(true, this.map.getCenter());
+        }.bind(this))
+      } else {
+        alert('위치 정보 제공 동의를 해주세요');
       }
     }
   },
@@ -216,6 +272,12 @@ export default {
             lng: position.coords.longitude
           };
           this.map.setCenter(pos);
+          this.map.addListener('dragend', function() {
+            this.isChangeLocation = true;
+          }.bind(this))
+          this.map.addListener('zoom_changed', function() {
+            this.isChangeLocation = true;
+          }.bind(this))
           const bound = {x1: pos.lng - 0.01544952392, y1: pos.lat - 0.01721547104, x2: pos.lng + 0.01544952392, y2: pos.lat + 0.01721150239};
           await this.bringHereCinema(bound);
           this.theaterMovieList = this.getTheaterMovies;

@@ -65,6 +65,8 @@ export default {
         const link = document.location.href.split("/");
         if (link[link.length - 1] !== "userPage") {
           router.push('/userPage');
+        } else {
+          location.reload();
         }
       } else {
         router.push('signup');
