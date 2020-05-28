@@ -1,30 +1,19 @@
 <template>
-  <form class="ratingForm" @submit.prevent="submitRating">
+  <div class="ratingForm">
     <div class="score">
       <v-rating
-        :value=score
-        background-color="orange lighten-3"
+        v-model="rating.score"
         color="amber"
-        dense
+        background-color="orange lighten-3"
         half-increments
-        size="20"></v-rating>
-      <v-slider
-        v-model="score"
-        dense
-        min="0"
-        max="5"
-        step="0.5"
-        :thumb-size="24"
-        thumb-label="always"
-        color="orange darken-3"
-        track-color="orange lighten-3"
-        ></v-slider>
+        hover
+        size="18"></v-rating>
     </div>
     <div class="comment">
       <v-textarea
-        v-model="comment"
+        v-model="rating.comment"
         clearable
-        clear-icon="fas fa-times small"
+        clear-icon="fas fa-times xsmall"
         label="관람평"
         rows="1"
         auto-grow
@@ -32,48 +21,56 @@
         color="orange darken-3"
         dense
       ></v-textarea>
+      <v-btn 
+        class="button"
+        color="orange darken-3" 
+        icon
+        text 
+        @click.prevent="postRating(this.rating)"
+      >등록</v-btn>
     </div>
-    <v-btn 
-      color="orange darken-3" 
-      text 
-      type="submit"
-      right-alignment
-      >Submit</v-btn>
 
-  </form>
+  </div>
 </template>
 
 <script>
 
-import { postRating } from '@/api/index';
+import { mapActions } from 'vuex';
 
 export default {
   name: "RatingForm",
+  props:["id"],
   components: {
     },
   data() {
     return {
       rules: [
         value => !!value || '점수를 입력해주세요.',
-        value => ( value <= 5 ) || '최대 점수는 5점입니다.',
+        value => ( value <= 5 ) || '최고 점수는 5점입니다.',
+        value => ( value < 1 ) || '최저 점수는 1점입니다.',
       ],
-      score: null,
-      comment: '',
-
+      rating: {
+        score: 0,
+        comment: '',
+        movie: this.id,
+      },
     }
   },
   methods: {
-    async submitRating() {
-      const rating = {
-        score: this.score,
-        comment: this.comment,
-      };
-      const { data } = await postRating(rating);
-      console.log("form 제출 !!!!", data);
-      
-    }
+    ...mapActions(['postRating']),
+    // async submitRating() {
+    //   try {
+    //     console.log('????????');
+    //     await this.postRating(this.rating);
+    //     console.log('!!!!!!!!!!')
+    //     this.rating.score = 0;
+    //     this.rating.comment = '';
+
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // },    
   },
-
-
 }
 </script>
+<style src="./RatingForm.css" scoped></style>

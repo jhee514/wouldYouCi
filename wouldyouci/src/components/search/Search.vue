@@ -15,9 +15,9 @@
         </form>
       </v-container>
       <div class="now" v-if="getNowAddress">
-        <v-btn small text>
+        <v-btn small text @click="reBringMyPos">
           <v-icon small>fas fa-crosshairs</v-icon>
-          {{ getNowAddress }}
+          {{ nowAddress }}
         </v-btn>
       </div>
       <div v-if="getSearchMode">
@@ -58,7 +58,8 @@ export default {
       { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg'},
     ],
     keyword: null,
-    keywordProps: null
+    keywordProps: null,
+    nowAddress: null
   }),
   computed: {
     ...mapGetters(['getSearchMode', 'getNearTheater', 'getNowAddress'])
@@ -70,10 +71,19 @@ export default {
       this.setSearchMode('after');
       this.keywordProps = this.keyword;
       this.keyword = null;
+    },
+    reBringMyPos() {
+      this.bringAddress();
+      setTimeout(function() {
+        this.nowAddress = this.getNowAddress;
+      }.bind(this), 150)
     }
   },
   mounted() {
     this.bringAddress();
+    setTimeout(function() {
+      this.nowAddress = this.getNowAddress;
+    }.bind(this), 150)
   }
 }
 </script>
