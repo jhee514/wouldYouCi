@@ -28,6 +28,7 @@ def contentsbased(user_id, movie_id):
     predictions = research.best_estimator_.predict(genres)
     genres['predict'] = predictions
 
+    return genres.loc[movie_id, 'predict']
     # print("예상평점:",genres.loc[movie_id, 'predict'])
 
 
