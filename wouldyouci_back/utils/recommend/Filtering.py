@@ -4,7 +4,7 @@ import pymysql
 from sklearn.model_selection import RandomizedSearchCV
 from scipy.stats import uniform as sp_rand
 
-def contentsbased(user_id, movie_id):
+def contentsbased(user_id):
     conn = pymysql.connect(host='15.164.96.65', port=3306, user='root', password='wouldyoucinema', db='wouldyouci')
     sql = "SELECT * FROM wouldyouci.accounts_rating where user_id=" + str(user_id)
     ratings = pd.read_sql_query(sql, conn)
@@ -19,16 +19,18 @@ def contentsbased(user_id, movie_id):
 
     research = RandomizedSearchCV(estimator=model,
                                   param_distributions=param_grid,
-                                  n_iter=30,
+                                  n_iter=50,
                                   cv=5,
                                   random_state=406)
 
     research.fit(user_profile[genres.columns], user_profile['score'])
 
     predictions = research.best_estimator_.predict(genres)
+    genres.reset_index()
+
     genres['predict'] = predictions
 
-    return genres.loc[movie_id, 'predict']
-    # print("예상평점:",genres.loc[movie_id, 'predict'])
+    return pd.DataFrame.to_json(genres['predict'])
 
 
+contentsbased(9000033)
