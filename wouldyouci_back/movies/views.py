@@ -12,25 +12,14 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-
-# class MovieViewSet(viewsets.ReadOnlyModelViewSet):
-#     queryset = Movie.objects.all()
-#     serializer_class = MovieSerializer
-#     permission_classes = [permissions.IsAuthenticated]
-
-
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
     serializer = MovieSerializer(movie)
 
-    is_showing = False
-    if Onscreen.objects.filter(movie=movie_id).exists():
-        is_showing = True
-
     datasets = {
-        "is_showing": is_showing,
+        "is_showing": Onscreen.objects.filter(movie=movie_id).exists(),
     }
     datasets.update(serializer.data)
 
