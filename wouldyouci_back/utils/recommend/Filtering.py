@@ -32,5 +32,3 @@ def contentsbased(user_id):
 
     return pd.DataFrame.to_json(genres['predict'])
 
-
-contentsbased(9000033)
