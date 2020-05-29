@@ -1,3 +1,5 @@
 accounts/migrations/*
 movies/migrations/*
 cinemas/migrations/*
+accounts/fixtures/*
+movies/fixtures/*

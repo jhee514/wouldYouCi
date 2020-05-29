@@ -86,7 +86,7 @@ class Profile(models.Model):
 
 class Rating(models.Model):
     comment = models.TextField(blank=True, null=True)
-    score = models.IntegerField()
+    score = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='ratings')  # movie.ratings
@@ -98,7 +98,7 @@ class Rating(models.Model):
 
 class CinemaRating(models.Model):
     comment = models.TextField(blank=True, null=True)
-    score = models.IntegerField()
+    score = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE, related_name='cinema_ratings')  # movie.ratings
