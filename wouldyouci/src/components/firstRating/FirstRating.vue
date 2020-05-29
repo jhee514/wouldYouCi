@@ -38,6 +38,7 @@
                   v-model="card.rating"
                   color="#F7FE2E"
                   background-color="#F2F2F2"
+                  half-increments
                 ></v-rating>
               </v-card-actions>
             </v-card>

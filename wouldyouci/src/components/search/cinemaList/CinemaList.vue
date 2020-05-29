@@ -9,18 +9,18 @@
     >
       <v-card
         class="ma-4"
-        height="20vh"
-        width="50vw"
+        height="45vh"
+        width="45vw"
         style="margin-right:2vh"
         @click="goDetail"
       >
         <v-img 
-          :src=cinema.src
-          height="15vh"
-          width="50vw"
+          :src=cinema.poster
+          height="40vh"
+          width="45vw"
         >
         </v-img>
-        <v-card-text>{{ cinema.title }}</v-card-text>
+        <v-card-text>{{ cinema.name }}</v-card-text>
       </v-card>
     </v-slide-item>
   </v-slide-group>

@@ -18,7 +18,8 @@ const state = {
   movies: [],
   nearTheater: [],
   movieDetail: [],
-  
+  searchList: [],
+  searchSimiList: []
 };
 
 const getters = {
@@ -28,7 +29,8 @@ const getters = {
   getMovies: state => state.movies,
   getNearTheater: state => state.nearTheater,
   getMovieDetail: state => state.movieDetail,
-
+  getSearchList: state => state.searchList,
+  getSearchSimiList: state => state.searchSimiList
 };
 
 const mutations = {
@@ -38,7 +40,8 @@ const mutations = {
   setMovies: (state, movies) => state.movies = movies,
   setNearTheater: (state, theaters) => state.nearTheater = theaters,
   setMovieDetail: (state, details) => state.movieDetail = details,
-
+  setSearchList: (state, movies) => state.searchList = movies,
+  setSearchSimiList: (state, movies) => state.searchSimiList = movies
 };
 
 const actions = {
@@ -183,7 +186,25 @@ const actions = {
         console.log(err);
       })
   },
-
+  searchMovies: ({ commit }, keywords) => {
+    commit;
+    console.log(keywords);
+    return new Promise(function(resolve, reject) {
+      axios.get(`${HOST}/search/movie/${keywords}/`)
+        .then(res => {
+          console.log(res);
+          commit('setSearchList', res.data.search_result);
+          commit('setSearchSimiList', res.data.similar_result);
+          resolve(res.data);
+        })
+        .catch(err => {
+          console.log(err);
+          commit('setSearchList', null);
+          commit('setSimiSearchList', null);
+          reject(Error('error'));
+        })
+    })
+  }
 };
 
 export default {
