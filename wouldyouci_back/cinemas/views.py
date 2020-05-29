@@ -18,42 +18,6 @@ import datetime
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def get_cinema_center(request):
-    x = float(request.query_params.get('x'))
-    y = float(request.query_params.get('y'))
-    radius = request.query_params.get('radius')
-    radius = int(radius) if radius else 1
-
-    if not x or not y:
-        return Response(status=400, data={'message': 'x, y 값은 필수입니다.'})
-
-    position = (y, x)
-    condition = (
-            Q(y__range=(y - 0.005*radius, y + 0.005*radius)) |
-            Q(x__range=(x - 0.008*radius, x + 0.008*radius))
-    )
-
-    cinema_infos = (
-        Cinema.objects.filter(condition)
-    )
-
-    near_cinema = [cinema for cinema in cinema_infos
-                   if haversine(position, (float(cinema.y), float(cinema.x))) <= radius]
-
-    serializer = SimpleCinemaSerializer(near_cinema, many=True)
-
-    datasets = {
-        'meta': {
-            'total': len(near_cinema)
-        },
-        'documents': serializer.data
-    }
-
-    return Response(status=200, data=datasets, content_type='application.json')
-
-
-@api_view(['GET'])
-@permission_classes([AllowAny])
 def get_cinema_width(request):
     x1 = float(request.query_params.get('x1'))
     x2 = float(request.query_params.get('x2'))
