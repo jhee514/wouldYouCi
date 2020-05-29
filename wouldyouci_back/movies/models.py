@@ -16,7 +16,7 @@ class Movie(models.Model):
     watch_grade = models.CharField(max_length=150)
     running_time = models.CharField(max_length=50)
     summary = models.TextField()
-    open_date = models.DateField()
+    open_date = models.CharField(max_length=20)
 
     trailer = models.CharField(max_length=200, blank=True, null=True)
     poster = models.CharField(max_length=200, blank=True, null=True)
