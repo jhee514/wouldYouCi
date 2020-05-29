@@ -65,6 +65,7 @@ JWT_AUTH = {
 }
 
 INSTALLED_APPS = [
+    'django_elasticsearch_dsl',
     'django_extensions',
     'rest_framework',
     'corsheaders',
@@ -78,6 +79,7 @@ INSTALLED_APPS = [
     'accounts',
     'movies',
     'cinemas',
+    'search',
 ]
 
 MIDDLEWARE = [
@@ -158,6 +160,14 @@ CACHES = {
         }
     }
 }
+
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'localhost:9200'
+    },
+}
+
 
 ROOT_DIR = os.path.dirname(BASE_DIR)
 
