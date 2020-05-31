@@ -17,11 +17,11 @@ class CinemaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cinema
         fields = ('id', 'name', 'type', 'img', 'address', 'url', 'tel',
-                  'public', 'parking', 'onscreens', 'cinema_ratings')
+                  'public', 'parking', 'onscreens', 'score', 'cinema_ratings')
 
 
 class SearchCinemaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cinema
-        fields = ('id', 'name', 'type', 'img')
+        fields = ('id', 'name', 'address', 'type', 'img')

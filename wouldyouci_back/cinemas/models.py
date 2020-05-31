@@ -15,4 +15,5 @@ class Cinema(models.Model):
     parking = models.TextField(blank=True, null=True)
     type = models.CharField(max_length=50, default='기타')
     img = models.URLField(max_length=250, blank=True, null=True)
+    score = models.FloatField(blank=True, default=0)
 

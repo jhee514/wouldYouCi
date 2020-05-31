@@ -3,10 +3,8 @@ from django.shortcuts import HttpResponse, get_object_or_404
 import os
 from wouldyouci_back.settings import MEDIA_ROOT
 from .serializers import UserCreationSerializer, UserDetailSerializer, ProfileSerializer
-from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
 User = get_user_model()
-from rest_framework import viewsets, permissions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from .models import Rating, Profile
@@ -51,7 +49,7 @@ def change_profile(request):
     user = request.user
     # print(request.body)
     # print(request.data)
-    if Profile.objects.filter(user=user.id).exists():
+    if user.file.exists():
         profile = Profile.objects.get(user=user.id)
         # os.remove(os.path.join(MEDIA_ROOT, f"{profile.file}"))
         profile.delete()
