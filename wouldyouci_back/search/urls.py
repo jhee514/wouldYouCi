@@ -7,7 +7,7 @@ urlpatterns = [
     path('movie/', views.autocomplete_movie, name='autocomplete_movie'),
     path('movie/<str:words>/', views.search_movie, name='search_movie'),
 
-    path('cinema/', views.autocomplete_movie, name='autocomplete_movie'),
-    path('cinema/<str:words>/', views.search_movie, name='search_movie'),
+    path('cinema/', views.autocomplete_cinema, name='autocomplete_cinema'),
+    path('cinema/<str:words>/', views.search_cinema, name='search_cinema'),
 
 ]
