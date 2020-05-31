@@ -1,16 +1,21 @@
+from django.db.models import Count
+from rest_framework import viewsets, permissions
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from django.shortcuts import HttpResponse, get_object_or_404
+from django.shortcuts import get_object_or_404
 import os
 from wouldyouci_back.settings import MEDIA_ROOT
-from .serializers import UserCreationSerializer, UserDetailSerializer, ProfileSerializer
+from movies.serializers import TasteMovieSerializer
+from .serializers import UserCreationSerializer, UserDetailSerializer, ProfileSerializer, RatingSerializer
 from django.contrib.auth import get_user_model
 User = get_user_model()
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from movies.models import Movie
 from .models import Rating, Profile
 
 
-@api_view(['POST', 'PATCH'])
+@api_view(['POST'])
 @permission_classes([AllowAny])
 def create_user(request):
     if request.method == 'POST':
@@ -28,15 +33,17 @@ def create_user(request):
 @permission_classes([IsAuthenticated])
 def get_rating_tf(request):
     user = request.user
-    if Rating.objects.filter(user=user.pk).count() > 4:
-        return Response(status=200, data={'rating_tf': True})
+    if user.ratings.count() > 9:
+        data = {'rating_tf': True, 'rating_cnt': user.ratings.count()}
     else:
-        return Response(status=200, data={'rating_tf': False})
+        data = {'rating_tf': False, 'rating_cnt': user.ratings.count()}
+    return Response(status=200, data=data)
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def user_detail(request):
+def user_index(request):
+    # TODO
     user = get_object_or_404(User, id=request.user.id)
     serializer = UserDetailSerializer(user)
 
@@ -47,22 +54,18 @@ def user_detail(request):
 @permission_classes([IsAuthenticated])
 def change_profile(request):
     user = request.user
-    # print(request.body)
-    # print(request.data)
     if user.file.exists():
         profile = Profile.objects.get(user=user.id)
-        # os.remove(os.path.join(MEDIA_ROOT, f"{profile.file}"))
+        os.remove(os.path.join(MEDIA_ROOT, f"{profile.file}"))
         profile.delete()
     if request.method == 'POST':
         if request.FILES:
             serializer = ProfileSerializer(request.POST, request.FILES)
-            # print(request.data)
             if serializer.is_valid():
                 profile = serializer.create(serializer.validated_data)
                 profile.user_id = user.id
                 profile.save()
                 return Response(status=200, data={'file': f"media/{profile.file}"})
-            # print(serializer.errors)
             return Response(status=400, data={'message': '유효하지 않은 파일입니다.'})
         return Response(status=403, data={'message': '이미지는 필수입니다.'})
     elif request.method == 'DELETE':
@@ -73,16 +76,74 @@ def change_profile(request):
 @permission_classes([IsAuthenticated])
 def change_password(request):
     user = get_object_or_404(User, id=request.user.id)
-    # user = get_object_or_404(User, id=9000000)
-    # password = request.POST.get('password')
     new_password = request.data.get('new_password')
 
     if not new_password:
         return Response(status=400, data={'message': '필수 데이터가 누락되었습니다.'})
 
-    # if user.check_password(password):
     user.set_password(new_password)
     user.save()
     return Response(status=203)
-    # return Response(status=403, data={'message': '비밀번호가 일치하지 않습니다.'})
 
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def get_create_taste(request):
+    # 이전에 한 목록은 제외하고
+    # 몇 개 했는지도 같이
+    if request.method == 'GET':
+        pass
+    elif request.method == 'POST':
+        pass
+
+
+class SmallPagination(PageNumberPagination):
+    page_size = 20
+    page_size_query_param = "page_size"
+    max_page_size = 50
+
+
+class TasteViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = TasteMovieSerializer
+    pagination_class = SmallPagination
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+
+        id_set = [21, 25, 29, 9]
+        rated_id = user.ratings.values_list('movie', flat=True)
+        queryset = (
+            Movie.objects
+                .exclude(id__in=rated_id)
+                .exclude(genres__in=id_set)
+                .exclude(watch_grade='청소년 관람불가')
+                .filter(open_date__gte='2015')
+                .annotate(num_rating=Count('ratings'))
+                .order_by('-num_rating', '-score')
+        )
+        return queryset
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def make_dummy_rating(request):
+    # print(request.data)
+    user = request.user
+    for data in request.data['data']:
+        if user.ratings.filter(movie=data['movie']).exists():
+            continue
+
+        serializer = RatingSerializer(data=data)
+        if serializer.is_valid():
+            new_rating = serializer.save(user=user)
+            movie = new_rating.movie
+            ratings_count = movie.ratings.count()
+            movie_rating = movie.score * (ratings_count - 1)
+            movie_rating = (movie_rating + new_rating.score) / ratings_count
+            movie.score = movie_rating
+            movie.save()
+        else:
+            return Response(status=400, data=serializer.errors)
+
+    return Response(status=203)
