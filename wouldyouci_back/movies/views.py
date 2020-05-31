@@ -76,7 +76,7 @@ class RatingViewSet(viewsets.ReadOnlyModelViewSet):
         movie_id = self.request.query_params.get('movie', 0)
         movie = get_object_or_404(Movie, id=movie_id)
         queryset = (
-            movie.ratings.all()
+            movie.ratings.filter(comment__isnull=False)
         )
         return queryset
 
@@ -136,9 +136,13 @@ def create_rating(request):
     # user = get_object_or_404(User, id=9000000)
     # print(request.body)
     # print(request.data)
+    user = request.user
+    if user.ratings.filter(movie=request.data['movie']).exists():
+        return Response(status=403, data={'message': '이미 평가한 영화입니다.'})
+
     serializer = RatingSerializer(data=request.data)
     if serializer.is_valid():
-        new_rating = serializer.save(user=request.user)
+        new_rating = serializer.save(user=user)
 
         movie = new_rating.movie
         ratings_count = movie.ratings.count()
