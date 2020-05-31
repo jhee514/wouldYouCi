@@ -2,6 +2,7 @@ from django.db.models import Q
 from haversine import haversine
 from django.shortcuts import HttpResponse, get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import viewsets, permissions
@@ -12,6 +13,9 @@ from .serializers import SimpleCinemaSerializer, CinemaSerializer
 from accounts.models import CinemaRating
 from accounts.serializers import CinemaRatingSerializer
 from django.contrib.auth import get_user_model
+
+from accounts.serializers import SimpleCinemaRatingSerializer
+
 User = get_user_model()
 import datetime
 
@@ -149,3 +153,23 @@ def patch_delete_cinema_rating(request, rating_id):
             return Response(status=204)
 
     return Response(status=400, data={'message': '권한이 없습니다.'})
+
+
+class SmallPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = "page_size"
+    max_page_size = 50
+
+
+@permission_classes([AllowAny])
+class RatingViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = SimpleCinemaRatingSerializer
+    pagination_class = SmallPagination
+
+    def get_queryset(self):
+        cinema_id = self.request.query_params.get('cinema', 0)
+        cinema = get_object_or_404(Cinema, id=cinema_id)
+        queryset = (
+            cinema.cinema_ratings.all()
+        )
+        return queryset

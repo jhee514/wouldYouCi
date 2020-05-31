@@ -1,5 +1,10 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter(trailing_slash=False)
+router.register(r'', views.RatingViewSet, basename="rating")
+
 
 urlpatterns = [
     path('map/', views.get_cinema_width, name='get_cinema_width'),
@@ -9,5 +14,5 @@ urlpatterns = [
     path('<int:cinema_id>/pick/', views.pick_cinema, name='pick_cinema'),
     path('rating/', views.create_cinema_rating, name='create_cinema_rating'),
     path('rating/<int:rating_id>/', views.patch_delete_cinema_rating, name='patch_delete_cinema_rating'),
-
+    path('rating/page/', include(router.urls)),
 ]
