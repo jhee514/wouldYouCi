@@ -169,6 +169,12 @@ ELASTICSEARCH_DSL = {
 }
 
 
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 10,
+}
+
+
 ROOT_DIR = os.path.dirname(BASE_DIR)
 
 # TODO debug=False 경우 수정 및 확인 필요한 부분

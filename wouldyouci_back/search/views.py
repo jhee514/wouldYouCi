@@ -1,9 +1,9 @@
-from django.db.models import Q
+from django.db.models import Q, Count
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from movies.serializers import SimpleMovieSerializer
-from movies.models import Movie
+from movies.serializers import SimpleMovieSerializer, SearchMovieSerializer, SoonMovieSerializer
+from movies.models import Movie, Onscreen
 from elasticsearch import Elasticsearch
 from .documents import MoviesDocument
 from cinemas.models import Cinema
@@ -74,19 +74,42 @@ def search_movie(request, words):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def autocomplete_cinema(request):
-    pass
+    words = request.query_params.get('words')
+
+    if not words:
+        return Response(status=203, data=[])
+
+    cinemas = Cinema.objects.filter(area__contains=words[0])
+
+    for w in words:
+        cinemas = cinemas.filter(area__contains=w)
+
+    results = cinemas.values_list('area', flat=True).distinct()
+
+    return Response(status=200, data=results[:10])
 
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def search_cinema(request):
-    pass
+def search_cinema(request, words):
+    cinemas = Cinema.objects.filter(area__contains=words)
 
+    id_set = cinemas.values_list('id', flat=True)
+    sim_cinemas = Cinema.objects.exclude(id__in=id_set).filter(address__contains=words)
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def search_index2(request):
-    pass
+    serializer = SearchCinemaSerializer(cinemas, many=True)
+    sim_serializer = SearchCinemaSerializer(sim_cinemas, many=True)
+
+    dataset = {
+        'meta': {
+            'search_result': cinemas.count(),
+            'similar_result': sim_cinemas.count(),
+        },
+        'search_result': serializer.data,
+        'similar_result': sim_serializer.data,
+    }
+
+    return Response(status=200, data=dataset)
 
 
 @api_view(['GET'])
@@ -112,14 +135,30 @@ def search_index(request):
             near_cinema.append(serializer.data)
 
 
+    # TODO cache and query
+    # 개봉 예정작 중 한 달 이내 개봉 예정작
+    comming_soon = Movie.objects.all()[:8]
+    soon_serializer = SoonMovieSerializer(comming_soon, many=True)
 
+    popular_movies = Movie.objects.annotate(num_rating=Count('ratings')).order_by('-num_rating')[:10]
+
+    pop_serializer = SearchMovieSerializer(popular_movies, many=True)
+
+
+    # maybe_like_onscreen = Onscreen.objects.all()
 
 
     dataset = {
         'meta': {
-            'near_cinema': len(near_cinema)
+            'near_cinema': len(near_cinema),
+            'popular_movies': len(popular_movies),
+            'comming_soon': len(comming_soon),
+            # 'maybe_like_onscreen': len(maybe_like_onscreen),
         },
-        'near_cinema': near_cinema
+        'near_cinema': near_cinema,
+        'popular_movies': pop_serializer.data,
+        'comming_soon': soon_serializer.data,
+        # 'maybe_like_onscreen': maybe_like_onscreen,
     }
 
     return Response(status=200, data=dataset, content_type='application.json')
