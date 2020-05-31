@@ -25,6 +25,8 @@ class Movie(models.Model):
     genres = models.ManyToManyField(Genre, related_name='movie_genres')
     actors = models.ManyToManyField(People, related_name='movie_actors')
 
+    score = models.FloatField(blank=True, default=0)
+
 
 class Onscreen(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='onscreens')
