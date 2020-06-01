@@ -1,5 +1,4 @@
 import router from "../../router";
-const KAKAO_API_KEY = process.env.VUE_APP_KAKAO_API_KEY;
 const HOST = process.env.VUE_APP_SERVER_HOST;
 const axios = require("axios");
 
@@ -8,8 +7,7 @@ const state = {
   token: null,
   errors: [],
   loading: false,
-  userInfo: null,
-  nowAddress: null
+  userInfo: null
 };
 
 const getters = { 
@@ -17,8 +15,7 @@ const getters = {
   isLoggedIn: state => !!state.token,
   getErrors: state => state.errors,
   getLoading: state => state.loading,
-  getUserInfo: state => state.userInfo,
-  getNowAddress: state => state.nowAddress
+  getUserInfo: state => state.userInfo
 };
 
 const mutations = {
@@ -30,8 +27,7 @@ const mutations = {
   pushError: (state, error) => state.errors.push(error),
   clearErrors: state => state.errors = [],
   setLoading: (state, bool) => state.loading = bool,
-  setUserInfo: (state, userInfo) => state.userInfo = userInfo,
-  setNowAddress: (state, address) => state.nowAddress = address
+  setUserInfo: (state, userInfo) => state.userInfo = userInfo
 };
 
 const actions = {
@@ -67,7 +63,8 @@ const actions = {
         commit('setLoading', true);
         axios.post(`${HOST}/user/login/`, data, options)
         .then(res => {
-          console.log(res)
+          console.log(res);
+          commit('setLoading', false);
           commit("setToken", res.data.token);
           dispatch("checkRating");
           // router.push("/firstRating");
@@ -75,6 +72,7 @@ const actions = {
         .catch(err => {
           console.log(err)
           console.log(userInfo)
+          commit('setLoading', false);
           if (err.response && err.response.data.non_field_errors.length) {
             commit("pushError", "아이디 혹은 패스워드가 올바르지 않습니다.")
           }
@@ -122,9 +120,10 @@ const actions = {
             Accept: "application/json"
           }
         }
-        axios.post(`${HOST}/user/signup/`, data, options)
+        axios.post(`${HOST}/user/`, data, options)
           .then(res => {
             console.log(res);
+            commit('setLoading', false);
             const credentials = {
               userName: userInfo.userName,
               password: userInfo.password
@@ -134,6 +133,7 @@ const actions = {
           .catch(err => {
             console.log(err.response);
             console.log(userInfo);
+            commit('setLoading', false);
             if (err.response && err.response.data.message.username){
               for (let i=0; i<err.response.data.message.username.length; i++){
                 if (err.response.data.message.username[i] === "user의 username은/는 이미 존재합니다.") {
@@ -272,28 +272,6 @@ const actions = {
           reject(Error('error'));
         })
     })
-  },
-  bringAddress: ({ commit }) => {
-    console.log("?")
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        const pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        const options = {
-          headers: {
-            Authorization: `KakaoAK ${KAKAO_API_KEY}`
-          }
-        }
-        axios.get(`https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${pos.lng}&y=${pos.lat}`, options)
-          .then(res => {
-            console.log(res);
-            commit('setNowAddress', res.data.documents[0].address_name);
-          })
-          .catch(err => console.log(err));
-      })
-    }
   }
 };
 

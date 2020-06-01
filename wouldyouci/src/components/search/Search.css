@@ -11,3 +11,9 @@
 #app > div > div.search > div.now > button {
   padding-left: 0;
 }
+
+/* radio button */
+#app > div > div.search > div.container > div {
+  margin-top:0;
+  height:3vh;
+}

@@ -25,12 +25,13 @@
         
         <v-card-actions>
           <!-- TODO 평점 구하는 함수 -->
-          <Score :score="avgScore"/>
+          <Score :score="details.score"/>
           <v-spacer></v-spacer>
 
-          <!-- TODO 찜/예매 함수 -->
-          <!-- TODO 상영중 표시 -->
-          <v-btn icon @submit.prevent="toggleWish">
+          <v-btn 
+            icon 
+            color="grey"
+            @click.prevent="togglePick()">
             <v-icon>mdi-heart</v-icon>
           </v-btn>
           <v-btn v-if="details.is_showing" icon>
@@ -38,9 +39,13 @@
           </v-btn>
         </v-card-actions>
 
-        <v-card-text>
-        {{ details.summary }}
-        </v-card-text>
+        <v-expansion-panels>
+          <v-expansion-panel>
+            <v-expansion-panel-header>줄거리</v-expansion-panel-header>
+            <v-expansion-panel-content>{{ details.summary }}</v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+
 
         <v-tabs
           v-model="tab"
@@ -63,7 +68,7 @@
           >
             <v-card flat>
               <v-card-text>
-                <component v-bind:is="item.component" :details="details"></component>
+                <component v-bind:is="item.component" :details="details" :user="user"></component>
               </v-card-text>
             </v-card>
           </v-tab-item>
@@ -101,38 +106,41 @@ export default {
         {tab: 'Info', component: "MovieInfo"},
         {tab: 'Reviews', component: "Ratings"}
       ],
-      avgScore: 0,
+      expand: false,
+      isPicked: '',
     }
   },
 
   computed: {
     ...mapGetters({
-      details: 'getMovieDetail'
+      details: 'getMovieDetail',
+      user: 'getUserInfo',
       }
     ),
+
   },
 
   methods: {
-    ...mapActions(['fetchMovieDetail']),
-    
-
+    ...mapActions(['fetchMovieDetail', 'bringUserInfo', 'togglePickMovie', ]),
+    async togglePick() {
+      console.log('clickedToggle');
+      await this.togglePickMovie(this.details.id)
+    },
   },
-  async created() {
-    try {
-      await this.fetchMovieDetail(this.$route.params.id)
-      .then(()=> {
-          // 평점 구하기
-          let sum = 0;
-          for (let i=0; i < this.details.ratings.length; i++) {
-            sum += (this.details.ratings[i].score)
-          }
-          this.avgScore = sum / this.details.ratings.length;
-         }
-        )
-      } catch (err) {
-        console.log(err);
+
+  async mounted() {
+    await this.fetchMovieDetail(this.$route.params.id);
+    await this.bringUserInfo()
+    console.log(this.user)
+    console.log(this.user.pick_movies)
+
+    if (this.user.pick_movies.length && this.user.pick_movies.include(this.getMovieDetail.id)) {
+      this.isPicked = 'pink'
+    } else {
+      this.isPicked = 'grey'
     }
   },
+
 
 
 }
