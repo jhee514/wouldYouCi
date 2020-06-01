@@ -29,7 +29,7 @@ class Movie(models.Model):
 
 
 class Onscreen(models.Model):
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='onscreens')
+    movie = models.ForeignKey(Movie, blank=True, null=True, on_delete=models.CASCADE, related_name='onscreens')
     cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE, related_name='onscreens')
     info = models.CharField(max_length=50)
     date = models.DateField(auto_now_add=False, auto_now=False)

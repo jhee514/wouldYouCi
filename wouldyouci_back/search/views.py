@@ -1,16 +1,13 @@
-from django.db.models import Q, Count
+from django.db.models import Count
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from movies.serializers import SimpleMovieSerializer, SearchMovieSerializer, SoonMovieSerializer
 from movies.models import Movie, Onscreen
-from elasticsearch import Elasticsearch
 from .documents import MoviesDocument
 from cinemas.models import Cinema
 from cinemas.serializers import SearchCinemaSerializer
 from haversine import haversine
-
-import json
 
 
 @api_view(['GET'])

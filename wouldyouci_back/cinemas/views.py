@@ -1,23 +1,19 @@
-from django.db.models import Q
-from haversine import haversine
-from django.shortcuts import HttpResponse, get_object_or_404
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
+import datetime
 from movies.models import Onscreen
 from movies.serializers import OnscreenSerializer
 from .models import Cinema
 from .serializers import SimpleCinemaSerializer, CinemaSerializer
 from accounts.models import CinemaRating
 from accounts.serializers import CinemaRatingSerializer
-from django.contrib.auth import get_user_model
-
 from accounts.serializers import SimpleCinemaRatingSerializer
-
+from django.contrib.auth import get_user_model
 User = get_user_model()
-import datetime
 
 
 @api_view(['GET'])
@@ -84,7 +80,6 @@ def cinema_detail(request, cinema_id):
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def pick_cinema(request, cinema_id):
-    # user = get_object_or_404(User, id=9000000)
     user = request.user
     cinema = get_object_or_404(Cinema, id=cinema_id)
     if cinema.pick_users.filter(id=user.id).exists():
@@ -98,12 +93,9 @@ def pick_cinema(request, cinema_id):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_cinema_rating(request):
-    # user = get_object_or_404(User, id=9000000)
-    # cinema_id = request.data.get('cinema_id')
     serializer = CinemaRatingSerializer(data=request.data)
     if serializer.is_valid():
         new_rating = serializer.save(user=request.user)
-        # serializer.save(user=user)
 
         cinema = new_rating.cinema
         ratings_count = cinema.cinema_ratings.count()
@@ -119,7 +111,6 @@ def create_cinema_rating(request):
 @api_view(['PATCH', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def patch_delete_cinema_rating(request, rating_id):
-    # user_id = 9000000
     rating = get_object_or_404(CinemaRating, id=rating_id)
     origin_score = rating.score
     cinema = rating.cinema
