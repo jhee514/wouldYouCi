@@ -17,6 +17,6 @@ urlpatterns = [
     # rating tf
     path('login/rating/', views.get_rating_tf, name='get_rating_tf'),
 
-    path('rating/', views.make_dummy_rating, name='make_dummy_rating'),
+    path('rating/', views.get_create_dummy_rating, name='get_create_dummy_rating'),
     path('rating/page/', include(router.urls)),
 ]
