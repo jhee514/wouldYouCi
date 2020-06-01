@@ -18,6 +18,7 @@ const state = {
   movies: [],
   nearTheater: [],
   movieDetail: [],
+  ratings: [],
   
 };
 
@@ -28,6 +29,7 @@ const getters = {
   getMovies: state => state.movies,
   getNearTheater: state => state.nearTheater,
   getMovieDetail: state => state.movieDetail,
+  getRatings: state => state.ratings,
 
 };
 
@@ -38,6 +40,7 @@ const mutations = {
   setMovies: (state, movies) => state.movies = movies,
   setNearTheater: (state, theaters) => state.nearTheater = theaters,
   setMovieDetail: (state, details) => state.movieDetail = details,
+  setRatings: (state, ratings) => state.ratings = ratings,
 
 };
 
@@ -147,7 +150,29 @@ const actions = {
           reject(Error('error'))
         })
     })
-
+  },
+  fetchRatings: ({ commit }, { movieId, page }) => {
+    const params = {movieId, page}
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`
+      }
+    }
+    return new Promise(function(resolve, reject) {
+      axios.get(`${HOST}/movie/rating/page/`, params, options)
+        .then(res => {
+          commit('setRatings', res.data);
+          if (!getters.getRatings) {
+            console.log('no movie data')
+          }
+          resolve('ok')
+        })
+        .catch(err => {
+          console.log(err);
+          reject(Error('error'))
+        })
+    })
   },
   postRating: ({ dispatch }, rating) => {
     dispatch;
@@ -187,6 +212,27 @@ const actions = {
       .catch(err => {
         console.log(err);
       })
+    },
+  patchRating: ({dispatch}, rating) => {
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`,
+        "Content-Type": "application/json",
+      }
+    }
+    return new Promise(function(resolve, reject) {
+    axios.patch(`${HOST}/movie/rating/${rating.id}/`, rating, options)
+      .then(res => {
+        console.log(res);
+        dispatch('fetchMovieDetail', rating.movie);
+        resolve('ok');
+      })
+      .catch(err => {
+        console.log(err);
+        reject(Error('erroe'));
+      })
+    })
   },
   togglePickMovie: ({dispatch}, movieId ) => {
     const token = sessionStorage.getItem('jwt');
@@ -203,7 +249,7 @@ const actions = {
       .catch(err => {
         console.log(err)
       })
-  }
+  },
 
 };
 

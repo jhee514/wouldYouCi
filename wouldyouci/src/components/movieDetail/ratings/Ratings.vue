@@ -23,7 +23,24 @@
                 <p class="comment">{{ rating.comment}}</p>
                 
                 <div v-if="rating.user.username == user.username" class="button">
-                  <v-btn icon @click.prevent="deleteRating(index, rating, details.id)">
+                  <!-- 리뷰수정모달 -->
+                  <v-dialog v-model="dialog" persistent>
+                    <template v-slot:activator="{ on }">
+                      <v-btn
+                        v-on="on"
+                        icon 
+                        color="grey"
+                        x-small
+                        >
+                        <v-icon>mdi-pencil</v-icon>
+                      </v-btn>
+                    </template>
+                    <RatingEditForm :id="details.id" :rating="rating" @close="closeModal" @editRating="editRating"/>
+                  </v-dialog>
+
+                  <v-btn 
+                    icon 
+                    @click.prevent="deleteRating(index, rating, details.id)">
                     <i class="fas fa-times fa-xs"></i>
                   </v-btn>
                 </div>
@@ -43,6 +60,7 @@
 <script>
 import Score from './Score';
 import RatingForm from './RatingForm';
+import RatingEditForm from './RatingEditForm';
 import { mapActions } from 'vuex';
 
 export default {
@@ -51,17 +69,21 @@ export default {
   components: {
     Score,
     RatingForm,
+    RatingEditForm,
 
   },
 
   data() {
     return {
       loading: true,
+      dialog: false,
+
       isRatings: this.details.ratings.length,
       buttons: [
         {method:"delete", icon:"fas fa-times fa-xs"},
         {method:"edit", icon:"far fa-edit fa-xs"},
       ],
+
     }
   },
   computed: {
@@ -69,13 +91,18 @@ export default {
       return this.details.ratings
     },
   },
-
   methods: {
-    ...mapActions(['postRating', 'delRating', ]),
+    ...mapActions(['postRating', 'delRating', 'patchRating' ]),
 
     formatDate(date) {
       var moment = require('moment');
       return moment(date).format('YYYY.MM.DD')
+    },
+    closeModal() {
+      this.dialog = false;
+    },
+    confirmDelete() {
+
     },
     async deleteRating(index, rating, movieId) {
       const ratingId = rating.id;
@@ -86,7 +113,11 @@ export default {
       await this.postRating(rating);
 
     },
-  }
+    async editRating(editedRating) {
+      this.dialog = false;
+      await this.patchRating(editedRating);
+    },
+  },
 }
 </script>
 
