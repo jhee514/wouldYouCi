@@ -11,54 +11,42 @@ from .serializers import MovieSerializer
 from django.core.paginator import Paginator
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
-from django.db.models import Avg
+import pandas as pd
+from sklearn.linear_model import Lasso
+from sklearn.model_selection import RandomizedSearchCV
+from scipy.stats import uniform as sp_rand
+from wouldyouci_back.settings import BASE_DIR
+import os
 from django.contrib.auth import get_user_model
 User = get_user_model()
-# import pandas as pd
-# from sklearn.linear_model import Lasso
-# import pymysql
-# from sklearn.model_selection import RandomizedSearchCV
-# from scipy.stats import uniform as sp_rand
-# from wouldyouci_back.settings import BASE_DIR
-# import os
-#
-#
-# def contentsbased(user_id):
-#     # conn = pymysql.connect(host='15.164.96.65', port=3306, user='root', password='wouldyoucinema', db='wouldyouci')
-#     # sql = "SELECT * FROM wouldyouci.accounts_rating where user_id=" + str(user_id)
-#     # ratings = pd.read_sql_query(sql, conn)
-#     genres = pd.read_pickle(os.path.join(BASE_DIR, 'movies', 'genre_train.p'))
-#
-#     rating_test = Rating.objects.filter(user=user_id).values_list('score', flat=True)
-#     print(rating_test)
-#     rating_test = list(rating_test)
-#
-#     # test = pd.read_sql_query(rating_test)
-#     # print(ratings)
-#
-#     # conn.close()
-#
-#     user_profile = rating_test.merge(genres, left_on='movie_id', right_index=True)
-#     print(user_profile)
-#     model = Lasso()
-#     param_grid = {'alpha': sp_rand()}
-#
-#     research = RandomizedSearchCV(estimator=model,
-#                                   param_distributions=param_grid,
-#                                   n_iter=50,
-#                                   cv=5,
-#                                   random_state=406)
-#
-#     research.fit(user_profile[genres.columns], user_profile['score'])
-#
-#     predictions = research.best_estimator_.predict(genres)
-#     genres.reset_index()
-#
-#     genres['predict'] = predictions
-#
-#     a = pd.DataFrame.to_json(genres['predict'])
-#     print(a)
-#     return pd.DataFrame.to_json(genres['predict'])
+
+
+def contentsbased(user_id, movie_id):
+    genres = pd.read_pickle(os.path.join(BASE_DIR, 'utils', 'genre_train.p'))
+
+    ratings = pd.DataFrame(list(Rating.objects.filter(user=user_id).values('score', 'movie_id')))
+
+    user_profile = ratings.merge(genres, left_on='movie_id', right_index=True)
+
+    model = Lasso()
+    param_grid = {'alpha': sp_rand()}
+
+    research = RandomizedSearchCV(estimator=model,
+                                  param_distributions=param_grid,
+                                  n_iter=50,
+                                  cv=5,
+                                  random_state=406)
+
+    research.fit(user_profile[genres.columns], user_profile['score'])
+
+    predictions = research.best_estimator_.predict(genres)
+    genres.reset_index()
+
+    genres['predict'] = predictions
+    # print(genres['predict'])
+    predicted_score = genres.at[movie_id, 'predict']
+
+    return predicted_score * 20
 
 
 class SmallPagination(PageNumberPagination):
@@ -86,7 +74,10 @@ class RatingViewSet(viewsets.ReadOnlyModelViewSet):
 def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
     serializer = MovieSerializer(movie)
-    # contentsbased(9000006)
+
+    predicted_score = 0
+    if request.user.ratings.count() > 9:
+        predicted_score = contentsbased(request.user.id, movie_id)
 
     paginator = Paginator(movie.ratings.all(), 10)
     page_number = request.GET.get('page', 1)
@@ -107,6 +98,7 @@ def movie_detail(request, movie_id):
     # }
     datasets = {
         'is_showing': Onscreen.objects.filter(movie=movie_id).exists(),
+        'predicted_score': predicted_score,
         'ratings': ratings.data,
     }
     datasets.update(serializer.data)
@@ -118,7 +110,6 @@ def movie_detail(request, movie_id):
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def pick_movie(request, movie_id):
-    # user = get_object_or_404(User, id=9000000)
     user = request.user
     movie = get_object_or_404(Movie, id=movie_id)
     if movie.pick_users.filter(id=user.id).exists():
@@ -133,9 +124,6 @@ def pick_movie(request, movie_id):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_rating(request):
-    # user = get_object_or_404(User, id=9000000)
-    # print(request.body)
-    # print(request.data)
     user = request.user
     if user.ratings.filter(movie=request.data['movie']).exists():
         return Response(status=403, data={'message': '이미 평가한 영화입니다.'})
@@ -158,7 +146,6 @@ def create_rating(request):
 @api_view(['PATCH', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def patch_delete_rating(request, rating_id):
-    # user_id = 9000000
     rating = get_object_or_404(Rating, id=rating_id)
     origin_score = rating.score
     movie = rating.movie
