@@ -40,7 +40,7 @@ const mutations = {
   setMovies: (state, movies) => state.movies = movies,
   setNearTheater: (state, theaters) => state.nearTheater = theaters,
   setMovieDetail: (state, details) => state.movieDetail = details,
-  setRatings: (state, ratings) => state.ratings = ratings,
+  setRatings: (state, ratings) => state.ratings.push(ratings),
 
 };
 
@@ -143,6 +143,7 @@ const actions = {
           if (!getters.getMovieDetail) {
             console.log('no movie data')
           }
+          console.log(res)
           resolve('ok')
         })
         .catch(err => {
@@ -151,18 +152,18 @@ const actions = {
         })
     })
   },
-  fetchRatings: ({ commit }, { movieId, page }) => {
-    const params = {movieId, page}
+  fetchRatings: ({ commit }, params ) => {
     const token = sessionStorage.getItem('jwt');
     const options = {
       headers: {
-        Authorization: `JWT ${token}`
-      }
+        Authorization: `JWT ${token}`,
+      },
+      params: params
     }
     return new Promise(function(resolve, reject) {
-      axios.get(`${HOST}/movie/rating/page/`, params, options)
+      axios.get(`${HOST}/movie/rating/page/`, options)
         .then(res => {
-          commit('setRatings', res.data);
+          commit('setRatings', res.data.results);
           if (!getters.getRatings) {
             console.log('no movie data')
           }

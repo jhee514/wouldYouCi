@@ -1,9 +1,9 @@
 <template>
   <div 
     class="ratings"
-    v-infinite-scroll="loadMore"
-    infinite-scroll-disabled="loading"
-    infinite-scroll-distance="10"
+    v-infinite-scroll="loadMore()"
+    infinite-scroll-disabled="busy"
+    infinite-scroll-distance="50vh"
     >
     <RatingForm :id="details.id" @submitRating="addRating"/>
 
@@ -26,7 +26,6 @@
                 <p class="comment">{{ rating.comment}}</p>
                 
                 <div v-if="rating.user.username == user.username" class="button">
-                  <!-- 리뷰수정모달 -->
                   <v-dialog v-model="dialog" persistent>
                     <template v-slot:activator="{ on }">
                       <v-btn
@@ -64,11 +63,11 @@
 import Score from './Score';
 import RatingForm from './RatingForm';
 import RatingEditForm from './RatingEditForm';
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'Ratings',
-  props:["details", "user"],
+  props:["details", "user", "firstRatings", ],
   components: {
     Score,
     RatingForm,
@@ -78,57 +77,48 @@ export default {
 
   data() {
     return {
-      loading: true,
+      busy: false,
+      page: 1,
       dialog: false,
-
       isRatings: this.details.ratings.length,
-      buttons: [
-        {method:"delete", icon:"fas fa-times fa-xs"},
-        {method:"edit", icon:"far fa-edit fa-xs"},
-      ],
-      loading: true,
+      ratings: this.firstRating,
 
     }
   },
   computed: {
-    ratings() {
-      return this.details.ratings
-    },
+    ...mapGetters(['getRatings']),
+
   },
+  
   methods: {
-    ...mapActions(['postRating', 'delRating', 'patchRating' ]),
-    loadMore: function() {
-      this.busy = true;
-      setTimeout(() => {
-        for (var i = 0, j = 10; i < j; i++) {
-          this.data.push({ name: count++ });
-        }
-        this.busy = false;
-      }, 1000);
-    },
+    ...mapActions(['fetchRatings', 'postRating', 'delRating', 'patchRating' ]),
+
     formatDate(date) {
       var moment = require('moment');
       return moment(date).format('YYYY.MM.DD')
     },
+    
     closeModal() {
       this.dialog = false;
     },
 
-    deleteRating(index, rating, movieId) {
+    deleteRating(index, rating, detailId) {
       const ratingId = rating.id;
-      const params = {ratingId, movieId};
+      const params = {ratingId, detailId};
       if(confirm('삭제하시겠습니까?')){
         this.delRating(params);
       }
     },
+    
     async addRating(rating){
       await this.postRating(rating);
-
     },
+    
     async editRating(editedRating) {
       this.dialog = false;
       await this.patchRating(editedRating);
     },
+
   },
 }
 </script>
