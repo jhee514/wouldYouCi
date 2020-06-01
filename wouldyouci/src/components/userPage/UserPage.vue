@@ -82,7 +82,7 @@ export default {
   data() {
     return {
       theaterList: null,
-      ratedMovies: ['톰보이', '레이니 데이 인 뉴욕', '트롤: 월드 투어', '콜 오브 와일드', '프리즌 이스케이프', '더 플랫폼', '저 산 너머', '씨 피버', '패왕별희'],
+      ratedMovies: null,
       wishMovies: null,
       recommendedMovies: ['배고파...', '집이지만', '집에 가고파', '월요병', '스마일감자', '나쁘다....'],
       isShow: false,
@@ -98,7 +98,7 @@ export default {
     ...mapGetters(['getUserInfo'])
   },
   methods: {
-    ...mapActions(['bringUserInfo']),
+    ...mapActions(['bringUserInfo', 'bringRatedMovies']),
     closeDialog(type) {
       if (type === "image") {
         this.isShowChangeImgDialog = true;
@@ -144,6 +144,9 @@ export default {
     this.userName = this.getUserInfo.username;
     this.theaterList = this.getUserInfo.pick_cinemas;
     this.wishMovies = this.getUserInfo.pick_movies;
+    const res = await this.bringRatedMovies();
+    this.ratedMovies = res;
+    console.log(res)
   }
 }
 </script>

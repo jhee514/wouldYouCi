@@ -20,3 +20,16 @@
   margin-top: 1vh;
   margin-right: 3vw;
 }
+
+.upBtn {
+  position: fixed;
+  bottom: 9vh;
+  right: 0vw;
+  color: #9462EA;
+}
+
+.cntA {
+  position: fixed;
+  bottom: 18vh;
+  right: 6.7vw;
+}

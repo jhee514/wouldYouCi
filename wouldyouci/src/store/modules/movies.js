@@ -1,3 +1,5 @@
+import router from "../../router";
+
 const API_KEY = process.env.VUE_APP_GOOGLE_MAP_API_KEY;
 const KAKAO_API_KEY = process.env.VUE_APP_KAKAO_API_KEY;
 const HOST = process.env.VUE_APP_SERVER_HOST;
@@ -283,7 +285,58 @@ const actions = {
       })
     })
   },
-  bringRatingMovies: ({ getters }) => {
+  bringRatingMovies: ({ getters }, next) => {
+    getters;
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`
+      },
+      params: {
+        page: next
+      }
+    }
+    return new Promise(function(resolve, reject) {
+      axios.get(`${HOST}/user/rating/page/`, options)
+        .then(res => {
+          console.log(res);
+          resolve(res.data);
+        })
+        .catch(err => {
+          console.log(err);
+          reject(Error('error'));
+        })
+    })
+  },
+  submitRatings: ({ getters }, movies) => {
+    getters;
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`
+      }
+    }
+    let data = [];
+    for (const movie of movies) {
+      if (movie.rating) {
+        data.push({"movie": movie.id, "score": movie.rating})
+      }
+    }
+    console.log(data);
+    if (data.length >= 10) {
+      axios.post(`${HOST}/user/rating/`, {data}, options)
+        .then(res => {
+          console.log(res);
+          router.push('/');
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    } else {
+      alert(`현재까지 ${data.length}개의 영화를 평가하셨습니다.\n추천을 받기 위해선 최소 10개 이상의 영화를 평가해주셔야 합니다.`);
+    }
+  },
+  bringRatedMovies: ({ getters }) => {
     getters;
     const token = sessionStorage.getItem('jwt');
     const options = {
@@ -292,7 +345,7 @@ const actions = {
       }
     }
     return new Promise(function(resolve, reject) {
-      axios.get(`${HOST}/user/rating/page/`, options)
+      axios.get(`${HOST}/user/rating/`, options)
         .then(res => {
           console.log(res);
           resolve(res.data);

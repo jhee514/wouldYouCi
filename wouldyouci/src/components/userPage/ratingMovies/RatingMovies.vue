@@ -1,11 +1,14 @@
 <template>
   <div class="ratingMovies">
-    <v-container>
+    <v-container class="moviesContainer">
       <v-row dense>
         <v-col cols="12">
           <v-card
+            class="movieCard"
             color="#385F73"
             dark
+            v-for="(movie, idx) in CinemaList"
+            :key="idx"
           >
             <v-list-item>
               <v-avatar
@@ -13,17 +16,19 @@
                 size="auto"
                 tile
               >
-                <v-img src="https://movie-phinf.pstatic.net/20161123_188/1479862185516tYkKO_JPEG/movie_image.jpg">
+                <v-img :src="movie.movie.poster">
                 </v-img>
               </v-avatar>
               <div>
-                <v-card-title>
-                  라라랜드
-                </v-card-title>
+                <v-card-subtitle>
+                  {{ movie.movie.name }}
+                </v-card-subtitle>
                 <v-card-actions>
                   <v-rating
+                    v-model="movie.score"
                     small
-                    half-increments>
+                    half-increments
+                    @click="changeRating">
                   </v-rating>
                 </v-card-actions>
               </div>
@@ -44,6 +49,9 @@ export default {
   methods: {
     goDetail() {
       router.push('/movieDetail')
+    },
+    changeRating() {
+      console.log('???')
     }
   }
 }
