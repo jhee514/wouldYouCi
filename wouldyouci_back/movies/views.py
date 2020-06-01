@@ -22,7 +22,7 @@ User = get_user_model()
 
 
 def contentsbased(user_id, movie_id):
-    genres = pd.read_pickle(os.path.join(BASE_DIR, 'utils', 'genre_train.p'))
+    genres = pd.read_pickle(os.path.join(BASE_DIR, 'utils', 'genres_train.p'))
 
     ratings = pd.DataFrame(list(Rating.objects.filter(user=user_id).values('score', 'movie_id')))
 
