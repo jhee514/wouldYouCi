@@ -149,24 +149,29 @@ const actions = {
     })
 
   },
-  postRating: ( {dispatch}, rating) => {
+  postRating: ({ dispatch }, rating) => {
+    dispatch;
     const token = sessionStorage.getItem('jwt');
     const options = {
       headers: {
-        "Content-Type": "application/json",
         Authorization: `JWT ${token}`,
+        "Content-Type": "application/json",
       }
     }
-    axios.post(`${HOST}/movie/rating/`, rating, options)
-      .then(res => {
-        console.log(res);
-        dispatch();
-      })
-      .catch(err => {
-        console.log(err);
+    return new Promise(function(resolve, reject) {
+      axios.post(`${HOST}/movie/rating/`, rating, options)
+        .then(res => {
+          console.log(res);
+          dispatch('fetchMovieDetail', rating.movie);
+          resolve('ok');
+        })
+        .catch(err => {
+          console.log(err);
+          reject(Error('erroe'));
+        })
       })
   },
-  delRating: ({dispatch}, ratingId) => {
+  delRating: ({dispatch}, {ratingId, movieId}) => {
     const token = sessionStorage.getItem('jwt');
     const options = {
       headers: {
@@ -176,11 +181,27 @@ const actions = {
     axios.delete(`${HOST}/movie/rating/${ratingId}/`, options)
       .then(res => {
         console.log(res);
-        dispatch();
+        return dispatch('fetchMovieDetail', movieId);
+        }
+      )
+      .catch(err => {
+        console.log(err);
+      })
+  },
+  togglePickMovie: ({dispatch}, movieId ) => {
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`,
+      }
+    }
+    axios.patch(`${HOST}/movie/${movieId}/pick/`, movieId, options)
+      .then(res => {
+        console.log(res);
+        return dispatch('fetchMovieDetail', movieId);
       })
       .catch(err => {
-        console.log("erorororororo")
-        console.log(err);
+        console.log(err)
       })
   },
   searchMovies: ({ commit }, keywords) => {

@@ -120,7 +120,7 @@ const actions = {
             Accept: "application/json"
           }
         }
-        axios.post(`${HOST}/user/signup/`, data, options)
+        axios.post(`${HOST}/user/`, data, options)
           .then(res => {
             console.log(res);
             commit('setLoading', false);

@@ -50,7 +50,7 @@ import Title from '../nav/Title.vue';
 import CinemaInfo from './cinemaInfo/CinemaInfo';
 import Ratings from '../movieDetail/ratings/Ratings';
 import Score from '../movieDetail/ratings/Score';
-import { fetchCinema } from '@/api/index';
+import { fetchCinema } from '../../api/index';
 
 export default {
   name: 'CinemaDetail',
