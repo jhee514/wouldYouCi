@@ -12,7 +12,7 @@
         height="45vh"
         width="45vw"
         style="margin-right:2vh"
-        @click="goDetail"
+        @click="goDetail(cinema.id)"
         dark
       >
         <v-img 
@@ -33,8 +33,8 @@ export default {
   name: 'TheaterMovie',
   props: ['CinemaList'],
   methods: {
-    goDetail() {
-      router.push('/movieDetail')
+    goDetail(movieId) {
+      router.push(`/movie/${movieId}`);
     }
   }
 }

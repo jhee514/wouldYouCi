@@ -112,7 +112,7 @@ export default {
           this.nearTheater = this.getInitSearchInfo.near_cinema;
           this.commings = this.getInitSearchInfo.comming_soon;
           this.populars = this.getInitSearchInfo.popular_movies;
-        }.bind(this), 600)
+        }.bind(this), 500)
       } else {
         alert('위치 설정을 켜주세요.');
       }
@@ -135,7 +135,7 @@ export default {
         this.nearTheater = this.getInitSearchInfo.near_cinema;
         this.commings = this.getInitSearchInfo.comming_soon;
         this.populars = this.getInitSearchInfo.popular_movies;
-      }.bind(this), 250)
+      }.bind(this), 500)
     } else {
       alert('위치 설정을 켜주세요.');
     }
