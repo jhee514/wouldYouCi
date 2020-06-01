@@ -167,7 +167,7 @@ CACHES = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': 'localhost:9200'
+        'hosts': 'k02a4061.p.ssafy.io:9200'
     },
 }
 
