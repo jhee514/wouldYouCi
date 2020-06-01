@@ -101,13 +101,13 @@ export default {
     closeModal() {
       this.dialog = false;
     },
-    confirmDelete() {
 
-    },
-    async deleteRating(index, rating, movieId) {
+    deleteRating(index, rating, movieId) {
       const ratingId = rating.id;
       const params = {ratingId, movieId};
-      await this.delRating(params);
+      if(confirm('삭제하시겠습니까?')){
+        this.delRating(params);
+      }
     },
     async addRating(rating){
       await this.postRating(rating);
