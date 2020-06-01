@@ -13,6 +13,7 @@
         width="45vw"
         style="margin-right:2vh"
         @click="goDetail"
+        dark
       >
         <v-img 
           :src=cinema.poster

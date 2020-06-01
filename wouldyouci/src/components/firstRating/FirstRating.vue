@@ -6,7 +6,7 @@
         <v-card-text>
           아래의 영화 중 본 영화에 대해 1~5점 사이의 평점을 남겨주시면
           당신의 취향에 맞는 영화를 추천해드립니다.
-          <h4>단, 최소 5개 이상의 영화를 평가해주셔서 추천이 가능합니다.</h4>
+          <h4>단, 최소 10개 이상의 영화를 평가해주셔서 추천이 가능합니다.</h4>
         </v-card-text>
       </v-card>
       <v-container fluid>
@@ -20,27 +20,27 @@
           <v-col
             v-for="card in cards"
             :key="card.title"
-            cols="12"
-            sm="5"
-            md="2"
+            cols="6"
+            sm="4"
           >
-            <v-card class="movieCard">
+            <v-card 
+              class="movieCard"
+            >
               <v-img
                 :src="card.src"
                 class="white--text align-end"
                 gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                height="40vh"
               >
               </v-img>
 
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-rating
-                  v-model="card.rating"
-                  color="#F7FE2E"
-                  background-color="#F2F2F2"
-                  half-increments
-                ></v-rating>
-              </v-card-actions>
+              <v-rating
+                v-model="card.rating"
+                color="#F7FE2E"
+                background-color="#F2F2F2"
+                half-increments
+                small
+              ></v-rating>
             </v-card>
           </v-col>
         </v-row>
@@ -59,6 +59,7 @@
 import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import router from '../../router';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'UserPage',
@@ -76,9 +77,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['bringRatingMovies']),
     goMap() {
       router.push('/');
     }
+  },
+  async mounted() {
+    const res = await this.bringRatingMovies();
+    console.log(res);
   }
 }
 </script>

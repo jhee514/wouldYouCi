@@ -2,7 +2,7 @@
   <v-slide-group
     class="pa-4 cinemaList"
     active-class="success"
-    v-if="TheaterList && TheaterList[0]!=='Nothing'"
+    v-if="TheaterList.length"
   >
     <v-slide-item
       v-for="(theater, idx) in TheaterList"

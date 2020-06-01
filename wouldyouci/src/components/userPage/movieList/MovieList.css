@@ -1,10 +1,4 @@
-#app > div > div.userPage > div:nth-child(4) > div > div {
-  text-align: center;
-  position: relative;
-  top: 40%;
-}
-
-#app > div > div.userPage > div:nth-child(8) > div > div {
+#app > div > div.userPage > div.prefer > div > div > div {
   text-align: center;
   position: relative;
   top: 40%;

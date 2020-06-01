@@ -6,11 +6,11 @@
     </div>
     <div class="current">
       <div style="text-align : left">현재 상영작 순위<br/></div>
-      <CinemaList v-bind:CinemaList="CinemaList" />
+      <CinemaList v-bind:CinemaList="Populars" />
     </div>
     <div class="released">
       <div style="text-align : left"> 개봉예정작<br/></div>
-      <CinemaList v-bind:CinemaList="CinemaList" />
+      <CinemaList v-bind:CinemaList="Commings" />
     </div>
   </div>
 </template>
@@ -25,7 +25,7 @@ export default {
      CinemaList,
      TheaterList
    },
-   props:['CinemaList', 'TheaterList']
+   props:['Commings', 'Populars', 'TheaterList']
 
 
 }
