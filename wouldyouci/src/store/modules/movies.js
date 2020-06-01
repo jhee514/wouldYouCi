@@ -1,4 +1,5 @@
 const API_KEY = process.env.VUE_APP_GOOGLE_MAP_API_KEY;
+const KAKAO_API_KEY = process.env.VUE_APP_KAKAO_API_KEY;
 const HOST = process.env.VUE_APP_SERVER_HOST;
 const axios = require("axios");
 
@@ -16,9 +17,11 @@ const state = {
   searchMode: "before",
   theaterMovies: [],
   movies: [],
-  nearTheater: [],
   movieDetail: [],
-  
+  searchList: [],
+  searchSimiList: [],
+  initSearchInfo: null,
+  address: null
 };
 
 const getters = {
@@ -26,9 +29,11 @@ const getters = {
   getSearchMode: state => state.searchMode,
   getTheaterMovies: state => state.theaterMovies,
   getMovies: state => state.movies,
-  getNearTheater: state => state.nearTheater,
   getMovieDetail: state => state.movieDetail,
-
+  getSearchList: state => state.searchList,
+  getSearchSimiList: state => state.searchSimiList,
+  getInitSearchInfo: state => state.initSearchInfo,
+  getAddress: state => state.address
 };
 
 const mutations = {
@@ -36,9 +41,11 @@ const mutations = {
   setSearchMode: (state, mode) => state.searchMode = mode,
   setTheaterMovies: (state, theaterMovies) => state.theaterMovies = theaterMovies,
   setMovies: (state, movies) => state.movies = movies,
-  setNearTheater: (state, theaters) => state.nearTheater = theaters,
   setMovieDetail: (state, details) => state.movieDetail = details,
-
+  setSearchList: (state, movies) => state.searchList = movies,
+  setSearchSimiList: (state, movies) => state.searchSimiList = movies,
+  setInitSearchInfo: (state, info) => state.initSearchInfo = info,
+  setAddress: (state, address) => state.address = address
 };
 
 const actions = {
@@ -57,7 +64,7 @@ const actions = {
     // console.log(initPromise)
     return initPromise;
   },
-  bringHereCinema: ({ getters, commit }, bound) => {
+  bringHereCinema: ({ commit }, bound) => {
     console.log(bound)
     const params = {
       params: {
@@ -72,13 +79,6 @@ const actions = {
         .then(res => {
           console.log(res);
           commit('setTheaterMovies', res.data.documents);
-          if (!getters.getNearTheater.length) {
-            if (!res.data.documents.length) {
-              commit('setNearTheater', ['Nothing']);
-            } else {
-              commit('setNearTheater', res.data.documents)
-            }
-          }
           resolve('ok');
         })
         .catch(err => {
@@ -203,8 +203,106 @@ const actions = {
       .catch(err => {
         console.log(err)
       })
+  },
+  searchMovies: ({ commit }, keywords) => {
+    console.log(keywords);
+    return new Promise(function(resolve, reject) {
+      axios.get(`${HOST}/search/movie/${keywords}/`)
+        .then(res => {
+          console.log(res);
+          commit('setSearchList', res.data.search_result);
+          commit('setSearchSimiList', res.data.similar_result);
+          resolve(res.data);
+        })
+        .catch(err => {
+          console.log(err);
+          commit('setSearchList', null);
+          commit('setSearchSimiList', null);
+          reject(Error('error'));
+        })
+    })
+  },
+  searchTheater: ({ commit }, keywords) => {
+    console.log(keywords);
+    return new Promise(function(resolve, reject) {
+      axios.get(`${HOST}/search/cinema/${keywords}/`)
+        .then(res => {
+          console.log(res);
+          commit('setSearchList', res.data.search_result);
+          commit('setSearchSimiList', res.data.similar_result);
+          resolve('ok');
+        })
+        .catch(err => {
+          console.log(err);
+          commit('setSearchList', null);
+          commit('setSearchSimiList', null);
+          reject(Error('error'));
+        })
+    })
+  },
+  bringAddress: ({ commit }, pos) => {
+    const KOptions = {
+      headers: {
+        Authorization: `KakaoAK ${KAKAO_API_KEY}`
+      }
+    }
+    return new Promise(function(resolve, reject) {
+      axios.get(`https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${pos.lng}&y=${pos.lat}`, KOptions)
+      .then(res => {
+        console.log(res);
+        commit('setAddress', res.data.documents[0].address_name);
+        resolve('ok')
+      })
+      .catch(err => {
+        console.log(err);
+        reject(Error('error'));
+      })
+    })
+  },
+  bringInitSearchInfo: ({ commit }, pos) => {
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`
+      },
+      params: {
+        x: pos.lng,
+        y: pos.lat
+      }
+    }
+    return new Promise(function(resolve, reject) {
+      axios.get(`${HOST}/search/`, options)
+      .then(res => {
+        console.log(res);
+        commit('setInitSearchInfo', res.data);
+        resolve('ok');
+      })
+      .catch(err => {
+        console.log(err);
+        reject(Error('error'));
+      })
+    })
+  },
+  bringRatingMovies: ({ getters }) => {
+    getters;
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`
+      }
+    }
+    return new Promise(function(resolve, reject) {
+      axios.get(`${HOST}/user/rating/page/`, options)
+        .then(res => {
+          console.log(res);
+          resolve(res.data);
+        })
+        .catch(err => {
+          console.log(err);
+          reject(Error('error'));
+        })
+    })
   }
-
 };
 
 export default {

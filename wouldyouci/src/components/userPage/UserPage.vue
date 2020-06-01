@@ -15,23 +15,40 @@
         </v-dialog>
       </div>
       <UserInfo v-bind:UserName="userName" v-bind:UserProfile="profileURL" @deleteP="deleteP"/>
-      <span>선호하는 영화관</span>
-      <MovieList v-bind:CinemaList="theaterList"/>
-      <span>내가 평가한 영화</span>
-      <MovieList v-bind:CinemaList="ratedMovies"/>
-      <span>찜한 영화</span>
-      <MovieList v-bind:CinemaList="wishMovies"/>
-      <span>나에게 추천하는 영화</span>
-      <MovieList v-bind:CinemaList="recommendedMovies"/>
-      <span>내 영화 스타일</span>
-      <div style="height:50vh; margin-bottom: 10vh; margin-top: 3vh; background-color:#FFC9E1; text-align:center; padding-top:5vh;">
-        현재 데이터가 부족해 내 영화 스타일에 대한 분석이 불가능 합니다.
-        <div style="padding-top:5vh;">
-          <v-btn text @click="goFirstRating">
-            영화 평가하러 가기
-            <v-icon small style="margin-left:3vw;">fas fa-arrow-right</v-icon>
-          </v-btn>
+      <div class="tabs">
+        <v-tabs
+          v-model="tab"
+          background-color="transparent"
+          grow
+        >
+          <v-tab
+            v-for="item in items"
+            :key="item"
+          >
+            {{ item }}
+          </v-tab>
+        </v-tabs>
+      </div>
+      <div class="prefer" v-if="tab===0">
+        <span>선호하는 영화관</span>
+        <MovieList v-bind:CinemaList="theaterList"/>
+        <span>찜한 영화</span>
+        <MovieList v-bind:CinemaList="wishMovies"/>
+        <span>나에게 추천하는 영화</span>
+        <MovieList v-bind:CinemaList="recommendedMovies"/>
+        <span>내 영화 스타일</span>
+        <div style="height:50vh; margin-bottom: 10vh; margin-top: 3vh; background-color:#FFC9E1; text-align:center; padding-top:5vh;">
+          현재 데이터가 부족해 내 영화 스타일에 대한 분석이 불가능 합니다.
+          <div style="padding-top:5vh;">
+            <v-btn text @click="goFirstRating">
+              영화 평가하러 가기
+              <v-icon small style="margin-left:3vw;">fas fa-arrow-right</v-icon>
+            </v-btn>
+          </div>
         </div>
+      </div>
+      <div class="rating" v-else>
+        <RatingMovies v-bind:CinemaList="ratedMovies"/>
       </div>
     </div>
     <Nav />
@@ -46,6 +63,7 @@ import MovieList from './movieList/MovieList.vue';
 import SettingCard from './settingCard/SettingCard.vue';
 import ChangeUserImage from './changeUserInfo/ChangeUserImage.vue';
 import ChangeUserPass from './changeUserInfo/ChangeUserPass.vue';
+import RatingMovies from './ratingMovies/RatingMovies.vue';
 import router from '../../router';
 import { mapGetters, mapActions } from 'vuex';
 
@@ -58,7 +76,8 @@ export default {
     MovieList,
     SettingCard,
     ChangeUserImage,
-    ChangeUserPass
+    ChangeUserPass,
+    RatingMovies
   },
   data() {
     return {
@@ -70,7 +89,9 @@ export default {
       isShowChangeImgDialog: false,
       isShowChangePassDialog: false,
       userName: null,
-      profileURL: null
+      profileURL: null,
+      tab: 0,
+      items: ['내가 선호하는 영화', '내가 평가한 영화']
     }
   },
   computed: {

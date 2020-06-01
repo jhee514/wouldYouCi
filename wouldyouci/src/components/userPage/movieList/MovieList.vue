@@ -34,7 +34,7 @@
     </v-slide-group>
     <v-card
       v-else
-      class="ma -4"
+      class="ma-4"
       height="20vh"
       width="90vw"
       style="margin-right:2vh"

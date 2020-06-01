@@ -8,12 +8,12 @@ div.v-card__text {
 }
 
 
-#app > div > div.search > div:nth-child(2) > div > div.content > div.ma-4.v-card.v-sheet.theme--light {
+#app > div > div.search > div > div > div.content > div.ma-4.v-card.v-sheet.theme--light {
   margin-top: 2vh;
   margin-bottom: 2vh;
 }
 
-#app > div > div.search > div:nth-child(2) > div > div.content > div.ma-4.v-card.v-sheet.theme--light > div {
+#app > div > div.search > div > div > div.content > div.ma-4.v-card.v-sheet.theme--light > div {
   text-align: center;
   position: relative;
   top: 40%;
