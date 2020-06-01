@@ -67,10 +67,10 @@ class SmallPagination(PageNumberPagination):
     max_page_size = 50
 
 
-@permission_classes([IsAuthenticated])
 class RatingViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = SimpleRatingSerializer
     pagination_class = SmallPagination
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         movie_id = self.request.query_params.get('movie', 0)
