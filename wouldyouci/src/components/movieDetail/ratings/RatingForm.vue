@@ -7,7 +7,8 @@
         background-color="orange lighten-3"
         half-increments
         hover
-        size="18"></v-rating>
+        size="18">
+        </v-rating>
     </div>
     <div class="comment">
       <v-textarea
@@ -26,7 +27,7 @@
         color="orange darken-3" 
         icon
         text 
-        @click.prevent="postRating(this.rating)"
+        @click.prevent="submitForm(rating)"
       >등록</v-btn>
     </div>
 
@@ -35,7 +36,6 @@
 
 <script>
 
-import { mapActions } from 'vuex';
 
 export default {
   name: "RatingForm",
@@ -57,19 +57,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['postRating']),
-    // async submitRating() {
-    //   try {
-    //     console.log('????????');
-    //     await this.postRating(this.rating);
-    //     console.log('!!!!!!!!!!')
-    //     this.rating.score = 0;
-    //     this.rating.comment = '';
 
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // },    
+    async submitForm(rating) {
+      await this.$emit("submitRating", rating);
+      this.rating.score = 0;
+      this.rating.comment = '';
+    },    
   },
 }
 </script>
