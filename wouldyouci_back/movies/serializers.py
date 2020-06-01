@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import Movie, Onscreen
-from accounts.serializers import SimpleRatingSerializer
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -82,7 +81,7 @@ class SoonMovieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = ('id', 'open_date', 'running_time', 'pick_users_count',
+        fields = ('id', 'name', 'poster', 'open_date', 'running_time', 'pick_users_count',
                   'genres', 'directors', 'actors')
 
 

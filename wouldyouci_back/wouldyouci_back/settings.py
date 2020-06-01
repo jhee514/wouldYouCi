@@ -52,7 +52,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 10,
 }
+
 
 REST_USE_JWT = True
 
@@ -164,14 +167,8 @@ CACHES = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': 'localhost:9200'
+        'hosts': 'k02a4061.p.ssafy.io:9200'
     },
-}
-
-
-REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
-    "PAGE_SIZE": 10,
 }
 
 

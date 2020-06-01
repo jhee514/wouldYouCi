@@ -1,18 +1,19 @@
 from django.db.models import Count
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 import os
 from wouldyouci_back.settings import MEDIA_ROOT
-from movies.serializers import TasteMovieSerializer
-from .serializers import UserCreationSerializer, UserDetailSerializer, ProfileSerializer, RatingSerializer
-from django.contrib.auth import get_user_model
-User = get_user_model()
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from movies.models import Movie
+from movies.serializers import TasteMovieSerializer
 from .models import Rating, Profile
+from .serializers import UserCreationSerializer, UserDetailSerializer, ProfileSerializer, RatingSerializer
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 
 
 @api_view(['POST'])
@@ -56,7 +57,7 @@ def change_profile(request):
     user = request.user
     if user.file.exists():
         profile = Profile.objects.get(user=user.id)
-        os.remove(os.path.join(MEDIA_ROOT, f"{profile.file}"))
+        # os.remove(os.path.join(MEDIA_ROOT, f"{profile.file}"))
         profile.delete()
     if request.method == 'POST':
         if request.FILES:
@@ -86,17 +87,6 @@ def change_password(request):
     return Response(status=203)
 
 
-@api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
-def get_create_taste(request):
-    # 이전에 한 목록은 제외하고
-    # 몇 개 했는지도 같이
-    if request.method == 'GET':
-        pass
-    elif request.method == 'POST':
-        pass
-
-
 class SmallPagination(PageNumberPagination):
     page_size = 20
     page_size_query_param = "page_size"
@@ -106,7 +96,7 @@ class SmallPagination(PageNumberPagination):
 class TasteViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = TasteMovieSerializer
     pagination_class = SmallPagination
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
@@ -128,7 +118,6 @@ class TasteViewSet(viewsets.ReadOnlyModelViewSet):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def make_dummy_rating(request):
-    # print(request.data)
     user = request.user
     for data in request.data['data']:
         if user.ratings.filter(movie=data['movie']).exists():
