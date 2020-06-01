@@ -7,6 +7,7 @@ from movies.models import Movie, Onscreen
 from .documents import MoviesDocument
 from cinemas.models import Cinema
 from cinemas.serializers import SearchCinemaSerializer
+from datetime import date, timedelta
 from haversine import haversine
 
 
@@ -132,30 +133,25 @@ def search_index(request):
             near_cinema.append(serializer.data)
 
 
-    # TODO cache and query
-    # 개봉 예정작 중 한 달 이내 개봉 예정작
-    comming_soon = Movie.objects.all()[:8]
+    today = date.today()
+    comming_soon = Movie.objects.filter(open_date__gte=today,
+                                        open_date__lte=today + timedelta(days=31)).order_by('open_date')
     soon_serializer = SoonMovieSerializer(comming_soon, many=True)
 
+    # Todo Onscreen 으로 바꾸기
     popular_movies = Movie.objects.annotate(num_rating=Count('ratings')).order_by('-num_rating')[:10]
 
     pop_serializer = SearchMovieSerializer(popular_movies, many=True)
-
-
-    # maybe_like_onscreen = Onscreen.objects.all()
-
 
     dataset = {
         'meta': {
             'near_cinema': len(near_cinema),
             'popular_movies': len(popular_movies),
             'comming_soon': len(comming_soon),
-            # 'maybe_like_onscreen': len(maybe_like_onscreen),
         },
         'near_cinema': near_cinema,
         'popular_movies': pop_serializer.data,
         'comming_soon': soon_serializer.data,
-        # 'maybe_like_onscreen': maybe_like_onscreen,
     }
 
     return Response(status=200, data=dataset, content_type='application.json')
