@@ -1,6 +1,9 @@
 <template>
   <div 
     class="ratings"
+    v-infinite-scroll="loadMore"
+    infinite-scroll-disabled="loading"
+    infinite-scroll-distance="10"
     >
     <RatingForm :id="details.id" @submitRating="addRating"/>
 
@@ -83,6 +86,7 @@ export default {
         {method:"delete", icon:"fas fa-times fa-xs"},
         {method:"edit", icon:"far fa-edit fa-xs"},
       ],
+      loading: true,
 
     }
   },
@@ -93,7 +97,15 @@ export default {
   },
   methods: {
     ...mapActions(['postRating', 'delRating', 'patchRating' ]),
-
+    loadMore: function() {
+      this.busy = true;
+      setTimeout(() => {
+        for (var i = 0, j = 10; i < j; i++) {
+          this.data.push({ name: count++ });
+        }
+        this.busy = false;
+      }, 1000);
+    },
     formatDate(date) {
       var moment = require('moment');
       return moment(date).format('YYYY.MM.DD')
