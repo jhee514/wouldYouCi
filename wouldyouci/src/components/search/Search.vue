@@ -7,26 +7,32 @@
           <v-radio label="영화" value="movies"></v-radio>
           <v-radio label="영화관" value="theater"></v-radio>
         </v-radio-group>
-        <form @submit.prevent="changeSearchMode">
-          <v-text-field
+        <div class="auto">
+          <v-autocomplete
             v-if="searchType === 'movies'"
-            v-model="keyword"
-            prepend-icon="fa fa-search"
-            :rules="rules"
-            :counter="20"
+            :search-input.sync="keyword"
             label="영화 제목을 검색해보세요!"
-            required
-          ></v-text-field>
-          <v-text-field
-            v-else
-            v-model="keyword"
-            prepend-icon="fa fa-search"
+            prepend-icon="fas fa-search"
+            :loading="isloading"
+            :items="items"
             :rules="rules"
-            :counter="20"
+            @input="changeSearchMode"
+            v-on:keyup.enter="changeSearchMode(keyword)"
+          >
+          </v-autocomplete>
+          <v-autocomplete
+            v-else
+            :search-input.sync="keyword"
             label="지역명을 검색해보세요!"
-            required
-          ></v-text-field>
-        </form>
+            prepend-icon="fas fa-search"
+            :loading="isloading"
+            :items="items"
+            :rules="rules"
+            @input="changeSearchMode"
+            v-on:keyup.enter="changeSearchMode(keyword)"
+          >
+          </v-autocomplete>
+        </div>
       </v-container>
       <div class="now" v-if="getInitSearchInfo">
         <v-btn small text @click="reBringMyPos">
@@ -38,6 +44,14 @@
         <MainSearch v-if="getSearchMode==='before'" v-bind:Commings="commings" v-bind:Populars="populars" v-bind:TheaterList="nearTheater"/>
         <AfterSearch v-else v-bind:KeyWords="keywordProps" v-bind:Type="searchTypeProps" v-bind:ResultList="cards" v-bind:Similar="similar"/>
       </div>
+      <v-overlay :value="getLoading">
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          color="#4520EA"
+          indeterminate
+        ></v-progress-circular>
+      </v-overlay>
     </div>
     <Nav />
   </div>
@@ -74,28 +88,62 @@ export default {
       nearTheater: [],
       commings: [],
       populars: [],
+      isloading: false,
+      items: []
     }
   },
   computed: {
-    ...mapGetters(['getSearchMode', 'getInitSearchInfo', 'getSearchList', 'getSearchSimiList', 'getAddress'])
+    ...mapGetters(['getSearchMode', 'getInitSearchInfo', 'getSearchList', 'getSearchSimiList', 'getAddress', 'getLoading'])
+  },
+  watch: {
+    keyword: function(val) {
+      const axios = require('axios');
+      const HOST = process.env.VUE_APP_SERVER_HOST;
+      const params = {
+        params: {
+          words: val
+        }
+      }
+      this.isloading = true;
+      if (this.searchType === 'movies') {
+        axios.get(`${HOST}/search/movie/`, params)
+          .then(res => {
+            console.log(res);
+            this.items = res.data;
+            this.isloading = false;
+          })
+          .catch(err => err)
+      } else {
+        axios.get(`${HOST}/search/cinema/`, params)
+          .then(res => {
+            console.log(res);
+            this.items = res.data;
+            this.isloading = false;
+          })
+          .catch(err => err)
+      }
+    }
   },
   methods: {
-    ...mapMutations(['setSearchMode']),
+    ...mapMutations(['setSearchMode', 'setLoading']),
     ...mapActions(['bringInitSearchInfo', 'searchMovies', 'bringAddress', 'searchTheater']),
-    async changeSearchMode() {
-      this.setSearchMode('after');
-      this.keywordProps = this.keyword;
-      this.searchTypeProps = this.searchType;
-      if (this.searchType === 'movies') {
-        await this.searchMovies(this.keyword);
-      } else {
-        await this.searchTheater(this.keyword);
+    async changeSearchMode(info) {
+      if (info) {
+        this.keywordProps = info;
+        this.searchTypeProps = this.searchType;
+        if (this.searchType === 'movies') {
+          await this.searchMovies(info);
+        } else {
+          await this.searchTheater(info);
+        }
+        this.cards = this.getSearchList;
+        this.similar = this.getSearchSimiList;
+        this.keyword = null;
+        this.setSearchMode('after');
       }
-      this.cards = this.getSearchList;
-      this.similar = this.getSearchSimiList;
-      this.keyword = null;
     },
     reBringMyPos() {
+      this.setLoading(true);
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
           const pos = {
@@ -112,13 +160,16 @@ export default {
           this.nearTheater = this.getInitSearchInfo.near_cinema;
           this.commings = this.getInitSearchInfo.comming_soon;
           this.populars = this.getInitSearchInfo.popular_movies;
-        }.bind(this), 500)
+          this.setLoading(false);
+        }.bind(this), 400)
       } else {
+        this.setLoading(false);
         alert('위치 설정을 켜주세요.');
       }
     }
   },
   mounted() {
+    this.setLoading(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
         const pos = {
@@ -135,8 +186,10 @@ export default {
         this.nearTheater = this.getInitSearchInfo.near_cinema;
         this.commings = this.getInitSearchInfo.comming_soon;
         this.populars = this.getInitSearchInfo.popular_movies;
-      }.bind(this), 500)
+        this.setLoading(false);
+      }.bind(this), 400)
     } else {
+      this.setLoading(false);
       alert('위치 설정을 켜주세요.');
     }
   }

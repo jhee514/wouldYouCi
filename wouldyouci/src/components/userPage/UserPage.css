@@ -1,6 +1,4 @@
 .userPage{
-  /* min-height: 82vh;
-  height: auto; */
   margin-top: 2vh;
   margin-bottom: 2vh;
   margin-left: 5vw;
@@ -17,4 +15,24 @@ span{
 
 .tabs{
   margin-bottom: 3vh;
+}
+
+.prefer{
+  margin-bottom: 10vh;
+}
+
+.noReco{
+  margin-top: 2vh;
+  text-align: center;
+}
+
+.exp{
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+  padding-right: 3vw;
+  padding-left: 3vw;
+}
+
+#app > div > div.userPage > div.prefer > div.v-card.v-sheet.theme--light > button{
+  padding-bottom: 5vh;
 }
