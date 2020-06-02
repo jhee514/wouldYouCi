@@ -5,7 +5,7 @@
     infinite-scroll-disabled="busy"
     infinite-scroll-distance="250"
     >
-    <RatingForm :id="details.id" @submitRating="addRating"/>
+    <RatingForm @submitRating="addRating"/>
 
     <v-list v-if="isRatings">
       <template v-for="(rating, index) in ratings">
@@ -26,7 +26,7 @@
                 <p class="comment">{{ rating.comment}}</p>
                 
                 <div v-if="rating.user.username == user.username" class="button">
-                  <v-dialog v-model="dialog" persistent>
+                  <v-dialog v-model="dialog">
                     <template v-slot:activator="{ on }">
                       <v-btn
                         v-on="on"
@@ -37,7 +37,7 @@
                         <v-icon>mdi-pencil</v-icon>
                       </v-btn>
                     </template>
-                    <RatingEditForm :id="details.id" :rating="rating" @close="closeModal" @editRating="editRating"/>
+                    <RatingEditForm :rating="rating" @close="closeModal" @editRating="editRating"/>
                   </v-dialog>
 
                   <v-btn 
@@ -71,8 +71,8 @@
 
 <script>
 import Score from './Score';
-import RatingForm from './RatingForm';
-import RatingEditForm from './RatingEditForm';
+import RatingForm from '../../ratingForm/RatingForm';
+import RatingEditForm from '../../ratingForm/RatingEditForm';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -86,7 +86,6 @@ export default {
 
   data() {
     return {
-      data: [],
       busy: false,
       page: 1,
       dialog: false,
@@ -99,17 +98,18 @@ export default {
 
   },
   methods: {
-    ...mapActions(['fetchMovieRatings', 'postRating', 'delRating', 'patchRating' ]),
+    ...mapActions(['fetchRatings', 'postRating', 'delRating', 'patchRating' ]),
 
     async loadMore() {
       this.busy = true;
+      const item = 'movie'
       const params = { 
         movie: this.details.id, 
         page: this.page++,
         };
-      await this.fetchMovieRatings(params)
+      const res = await this.fetchRatings({item, params})
       this.busy = false;
-      for ( const rating of this.getMovieRatings) {
+      for ( const rating of res) {
         this.ratings.push(rating);
       }
     },
@@ -123,22 +123,40 @@ export default {
       this.dialog = false;
     },
 
-    deleteRating(index, rating, detailId) {
+    deleteRating(index, rating) {
+      const item = 'movie'
       const ratingId = rating.id;
-      const params = {ratingId, detailId};
       if(confirm('삭제하시겠습니까?')){
-        this.delRating(params);
+        this.delRating({item, ratingId});
+        this.$delete(this.ratings, index)
       }
     },
     
     async addRating(rating){
-      await this.postRating(rating);
+      const item = 'movie'
+      rating[item] = this.details.id;
+      const res = await this.postRating({item, rating});
+      res.data["user"] = this.user;
+      if ( this.isRatings ) {
+        this.ratings.unshift(res.data)
+      } else {
+        this.ratings.push(res.data)
+      }
     },
     
     async editRating(editedRating) {
       this.dialog = false;
-      await this.patchRating(editedRating);
+      const item = 'movie';
+      editedRating[item] = this.details.id;
+      const params = {item, editedRating};
+      const res = await this.patchRating(params);
+      const formerIndex = this.ratings.indexOf(this.ratings.find(el => {
+        el.id === editedRating.id 
+        }))
+      res.data["user"] = this.user;
+      this.ratings.splice(formerIndex, 1, res.data)
     },
+
     goTop() {
       window.scrollTo(0, 0);
     },

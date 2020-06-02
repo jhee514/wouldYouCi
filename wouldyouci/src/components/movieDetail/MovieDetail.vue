@@ -19,7 +19,10 @@
               ></iframe>
         </div>
         <div v-else>
-          <img :src="details.poster" />
+           <v-img 
+            center
+            width="auto"
+            :src="details.poster" />
         </div>
 
         <v-list-item two-line>
@@ -37,7 +40,7 @@
           <v-btn 
             icon 
             :color="(isPicked) ? 'pink' : 'grey'"
-            @click.prevent="togglePick()">
+            @click.prevent="togglePickMovie">
             <v-icon>mdi-heart</v-icon>
           </v-btn>
           <v-btn v-if="details.is_showing" icon>
@@ -130,9 +133,11 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchMovieDetail', 'bringUserInfo', 'togglePickMovie', 'fetchMovieRatings', ]),
-    async togglePick() {
-      await this.togglePickMovie(this.details.id)
+    ...mapActions(['fetchMovieDetail', 'bringUserInfo', 'togglePick', ]),
+    async togglePickMovie() {
+      const item = 'movie'
+      const itemId = this.details.id
+      await this.togglePick({item, itemId})
       if ( this.isPicked ){
         this.isPicked = false
       } else {
@@ -140,7 +145,6 @@ export default {
       }
     },
   },
-
   async created() {
     await this.fetchMovieDetail(this.$route.params.id);
     await this.bringUserInfo()

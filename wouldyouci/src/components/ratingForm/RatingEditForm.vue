@@ -31,7 +31,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="closeMe()">Close</v-btn>
+        <v-btn color="blue darken-1" text @click="closeMe">Close</v-btn>
         <v-btn color="blue darken-1" text @click="submit(editedRating)">Save</v-btn>
       </v-card-actions>
     </v-card>
@@ -43,9 +43,7 @@
 
 export default {
   name: "RatingEditForm",
-  props:["rating", "id"],
-  components: {
-    },
+  props:["rating"],
   data() {
     return {
       rules: [
@@ -57,7 +55,6 @@ export default {
         id: this.rating.id,
         score: this.rating.score,
         comment: this.rating.comment,
-        movie: this.id,
         user: this.rating.user,
       },
     }
@@ -66,10 +63,8 @@ export default {
     closeMe() {
       this.$emit("close");
     },
-    async submit(editedRating) {
-      console.log(editedRating)
-      await this.$emit("editRating", editedRating);
-
+    submit(editedRating) {
+     this.$emit("editRating", editedRating);
     },    
   },
 }

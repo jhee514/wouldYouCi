@@ -39,7 +39,6 @@
 
 export default {
   name: "RatingForm",
-  props:["id"],
   components: {
     },
   data() {
@@ -52,7 +51,6 @@ export default {
       rating: {
         score: 0,
         comment: '',
-        movie: this.id,
       },
     }
   },

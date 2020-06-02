@@ -5,7 +5,11 @@
         홈페이지
       </span>
       <span class="content">
-        <v-btn :href="details.url" text>홈페이지</v-btn>
+        <v-btn
+        text
+        target="_blank"
+        :href="details.url" 
+        >홈페이지</v-btn>
       </span>
     </p>
     <p>
@@ -36,9 +40,12 @@
       <span class="item">
         전화
       </span>
-      <span class="content">
-      {{ details.tel }}
-      </span>
+      <a 
+        class="tel"
+        :href="'tel' + details.tel"
+        >
+        {{ details.tel }}
+      </a>
     </p>
   </div>
 </template>

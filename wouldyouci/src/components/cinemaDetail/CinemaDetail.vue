@@ -4,9 +4,9 @@
     <div class="body">
       <v-card elevation=0>
         <div>
-          <img 
-            width="370vw" 
-            height="auto"
+          <v-img 
+            center
+            width="auto" 
             :src="details.img" />
         </div>
 
@@ -14,7 +14,14 @@
           <v-list-item-content>
             <v-list-item-title class="headline">{{ details.name }}</v-list-item-title>
             <v-list-item-subtitle>{{ details.address }}</v-list-item-subtitle>
-            <v-list-item-subtitle>{{ details.tel }}</v-list-item-subtitle>
+            <v-list-item-subtitle>
+              <a 
+                class="tel"
+                :href="'tel' + details.tel"
+                >
+                {{ details.tel }}
+              </a>
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
         
@@ -25,7 +32,7 @@
           <v-btn 
             icon 
             :color="(isPicked) ? 'pink' : 'grey'"
-            @click.prevent="togglePick()">
+            @click.prevent="togglePickCinema">
             <v-icon>mdi-heart</v-icon>
           </v-btn>
           <v-btn icon>
@@ -74,7 +81,7 @@
 import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import CinemaInfo from './cinemaInfo/CinemaInfo';
-import Ratings from './ratings/Ratings';
+import CinemaRatings from './cinemaRatings/CinemaRatings';
 import Score from '../movieDetail/ratings/Score';
 import { mapGetters, mapActions } from 'vuex';
 
@@ -85,7 +92,7 @@ export default {
     Nav,
     Title,
     CinemaInfo,
-    Ratings,
+    CinemaRatings,
     Score,
   },
 
@@ -94,7 +101,7 @@ export default {
       tab: null,
       items: [
         {tab: 'Info', component: "CinemaInfo"},
-        {tab: 'Reviews', component: "Ratings"}
+        {tab: 'Reviews', component: "CinemaRatings"}
       ],
       expand: false,
       isPicked: false,
@@ -110,9 +117,11 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchCinemaDetail', 'bringUserInfo', 'togglePickMovie', ]),
-    async togglePick() {
-      await this.togglePickMovie(this.details.id)
+    ...mapActions(['fetchCinemaDetail', 'bringUserInfo', 'togglePick', ]),
+    async togglePickCinema() {
+      const item = 'cinema'
+      const itemId = this.details.id
+      await this.togglePick({item, itemId})
       if ( this.isPicked ){
         this.isPicked = false
       } else {
@@ -120,7 +129,6 @@ export default {
       }
     },
   },
-
   async created() {
     await this.fetchCinemaDetail(this.$route.params.id);
     await this.bringUserInfo()
