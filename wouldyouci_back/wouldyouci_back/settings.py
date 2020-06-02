@@ -52,8 +52,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
-    "PAGE_SIZE": 10,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
 }
 
 
@@ -153,13 +153,14 @@ USE_TZ = True
 AUTH_USER_MODEL = 'accounts.User'
 
 
+cache_password = config('PASSWORD')
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'django_cache',
-        'TIMEOUT': 120,
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://k02a4061.p.ssafy.io:6379/1',
         'OPTIONS': {
-            'MAX_ENTRIES': 500
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'PASSWORD': cache_password
         }
     }
 }
@@ -174,10 +175,8 @@ ELASTICSEARCH_DSL = {
 
 ROOT_DIR = os.path.dirname(BASE_DIR)
 
-# TODO debug=False 경우 수정 및 확인 필요한 부분
 STATIC_URL = '/static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
-# STATICFILES_DIRS = [STATIC_DIR, ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 MEDIA_URL = '/media/'

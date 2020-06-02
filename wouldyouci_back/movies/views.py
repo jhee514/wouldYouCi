@@ -12,17 +12,19 @@ from django.core.paginator import Paginator
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 import pandas as pd
-from sklearn.linear_model import Lasso
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.linear_model import Lasso, LinearRegression
+from sklearn.model_selection import RandomizedSearchCV, train_test_split
 from scipy.stats import uniform as sp_rand
 from wouldyouci_back.settings import BASE_DIR
 import os
+from django.core.cache import cache
+from .apps import MoviesConfig
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-def contentsbased(user_id, movie_id):
-    genres = pd.read_pickle(os.path.join(BASE_DIR, 'utils', 'genre_train.p'))
+def contentsbased_by_genre(user_id, movie_id):
+    genres = pd.read_pickle(os.path.join(BASE_DIR, 'utils', 'genres_train.p'))
 
     ratings = pd.DataFrame(list(Rating.objects.filter(user=user_id).values('score', 'movie_id')))
 
@@ -43,10 +45,37 @@ def contentsbased(user_id, movie_id):
     genres.reset_index()
 
     genres['predict'] = predictions
-    # print(genres['predict'])
     predicted_score = genres.at[movie_id, 'predict']
 
     return predicted_score * 20
+
+
+def contentsbased_by_genres_and_actors(user_id, movie_id):
+    data = cache.get(f'recommend_{user_id}')
+
+    if data is None:
+        movies = MoviesConfig.movies
+
+        ratings = pd.DataFrame(list(Rating.objects.filter(user=user_id).values('score', 'movie_id')))
+        ratings = ratings.merge(movies, left_on='movie_id', right_index=True)
+        x_train, x_test, y_train, y_test = train_test_split(ratings[movies.columns],
+                                                            ratings['score'],
+                                                            random_state=406,
+                                                            test_size=0.1)
+        reg = LinearRegression()
+        reg.fit(x_train, y_train)
+
+        predictions = reg.predict(movies)
+        movies.reset_index()
+
+        movies['predict'] = predictions
+        data = movies[['predict']]
+
+        cache.set(f'recommend_{user_id}', data)
+
+    predicted_score = data.at[movie_id, 'predict']
+
+    return round(predicted_score * 20, 1)
 
 
 class SmallPagination(PageNumberPagination):
@@ -77,7 +106,7 @@ def movie_detail(request, movie_id):
 
     predicted_score = 0
     if request.user.ratings.count() > 9:
-        predicted_score = contentsbased(request.user.id, movie_id)
+        predicted_score = contentsbased_by_genres_and_actors(request.user.id, movie_id)
 
     paginator = Paginator(movie.ratings.all(), 10)
     page_number = request.GET.get('page', 1)
@@ -85,17 +114,6 @@ def movie_detail(request, movie_id):
 
     ratings = SimpleRatingSerializer(page_obj.object_list, many=True)
 
-    # datasets = {
-    #     'meta': {
-    #         # 'page': paginator.page_range
-    #     },
-    #     'documets': {
-    #         'is_showing': Onscreen.objects.filter(movie=movie_id).exists(),
-    #         'movie': serializer.data,
-    #         'ratings': ratings.data,
-    #
-    #     }
-    # }
     datasets = {
         'is_showing': Onscreen.objects.filter(movie=movie_id).exists(),
         'predicted_score': predicted_score,
@@ -130,6 +148,8 @@ def create_rating(request):
 
     serializer = RatingSerializer(data=request.data)
     if serializer.is_valid():
+
+        cache.delete(f'recommend_{user.id}')
         new_rating = serializer.save(user=user)
 
         movie = new_rating.movie
@@ -152,10 +172,13 @@ def patch_delete_rating(request, rating_id):
     ratings_count = movie.ratings.count()
     movie_rating = movie.score * ratings_count - origin_score
 
-    if rating.user.id == request.user.id:
+    user_id = request.user.id
+    if rating.user.id == user_id:
         if request.method == 'PATCH':
             serializer = RatingSerializer(instance=rating, data=request.data)
             if serializer.is_valid():
+
+                cache.delete(f'recommend_{user_id}')
                 update_rating = serializer.save()
 
                 movie_rating = (movie_rating + update_rating.score) / ratings_count
@@ -166,6 +189,7 @@ def patch_delete_rating(request, rating_id):
             return Response(status=400, data=serializer.errors)
 
         elif request.method == 'DELETE':
+            cache.delete(f'recommend_{user_id}')
             rating.delete()
 
             if ratings_count - 1:
