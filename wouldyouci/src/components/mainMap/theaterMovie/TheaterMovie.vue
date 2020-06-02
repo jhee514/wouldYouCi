@@ -18,7 +18,7 @@
         >
           <v-row>
             <v-col>
-              <v-img 
+              <v-img
                 :src="movie.movie.poster"
                 height="30vh"
                 width="40vw"

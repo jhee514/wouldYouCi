@@ -35,17 +35,16 @@
         <span>찜한 영화</span>
         <MovieList v-bind:CinemaList="wishMovies"/>
         <span>나에게 추천하는 영화</span>
-        <MovieList v-bind:CinemaList="recommendedMovies"/>
-        <span>내 영화 스타일</span>
-        <div style="height:50vh; margin-bottom: 10vh; margin-top: 3vh; background-color:#FFC9E1; text-align:center; padding-top:5vh;">
-          현재 데이터가 부족해 내 영화 스타일에 대한 분석이 불가능 합니다.
-          <div style="padding-top:5vh;">
-            <v-btn text @click="goFirstRating">
-              영화 평가하러 가기
-              <v-icon small style="margin-left:3vw;">fas fa-arrow-right</v-icon>
-            </v-btn>
+        <MovieList v-if="recommendedMovies.length" v-bind:CinemaList="recommendedMovies"/>
+        <v-card class="noReco" v-else>
+          <div class="exp">
+            현재 데이터가 부족해 영화 추천이 불가능 합니다.
           </div>
-        </div>
+          <v-btn text @click="goFirstRating">
+            영화 평가하러 가기
+            <v-icon small style="margin-left:3vw;">fas fa-arrow-right</v-icon>
+          </v-btn>
+        </v-card>
       </div>
       <div class="rating" v-else>
         <RatingMovies v-bind:CinemaList="ratedMovies"/>
@@ -84,7 +83,7 @@ export default {
       theaterList: null,
       ratedMovies: null,
       wishMovies: null,
-      recommendedMovies: ['배고파...', '집이지만', '집에 가고파', '월요병', '스마일감자', '나쁘다....'],
+      recommendedMovies: [],
       isShow: false,
       isShowChangeImgDialog: false,
       isShowChangePassDialog: false,
