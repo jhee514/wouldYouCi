@@ -129,9 +129,12 @@ export default {
     deleteRating(index, rating) {
       const item = 'cinema'
       const ratingId = rating.id;
-      if(confirm('삭제하시겠습니까?')){
+      if (confirm('삭제하시겠습니까?')) {
         this.delRating({item, ratingId});
         this.$delete(this.ratings, index)
+        if ( index === 0 ) {
+          this.isRatings = false
+        }
       }
     },
     
@@ -143,6 +146,7 @@ export default {
       if ( this.isRatings ) {
         this.ratings.unshift(res.data)
       } else {
+        this.isRatings = true
         this.ratings.push(res.data)
       }
     },
