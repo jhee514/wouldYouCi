@@ -3,18 +3,28 @@
     <Title />
     <div class="body">
       <v-card elevation=0>
-        <div class="trailer">
-          <iframe 
-            id="player"
-            type="text/html" 
-            width="auto" 
-            height="auto"
-            allow="autoplay"
-            allowfullscreen
-            frameborder=0;
-            :src=details.trailer
-            ></iframe>
+        <div 
+          v-if="details.trailer"
+          class="trailer"
+          >
+            <iframe 
+              id="player"
+              type="text/html" 
+              width="auto" 
+              height="auto"
+              allow="autoplay"
+              allowfullscreen
+              frameborder=0
+              :src=details.trailer
+              ></iframe>
         </div>
+        <div v-else>
+           <v-img 
+            center
+            width="auto"
+            :src="details.poster" />
+        </div>
+
         <v-list-item two-line>
           <v-list-item-content>
             <v-list-item-title class="headline">{{ details.name }}</v-list-item-title>
@@ -24,14 +34,13 @@
         </v-list-item>
         
         <v-card-actions>
-          <!-- TODO 평점 구하는 함수 -->
           <Score :score="details.score"/>
           <v-spacer></v-spacer>
 
           <v-btn 
             icon 
-            color="grey"
-            @click.prevent="togglePick()">
+            :color="(isPicked) ? 'pink' : 'grey'"
+            @click.prevent="togglePickMovie">
             <v-icon>mdi-heart</v-icon>
           </v-btn>
           <v-btn v-if="details.is_showing" icon>
@@ -68,7 +77,11 @@
           >
             <v-card flat>
               <v-card-text>
-                <component v-bind:is="item.component" :details="details" :user="user"></component>
+                <component 
+                  v-bind:is="item.component" 
+                  :details="details" 
+                  :user="user" 
+                  ></component>
               </v-card-text>
             </v-card>
           </v-tab-item>
@@ -84,8 +97,8 @@
 import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import MovieInfo from './movieInfo/MovieInfo';
-import Ratings from './ratings/Ratings';
-import Score from './ratings/Score';
+import MovieRatings from './movieRatings/MovieRatings';
+import Score from '../ratingForm/Score';
 import { mapGetters, mapActions } from 'vuex';
 
 
@@ -95,19 +108,20 @@ export default {
     Nav,
     Title,
     MovieInfo,
-    Ratings,
+    MovieRatings,
     Score,
   },
-   
+
   data() {
     return {
       tab: null,
       items: [
         {tab: 'Info', component: "MovieInfo"},
-        {tab: 'Reviews', component: "Ratings"}
+        {tab: 'Reviews', component: "MovieRatings"}
       ],
       expand: false,
-      isPicked: '',
+      isPicked: false,
+
     }
   },
 
@@ -115,35 +129,34 @@ export default {
     ...mapGetters({
       details: 'getMovieDetail',
       user: 'getUserInfo',
-      }
-    ),
-
+      }),
   },
 
   methods: {
-    ...mapActions(['fetchMovieDetail', 'bringUserInfo', 'togglePickMovie', ]),
-    async togglePick() {
-      console.log('clickedToggle');
-      await this.togglePickMovie(this.details.id)
+    ...mapActions(['fetchMovieDetail', 'bringUserInfo', 'togglePick', ]),
+    async togglePickMovie() {
+      const item = 'movie'
+      const itemId = this.details.id
+      await this.togglePick({item, itemId})
+      if ( this.isPicked ){
+        this.isPicked = false
+      } else {
+        this.isPicked = true
+      }
     },
   },
-
-  async mounted() {
+  async created() {
     await this.fetchMovieDetail(this.$route.params.id);
     await this.bringUserInfo()
-    console.log(this.user)
-    console.log(this.user.pick_movies)
-
-    if (this.user.pick_movies.length && this.user.pick_movies.include(this.getMovieDetail.id)) {
-      this.isPicked = 'pink'
+    if (this.user.pick_movies && this.user.pick_movies.includes(this.details.id)) {
+      this.isPicked = true
     } else {
-      this.isPicked = 'grey'
+      this.isPicked = false
     }
   },
 
-
-
 }
 </script>
+
 
 <style src="./MovieDetail.css" scoped></style>

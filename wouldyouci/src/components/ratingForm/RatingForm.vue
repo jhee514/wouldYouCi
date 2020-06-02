@@ -39,7 +39,6 @@
 
 export default {
   name: "RatingForm",
-  props:["id"],
   components: {
     },
   data() {
@@ -47,12 +46,11 @@ export default {
       rules: [
         value => !!value || '점수를 입력해주세요.',
         value => ( value <= 5 ) || '최고 점수는 5점입니다.',
-        value => ( value < 1 ) || '최저 점수는 1점입니다.',
+        value => ( value < 0.5 ) || '최저 점수는 0.5점입니다.',
       ],
       rating: {
         score: 0,
         comment: '',
-        movie: this.id,
       },
     }
   },
