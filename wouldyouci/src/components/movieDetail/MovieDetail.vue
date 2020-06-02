@@ -98,7 +98,7 @@ import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import MovieInfo from './movieInfo/MovieInfo';
 import Ratings from './ratings/Ratings';
-import Score from './ratings/Score';
+import Score from '../ratingForm/Score';
 import { mapGetters, mapActions } from 'vuex';
 
 

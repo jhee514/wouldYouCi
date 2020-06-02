@@ -82,7 +82,7 @@ import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import CinemaInfo from './cinemaInfo/CinemaInfo';
 import CinemaRatings from './cinemaRatings/CinemaRatings';
-import Score from '../movieDetail/ratings/Score';
+import Score from '../ratingForm/Score';
 import { mapGetters, mapActions } from 'vuex';
 
 

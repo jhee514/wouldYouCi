@@ -71,8 +71,7 @@
 </template>
 
 <script>
-//TODO Score 위치 조정
-import Score from '../../movieDetail/ratings/Score';
+import Score from '../../ratingForm/Score';
 import RatingForm from '../../ratingForm/RatingForm';
 import RatingEditForm from '../../ratingForm/RatingEditForm';
 import { mapGetters, mapActions } from 'vuex';

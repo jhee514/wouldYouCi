@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import Score from './Score';
+import Score from '../../ratingForm/Score';
 import RatingForm from '../../ratingForm/RatingForm';
 import RatingEditForm from '../../ratingForm/RatingEditForm';
 import { mapGetters, mapActions } from 'vuex';
