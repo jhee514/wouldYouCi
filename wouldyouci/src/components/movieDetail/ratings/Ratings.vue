@@ -3,7 +3,7 @@
     class="ratings"
     v-infinite-scroll="loadMore"
     infinite-scroll-disabled="busy"
-    infinite-scroll-distance="200"
+    infinite-scroll-distance="250"
     >
     <RatingForm :id="details.id" @submitRating="addRating"/>
 
@@ -51,6 +51,16 @@
           </v-list-item-content>
         </v-list-item>
       </template>
+      <v-btn
+        color="amber"
+        small
+        dark
+        bottom
+        fixed
+        right
+        fab
+        @click="goTop"
+      ><v-icon>mdi-arrow-up</v-icon></v-btn>
     </v-list>
 
     <p v-else>
@@ -129,6 +139,9 @@ export default {
     async editRating(editedRating) {
       this.dialog = false;
       await this.patchRating(editedRating);
+    },
+    goTop() {
+      window.scrollTo(0, 0);
     },
 
   },
