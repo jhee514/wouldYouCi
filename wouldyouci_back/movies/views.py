@@ -12,8 +12,8 @@ from django.core.paginator import Paginator
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 import pandas as pd
-from sklearn.linear_model import Lasso
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.linear_model import Lasso, LinearRegression
+from sklearn.model_selection import RandomizedSearchCV, train_test_split
 from scipy.stats import uniform as sp_rand
 from wouldyouci_back.settings import BASE_DIR
 import os
@@ -21,7 +21,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-def contentsbased(user_id, movie_id):
+def contentsbased_by_genre(user_id, movie_id):
     genres = pd.read_pickle(os.path.join(BASE_DIR, 'utils', 'genres_train.p'))
 
     ratings = pd.DataFrame(list(Rating.objects.filter(user=user_id).values('score', 'movie_id')))
@@ -47,6 +47,26 @@ def contentsbased(user_id, movie_id):
     predicted_score = genres.at[movie_id, 'predict']
 
     return predicted_score * 20
+
+
+def contentsbased_by_genres_and_actors(user_id, movie_id):
+    movies = pd.read_pickle(os.path.join(BASE_DIR, 'utils', 'movie_train.p'))
+    ratings = pd.DataFrame(list(Rating.objects.filter(user=user_id).values('score', 'movie_id')))
+    ratings = ratings.merge(movies, left_on='movie_id', right_index=True)
+    x_train, x_test, y_train, y_test = train_test_split(ratings[movies.columns],
+                                                        ratings['score'],
+                                                        random_state=406,
+                                                        test_size=0.1)
+    reg = LinearRegression()
+    reg.fit(x_train, y_train)
+
+    predictions = reg.predict(movies)
+    movies.reset_index()
+
+    movies['predict'] = predictions
+    predicted_score = movies.at[movie_id, 'predict']
+
+    return predicted_score
 
 
 class SmallPagination(PageNumberPagination):
@@ -77,7 +97,7 @@ def movie_detail(request, movie_id):
 
     predicted_score = 0
     if request.user.ratings.count() > 9:
-        predicted_score = contentsbased(request.user.id, movie_id)
+        predicted_score = contentsbased_by_genres_and_actors(request.user.id, movie_id)
 
     paginator = Paginator(movie.ratings.all(), 10)
     page_number = request.GET.get('page', 1)
