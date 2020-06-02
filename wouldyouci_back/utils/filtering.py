@@ -6,18 +6,23 @@ from sklearn.linear_model import Lasso
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import RandomizedSearchCV
-
+import os
+from decouple import config
 from scipy.stats import uniform as sp_rand
 from datetime import datetime
 import time
 
 
-def contentsbased(user_id):
-    print('START TIME : ',str(datetime.now())[10:19] )
-    conn = pymysql.connect(host='15.164.96.65', port=3306, user='root', password='wouldyoucinema', db='wouldyouci')
+def contentsbased(user_id, movie_id, genres_pk):
+    print('======== 전체영화 예상평점 - GENRE ===========')
+    print('START TIME : ', str(datetime.now())[10:19])
+    start = time.time()
+
+    conn = pymysql.connect(host=config('HOST'), port=3306, user=config('USER'),
+                           password=config('PASSWORD'), db=config('DB'))
     sql = "SELECT * FROM wouldyouci.accounts_rating where user_id=" + str(user_id)
     ratings = pd.read_sql_query(sql, conn)
-    genres = pd.read_pickle('./movie_train.p')
+    genres = genres_pk
 
     conn.close()
 
@@ -34,29 +39,30 @@ def contentsbased(user_id):
 
     print('학습 : ', str(datetime.now())[10:19])
     research.fit(user_profile[genres.columns], user_profile['score'])
-    print('END : ', str(datetime.now())[10:19])
     predictions = research.best_estimator_.predict(genres)
     genres.reset_index()
 
-    print('예측 : ', str(datetime.now())[10:19])
+    print('점수 예측 : ', str(datetime.now())[10:19])
     genres['predict'] = predictions
     print('END TIME : ', str(datetime.now())[10:19])
-    print(genres['predict'])
-    print()
+    end = time.time()
+    print('TOTAL TIME : ', end-start)
+    # print(genres['predict'])
+    print('EXPECTED SCORE : ', genres.at[movie_id, 'predict'])
     print()
     return pd.DataFrame.to_json(genres['predict'])
 
 
-# 전체 영화 예상평점
-def contentsbased2(user_id, movie_id):
-    # print('START TIME : ',str(datetime.now())[10:19] )
+def contentsbased2(user_id, movie_id, movies_pk):
+    print('======== 전체 영화 예상평점 - GENRE & ACTOR ===========')
+    print('START TIME : ', str(datetime.now())[10:19])
     start = time.time()
-    # print(start)
 
-    conn = pymysql.connect(host='15.164.96.65', port=3306, user='root', password='wouldyoucinema', db='wouldyouci')
+    conn = pymysql.connect(host=config('HOST'), port=3306, user=config('USER'),
+                           password=config('PASSWORD'), db=config('DB'))
     sql = "SELECT * FROM wouldyouci.accounts_rating where user_id=" + str(user_id)
     ratings = pd.read_sql_query(sql, conn)
-    movies = pd.read_pickle('./movie_train.p')
+    movies = movies_pk
 
     conn.close()
 
@@ -66,39 +72,38 @@ def contentsbased2(user_id, movie_id):
                                                         random_state=406,
                                                         test_size=.1)
 
-    # 리뷰수가 적을수록 Lasso가 좋다는데 Linear가 더 잘나오는거 같음...
     reg = LinearRegression()
-    # reg = Lasso(alpha=0.05)
 
     reg.fit(x_train, y_train)
 
-    # print('점수예측 : ', str(datetime.now())[10:19])
+    print('점수예측 : ', str(datetime.now())[10:19])
 
     predictions = reg.predict(movies)
     movies.reset_index()
 
     movies['predict'] = predictions
 
-    # print('END TIME : ', str(datetime.now())[10:19])
+    print('END TIME : ', str(datetime.now())[10:19])
     predicted_score = movies.at[movie_id, 'predict']
-    # print(predicted_score)
-    print(movies['predict'])
-    end = time.time()
-    # print(end)
-    print('time')
-    print(end - start)
 
+    end = time.time()
+    print('TOTAL TIME : ', end-start)
+    # print(movies['predict'])
+    print('EXPECTED SCORE : ', predicted_score)
+    print()
     return pd.DataFrame.to_json(movies['predict'])
 
 
-# 해당 영화 예상평점
-def contentsbased3(user_id, movie_id):
+def contentsbased3(user_id, movie_id, movies_pk):
+    print('======== 특정 영화 예상평점 - GENRE & ACTOR ===========')
     print('START TIME : ', str(datetime.now())[10:19])
 
-    conn = pymysql.connect(host='15.164.96.65', port=3306, user='root', password='wouldyoucinema', db='wouldyouci')
+    start = time.time()
+    conn = pymysql.connect(host=config('HOST'), port=3306, user=config('USER'),
+                           password=config('PASSWORD'), db=config('DB'))
     sql = "SELECT * FROM wouldyouci.accounts_rating where user_id=" + str(user_id)
     ratings = pd.read_sql_query(sql, conn)
-    movies = pd.read_pickle('./movie_train.p')
+    movies = movies_pk
 
     conn.close()
 
@@ -106,11 +111,9 @@ def contentsbased3(user_id, movie_id):
 
     train, test = train_test_split(ratings, test_size=0.1, random_state=406)
 
+    x_train = train[movies.columns]
+    y_train = train['score']
 
-    x_train = train[movies.columns]  # feature, x
-    y_train = train['score']  # label, y
-
-    #     reg = LinearRegression()
     reg = Lasso(alpha=0.03)
     reg.fit(x_train, y_train)
 
@@ -126,13 +129,20 @@ def contentsbased3(user_id, movie_id):
     columns_score = sum(user_profile.loc[user_id, movies.columns] * movies.loc[movie_id, movies.columns])
 
     expected_score = intercept + columns_score
-    print()
-    print('expected score============================', expected_score)
     print('END TIME : ', str(datetime.now())[10:19])
+    end = time.time()
+    print('TOTAL TIME : ', end-start)
+    print('EXPECTED SCORE : ', expected_score)
     return expected_score
 
 
-# contentsbased(9000007)
-# contentsbased2(9000007)
-contentsbased2(9000007, 10004)
-# contentsbased3(9000007, 85579)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+genres = pd.read_pickle(os.path.join(BASE_DIR, 'genres_train.p'))
+a = time.time()
+movies = pd.read_pickle(os.path.join(BASE_DIR, 'movie_train.p'))
+print()
+print('Time to read pickle file: ', time.time() - a)
+print()
+contentsbased(9000007, 10016, genres)
+contentsbased2(9000007, 10016, movies)
+contentsbased3(9000007, 10016, movies)
