@@ -153,14 +153,13 @@ USE_TZ = True
 AUTH_USER_MODEL = 'accounts.User'
 
 
-cache_password = config('PASSWORD')
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': 'redis://k02a4061.p.ssafy.io:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            'PASSWORD': cache_password
+            'PASSWORD': config('PASSWORD')
         }
     }
 }
