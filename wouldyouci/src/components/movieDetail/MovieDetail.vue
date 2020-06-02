@@ -14,7 +14,7 @@
               height="auto"
               allow="autoplay"
               allowfullscreen
-              frameborder=0;
+              frameborder=0
               :src=details.trailer
               ></iframe>
         </div>
@@ -77,7 +77,6 @@
                 <component 
                   v-bind:is="item.component" 
                   :details="details" 
-                  :firstRatings="ratings"
                   :user="user" 
                   ></component>
               </v-card-text>
@@ -127,12 +126,11 @@ export default {
     ...mapGetters({
       details: 'getMovieDetail',
       user: 'getUserInfo',
-      ratings: 'getRatings',
       }),
   },
 
   methods: {
-    ...mapActions(['fetchMovieDetail', 'bringUserInfo', 'togglePickMovie', 'fetchRatings', ]),
+    ...mapActions(['fetchMovieDetail', 'bringUserInfo', 'togglePickMovie', 'fetchMovieRatings', ]),
     async togglePick() {
       await this.togglePickMovie(this.details.id)
       if ( this.isPicked ){
@@ -146,11 +144,6 @@ export default {
   async created() {
     await this.fetchMovieDetail(this.$route.params.id);
     await this.bringUserInfo()
-    const params = { 
-      movie: this.details.id, 
-      page: 1
-      };
-    await this.fetchRatings(params);
     if (this.user.pick_movies && this.user.pick_movies.includes(this.details.id)) {
       this.isPicked = true
     } else {

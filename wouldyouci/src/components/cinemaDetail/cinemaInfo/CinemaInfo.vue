@@ -1,12 +1,11 @@
-
 <template>
   <div class="cinemaInfo">
     <p>
       <span class="item">
-        홈페이지 
+        홈페이지
       </span>
       <span class="content">
-        {{ details.url }}
+        <v-btn :href="details.url" text>홈페이지</v-btn>
       </span>
     </p>
     <p>
@@ -45,7 +44,7 @@
 </template>
 <script>
 export default {
-  name: 'CinemaDetail',
+  name: 'CinemaInfo',
   props: ["details"],
   components: {
   },

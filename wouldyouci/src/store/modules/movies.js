@@ -18,8 +18,9 @@ const state = {
   movies: [],
   nearTheater: [],
   movieDetail: [],
-  ratings: [],
-  
+  movieRatings: [],
+  cinemaDetail: [],
+  cinemaRatings: [],
 };
 
 const getters = {
@@ -29,8 +30,9 @@ const getters = {
   getMovies: state => state.movies,
   getNearTheater: state => state.nearTheater,
   getMovieDetail: state => state.movieDetail,
-  getRatings: state => state.ratings,
-
+  getMovieRatings: state => state.movieRatings,
+  getCinemaDetail: state => state.cinemaDetail,
+  getCinemaRatings: state => state.cinemaRatings,
 };
 
 const mutations = {
@@ -40,8 +42,9 @@ const mutations = {
   setMovies: (state, movies) => state.movies = movies,
   setNearTheater: (state, theaters) => state.nearTheater = theaters,
   setMovieDetail: (state, details) => state.movieDetail = details,
-  setRatings: (state, ratings) => state.ratings = ratings,
-
+  setMovieRatings: (state, ratings) => state.movieRatings = ratings,
+  setCinemaDetail: (state, details) => state.cinemaDetail = details,
+  setCinemaRatings: (state, ratings) => state.cinemaRatings = ratings,
 };
 
 const actions = {
@@ -152,7 +155,7 @@ const actions = {
         })
     })
   },
-  fetchRatings: ({ commit }, params ) => {
+  fetchMovieRatings: ({ getters, commit }, params ) => {
     const token = sessionStorage.getItem('jwt');
     const options = {
       headers: {
@@ -163,6 +166,92 @@ const actions = {
     return new Promise(function(resolve, reject) {
       axios.get(`${HOST}/movie/rating/page/`, options)
         .then(res => {
+          console.log(res)
+          commit('setMovieRatings', res.data.results);
+          if (!getters.getMovieRatings) {
+            console.log('no movie data')
+          }
+          resolve('ok')
+        })
+        .catch(err => {
+          console.log(err);
+          reject(Error('error'))
+        })
+    })
+  },
+  togglePickMovie: ({dispatch}, movieId ) => {
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`,
+      }
+    }
+    axios.patch(`${HOST}/movie/${movieId}/pick/`, movieId, options)
+      .then(res => {
+        console.log(res);
+        return dispatch('fetchMovieDetail', movieId);
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  },
+
+  fetchCinemaDetail: ({ commit }, cinemaId) => {
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`
+      }
+    }
+    return new Promise(function(resolve, reject) {
+      axios.get(`${HOST}/cinema/${cinemaId}/`, options)
+        .then(res => {
+          commit('setCinemaDetail', res.data);
+          console.log(res)
+          resolve('ok')
+        })
+        .catch(err => {
+          console.log(err);
+          reject(Error('error'))
+        })
+    })
+  },
+  fetchCinemaRatings: ({ getters, commit }, params ) => {
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+      params: params
+    }
+    return new Promise(function(resolve, reject) {
+      axios.get(`${HOST}/cinema/rating/page/`, options)
+        .then(res => {
+          console.log(res)
+          commit('setCinemaRatings', res.data.results);
+          if (!getters.getCinemaRatings) {
+            console.log('no movie data')
+          }
+          resolve('ok')
+        })
+        .catch(err => {
+          console.log(err);
+          reject(Error('error'))
+        })
+    })
+  },
+  fetchRatings: ({ commit }, {item, params} ) => {
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+      params: params
+    }
+    return new Promise(function(resolve, reject) {
+      axios.get(`${HOST}/${item}/rating/page/`, options)
+        .then(res => {
+          console.log(res)
           commit('setRatings', res.data.results);
           if (!getters.getRatings) {
             console.log('no movie data')
@@ -235,22 +324,7 @@ const actions = {
       })
     })
   },
-  togglePickMovie: ({dispatch}, movieId ) => {
-    const token = sessionStorage.getItem('jwt');
-    const options = {
-      headers: {
-        Authorization: `JWT ${token}`,
-      }
-    }
-    axios.patch(`${HOST}/movie/${movieId}/pick/`, movieId, options)
-      .then(res => {
-        console.log(res);
-        return dispatch('fetchMovieDetail', movieId);
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  },
+  
 
 };
 

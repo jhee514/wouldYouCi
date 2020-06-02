@@ -1,13 +1,15 @@
 <template>
   <div 
     class="ratings"
-    v-infinite-scroll="loadMore"
-    infinite-scroll-disabled="busy"
-    infinite-scroll-distance="250"
     >
     <RatingForm :id="details.id" @submitRating="addRating"/>
 
-    <v-list v-if="isRatings">
+    <v-list 
+      v-if="isRatings"
+      v-infinite-scroll="loadMore"
+      infinite-scroll-disabled="busy"
+      infinite-scroll-distance="250"
+      >
       <template v-for="(rating, index) in ratings">
         <v-list-item :key="index">
           <v-list-item-avatar class="avatar">
@@ -70,9 +72,9 @@
 </template>
 
 <script>
-import Score from './Score';
-import RatingForm from './RatingForm';
-import RatingEditForm from './RatingEditForm';
+import Score from '../../movieDetail/ratings/Score';
+import RatingForm from '../../movieDetail/ratings/RatingForm';
+import RatingEditForm from '../../movieDetail/ratings/RatingEditForm';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -90,16 +92,16 @@ export default {
       busy: false,
       page: 1,
       dialog: false,
-      isRatings: this.details.ratings.length,
+      isRatings: this.details.cinema_ratings.length,
       ratings: [],
     }
   },
   computed: {
-    ...mapGetters(['getMovieRatings']),
+    ...mapGetters(['getCinemaRatings']),
 
   },
   methods: {
-    ...mapActions(['fetchMovieRatings', 'postRating', 'delRating', 'patchRating' ]),
+    ...mapActions(['fetchCinemaRatings', 'postRating', 'delRating', 'patchRating' ]),
 
     async loadMore() {
       this.busy = true;
@@ -107,9 +109,10 @@ export default {
         movie: this.details.id, 
         page: this.page++,
         };
-      await this.fetchMovieRatings(params)
+      console.log('params', params)
+      await this.fetchCinemaRatings(params)
       this.busy = false;
-      for ( const rating of this.getMovieRatings) {
+      for ( const rating of this.getCinemaRatings ) {
         this.ratings.push(rating);
       }
     },
