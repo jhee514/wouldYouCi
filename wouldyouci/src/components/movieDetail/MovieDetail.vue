@@ -148,7 +148,7 @@ export default {
     await this.bringUserInfo()
     const params = { 
       movie: this.details.id, 
-      page: 1 
+      page: 1
       };
     await this.fetchRatings(params);
     if (this.user.pick_movies && this.user.pick_movies.includes(this.details.id)) {

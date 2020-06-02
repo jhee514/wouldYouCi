@@ -40,7 +40,7 @@ const mutations = {
   setMovies: (state, movies) => state.movies = movies,
   setNearTheater: (state, theaters) => state.nearTheater = theaters,
   setMovieDetail: (state, details) => state.movieDetail = details,
-  setRatings: (state, ratings) => state.ratings.push(ratings),
+  setRatings: (state, ratings) => state.ratings = ratings,
 
 };
 

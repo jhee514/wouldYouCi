@@ -1,9 +1,9 @@
 <template>
   <div 
     class="ratings"
-    v-infinite-scroll="loadMore()"
+    v-infinite-scroll="loadMore"
     infinite-scroll-disabled="busy"
-    infinite-scroll-distance="50vh"
+    infinite-scroll-distance="200"
     >
     <RatingForm :id="details.id" @submitRating="addRating"/>
 
@@ -72,26 +72,38 @@ export default {
     Score,
     RatingForm,
     RatingEditForm,
-
   },
 
   data() {
     return {
+      data: [],
       busy: false,
       page: 1,
       dialog: false,
       isRatings: this.details.ratings.length,
-      ratings: this.firstRating,
-
+      ratings: this.firstRatings,
     }
   },
   computed: {
     ...mapGetters(['getRatings']),
 
   },
-  
   methods: {
     ...mapActions(['fetchRatings', 'postRating', 'delRating', 'patchRating' ]),
+
+    async loadMore() {
+      this.busy = true;
+      const params = { 
+        movie: this.details.id, 
+        page: this.page++
+      };
+      await this.fetchRatings(params)
+      this.busy = false;
+      console.log(this.ratings)
+      for ( const rating of this.getRatings) {
+        this.ratings.push(rating);
+      }
+    },
 
     formatDate(date) {
       var moment = require('moment');
