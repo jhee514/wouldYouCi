@@ -23,6 +23,7 @@
               dark
               v-for="(movie, idx) in CinemaList"
               :key="idx"
+              @click="goDetail(movie.movie.id)"
             >
               <v-list-item>
                 <v-avatar
@@ -59,14 +60,14 @@
 </template>
 
 <script>
-import router from "@/router";
+import router from "../../../router";
 
 export default {
   name: 'RatingMovies',
   props: ["CinemaList"],
   methods: {
-    goDetail() {
-      router.push('/movieDetail')
+    goDetail(movieId) {
+      router.push(`/movie/${movieId}`);
     },
     changeRating(info) {
       const axios = require("axios");
