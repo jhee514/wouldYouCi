@@ -3,17 +3,18 @@ from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-import os
-from wouldyouci_back.settings import MEDIA_ROOT
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from cinemas.serializers import SimpleCinemaSerializer
 from movies.models import Movie
-from movies.serializers import TasteMovieSerializer
+from movies.serializers import TasteMovieSerializer, RatingPosterSerializer, SimpleMovieSerializer
 from .models import Profile
 from .serializers import UserCreationSerializer, UserDetailSerializer, \
-    ProfileSerializer, RatingSerializer, RatingPosterSerializer
+    ProfileSerializer, RatingSerializer
+from movies.func import contentsbased_onscreen, recommend_userbased
 from django.contrib.auth import get_user_model
 User = get_user_model()
+
 
 
 @api_view(['POST'])
@@ -44,14 +45,49 @@ def get_rating_tf(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_index(request):
-    # TODO
-    user = get_object_or_404(User, id=request.user.id)
-    serializer = UserDetailSerializer(user)
 
+    user = request.user
+    user_serializer = UserDetailSerializer(user)
+    pick_movies = user.pick_movies.all()
+    pick_cinemas = user.pick_cinemas.all()
+    pick_movies_serializer = SimpleMovieSerializer(pick_movies, many=True)
+    pick_cinemas_serializer = SimpleCinemaSerializer(pick_cinemas, many=True)
+
+    rating_tf = False
     recommend_movies = []
-    maybe_likes_willscreen = []
+    recommend_onscreen = []
+    if user.ratings.count() > 9:
+        rating_tf = True
 
-    return Response(status=200, data=serializer.data)
+        recommend_id_set = recommend_userbased(user.id)
+        recommend_movie_set = Movie.objects.filter(id__in=recommend_id_set)
+        recommend_serializer = SimpleMovieSerializer(recommend_movie_set, many=True)
+        recommend_movies = recommend_serializer.data
+
+        onscreen_id_set = contentsbased_onscreen(user.id)
+        onscreen_movie_set = Movie.objects.filter(id__in=onscreen_id_set)
+        onscreen_serializer = SimpleMovieSerializer(onscreen_movie_set, many=True)
+        recommend_onscreen = onscreen_serializer.data
+
+
+    datasets = {
+        'meta': {
+            'rating_tf': rating_tf,
+            'pick_cinemas': pick_cinemas.count(),
+            'pick_movies': pick_movies.count(),
+            'recommend_movies': recommend_movie_set.count(),
+            'recommend_onscreen': onscreen_movie_set.count()
+        },
+        'data': {
+            'user': user_serializer.data,
+            'pick_cinemas': pick_cinemas_serializer.data,
+            'pick_movies': pick_movies_serializer.data,
+            'recommend_movies': recommend_movies,
+            'recommend_onscreen': recommend_onscreen
+        }
+    }
+
+    return Response(status=200, data=datasets)
 
 
 @api_view(['POST', 'DELETE'])
@@ -60,7 +96,6 @@ def change_profile(request):
     user = request.user
     if user.file.exists():
         profile = Profile.objects.get(user=user.id)
-        os.remove(os.path.join(MEDIA_ROOT, f"{profile.file}"))
         profile.delete()
     if request.method == 'POST':
         if request.FILES:
@@ -91,9 +126,9 @@ def change_password(request):
 
 
 class SmallPagination(PageNumberPagination):
-    page_size = 20
+    page_size = 12
     page_size_query_param = "page_size"
-    max_page_size = 50
+    max_page_size = 60
 
 
 class TasteViewSet(viewsets.ReadOnlyModelViewSet):

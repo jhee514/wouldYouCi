@@ -10,7 +10,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['[::1]', 'localhost', '127.0.0.1', '62f15d4f.ngrok.io']
+ALLOWED_HOSTS = ['[::1]', '52.78.229.238', 'k02a4061.p.ssafy.io']
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -18,6 +18,8 @@ CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:8080',
+    'http://wouldyouci.ga',
+    'https://wouldyouci.ga'
 ]
 
 CORS_ALLOW_METHODS = (
@@ -156,7 +158,7 @@ AUTH_USER_MODEL = 'accounts.User'
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://k02a4061.p.ssafy.io:6379/1',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'PASSWORD': config('PASSWORD')
@@ -167,7 +169,7 @@ CACHES = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': 'k02a4061.p.ssafy.io:9200'
+        'hosts': '127.0.0.1:9200'
     },
 }
 

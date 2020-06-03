@@ -1,9 +1,9 @@
 from django.db.models import Count
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from movies.serializers import SimpleMovieSerializer, SearchMovieSerializer, SoonMovieSerializer
-from movies.models import Movie, Onscreen
+from rest_framework.permissions import AllowAny
+from movies.serializers import SimpleMovieSerializer, SearchMovieSerializer, PremovieSerializer
+from movies.models import Movie
 from .documents import MoviesDocument
 from cinemas.models import Cinema
 from cinemas.serializers import SearchCinemaSerializer
@@ -132,15 +132,14 @@ def search_index(request):
             serializer = SearchCinemaSerializer(cinema)
             near_cinema.append(serializer.data)
 
-
     today = date.today()
+
     comming_soon = Movie.objects.filter(open_date__gte=today,
                                         open_date__lte=today + timedelta(days=31)).order_by('open_date')
-    soon_serializer = SoonMovieSerializer(comming_soon, many=True)
+    soon_serializer = PremovieSerializer(comming_soon, many=True)
 
-    # Todo Onscreen 으로 바꾸기
-    popular_movies = Movie.objects.annotate(num_rating=Count('ratings')).order_by('-num_rating')[:10]
-
+    popular_movies = Movie.objects.exclude(onscreens=None).annotate(num_rating=Count('ratings'))
+    popular_movies = popular_movies.order_by('-num_rating')[:10]
     pop_serializer = SearchMovieSerializer(popular_movies, many=True)
 
     dataset = {

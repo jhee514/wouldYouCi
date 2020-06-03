@@ -1,81 +1,20 @@
-from django.shortcuts import render
-from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from django.shortcuts import HttpResponse, get_object_or_404
-from rest_framework import viewsets, permissions
-from .models import Movie, Onscreen
-from accounts.serializers import RatingSerializer, SimpleRatingSerializer
-from accounts.models import Rating
-from .serializers import MovieSerializer
-from django.core.paginator import Paginator
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
-import pandas as pd
-from sklearn.linear_model import Lasso, LinearRegression
-from sklearn.model_selection import RandomizedSearchCV, train_test_split
-from scipy.stats import uniform as sp_rand
-from wouldyouci_back.settings import BASE_DIR
-import os
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
+from django.core.paginator import Paginator
 from django.core.cache import cache
-from .apps import MoviesConfig
+from accounts.serializers import RatingSerializer, SimpleRatingSerializer
+from accounts.models import Rating
+from cinemas.serializers import SearchCinemaSerializer
+from cinemas.models import Cinema
+from .models import Movie, Onscreen
+from .serializers import MovieSerializer
+from .func import contentsbased_by_genres_and_directors
 from django.contrib.auth import get_user_model
 User = get_user_model()
-
-
-def contentsbased_by_genre(user_id, movie_id):
-    genres = pd.read_pickle(os.path.join(BASE_DIR, 'utils', 'genres_train.p'))
-
-    ratings = pd.DataFrame(list(Rating.objects.filter(user=user_id).values('score', 'movie_id')))
-
-    user_profile = ratings.merge(genres, left_on='movie_id', right_index=True)
-
-    model = Lasso()
-    param_grid = {'alpha': sp_rand()}
-
-    research = RandomizedSearchCV(estimator=model,
-                                  param_distributions=param_grid,
-                                  n_iter=50,
-                                  cv=5,
-                                  random_state=406)
-
-    research.fit(user_profile[genres.columns], user_profile['score'])
-
-    predictions = research.best_estimator_.predict(genres)
-    genres.reset_index()
-
-    genres['predict'] = predictions
-    predicted_score = genres.at[movie_id, 'predict']
-
-    return predicted_score * 20
-
-
-def contentsbased_by_genres_and_actors(user_id, movie_id):
-    data = cache.get(f'recommend_{user_id}')
-
-    if data is None:
-        movies = MoviesConfig.movies
-
-        ratings = pd.DataFrame(list(Rating.objects.filter(user=user_id).values('score', 'movie_id')))
-        ratings = ratings.merge(movies, left_on='movie_id', right_index=True)
-        x_train, x_test, y_train, y_test = train_test_split(ratings[movies.columns],
-                                                            ratings['score'],
-                                                            random_state=406,
-                                                            test_size=0.1)
-        reg = LinearRegression()
-        reg.fit(x_train, y_train)
-
-        predictions = reg.predict(movies)
-        movies.reset_index()
-
-        movies['predict'] = predictions
-        data = movies[['predict']]
-
-        cache.set(f'recommend_{user_id}', data)
-
-    predicted_score = data.at[movie_id, 'predict']
-
-    return round(predicted_score * 20, 1)
 
 
 class SmallPagination(PageNumberPagination):
@@ -106,7 +45,7 @@ def movie_detail(request, movie_id):
 
     predicted_score = 0
     if request.user.ratings.count() > 9:
-        predicted_score = contentsbased_by_genres_and_actors(request.user.id, movie_id)
+        predicted_score = contentsbased_by_genres_and_directors(request.user.id, movie_id)
 
     paginator = Paginator(movie.ratings.all(), 10)
     page_number = request.GET.get('page', 1)
@@ -124,7 +63,6 @@ def movie_detail(request, movie_id):
     return Response(status=200, data=datasets)
 
 
-
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def pick_movie(request, movie_id):
@@ -136,7 +74,6 @@ def pick_movie(request, movie_id):
     else:
         movie.pick_users.add(user)
         return Response(status=200, data={"pick_movies": True})
-
 
 
 @api_view(['POST'])
@@ -203,3 +140,21 @@ def patch_delete_rating(request, rating_id):
             return Response(status=204)
 
     return Response(status=400, data={'message': '권한이 없습니다.'})
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_onscreen_cinema(request, movie_id):
+    movie = get_object_or_404(Movie, id=movie_id)
+    onscreens = movie.onscreens.values_list('cinema', flat=True).distinct()
+    cinemas = Cinema.objects.filter(id__in=onscreens)
+    area = list(cinemas.values_list('area', flat=True).distinct())
+    serializer = SearchCinemaSerializer(cinemas, many=True)
+
+    datasets = {
+        'area': area,
+        'data': serializer.data
+    }
+
+    return Response(status=200, data=datasets)
+
