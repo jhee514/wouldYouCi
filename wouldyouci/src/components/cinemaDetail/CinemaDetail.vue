@@ -35,9 +35,31 @@
             @click.prevent="togglePickCinema">
             <v-icon>mdi-heart</v-icon>
           </v-btn>
-          <v-btn icon>
-            <v-icon :href="details.url">mdi-share-variant</v-icon>
-          </v-btn>
+
+
+
+
+
+          <v-dialog v-model="dialog">
+            <template v-slot:activator="{ on }">
+              <v-btn
+                v-on="on"
+                icon 
+                color="grey"
+                x-small
+                >
+                <v-icon>mdi-share-variant</v-icon>
+              </v-btn>
+            </template>
+            <CinemaOnScreens :movies="details.onscreens" @close="closeModal" />
+          </v-dialog>
+
+
+
+
+
+
+
         </v-card-actions>
 
         <v-tabs
@@ -82,6 +104,7 @@ import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import CinemaInfo from './cinemaInfo/CinemaInfo';
 import CinemaRatings from './cinemaRatings/CinemaRatings';
+import CinemaOnScreens from './cinemaInfo/CinemaOnScreens';
 import Score from '../ratingForm/Score';
 import { mapGetters, mapActions } from 'vuex';
 
@@ -94,6 +117,7 @@ export default {
     CinemaInfo,
     CinemaRatings,
     Score,
+    CinemaOnScreens,
   },
 
   data() {
@@ -105,6 +129,7 @@ export default {
       ],
       expand: false,
       isPicked: false,
+      dialog: false,
 
     }
   },
@@ -128,6 +153,11 @@ export default {
         this.isPicked = true
       }
     },
+    closeModal() {
+      this.dialog = false;
+      console.log(this.details.onscreens)
+    },
+
   },
   async created() {
     await this.fetchCinemaDetail(this.$route.params.id);

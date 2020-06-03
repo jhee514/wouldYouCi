@@ -12,3 +12,8 @@
   color: rgb(246,	194,	68);
   text-decoration: none;
 }
+
+.movieCard{
+  color: black;
+  filter: blur(2px);
+}
