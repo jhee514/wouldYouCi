@@ -47,14 +47,16 @@
             <v-icon @submit.prevent="getTicket">mdi-share-variant</v-icon>
           </v-btn>
         </v-card-actions>
-
-        <v-expansion-panels>
-          <v-expansion-panel>
-            <v-expansion-panel-header>줄거리</v-expansion-panel-header>
-            <v-expansion-panel-content>{{ details.summary }}</v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-
+      
+        <div class="summary">
+          <div v-bind:style="lineClamp">
+            {{ details.summary }}
+          </div>
+          <v-btn icon @click.prevent="toggleSummaryClamp()">
+              <v-icon v-if="isHidden">mdi-arrow-down</v-icon>
+              <v-icon v-else>mdi-arrow-up</v-icon>
+          </v-btn>
+        </div>
 
         <v-tabs
           v-model="tab"
@@ -121,7 +123,14 @@ export default {
       ],
       expand: false,
       isPicked: false,
-
+      isHidden: true,
+      lineClamp: {
+        overflow: 'hidden',
+        display: '-webkit-box',
+        height: 'auto',
+        '-webkit-box-orient': 'vertical',
+        '-webkit-line-clamp': 3,
+      }
     }
   },
 
@@ -130,10 +139,35 @@ export default {
       details: 'getMovieDetail',
       user: 'getUserInfo',
       }),
+  
   },
 
   methods: {
     ...mapActions(['fetchMovieDetail', 'bringUserInfo', 'togglePick', ]),
+
+    toggleSummaryClamp() {
+      console.log(this.summary)
+      if ( this.isHidden == false) {
+        this.isHidden = true;
+        this.lineClamp = {
+          overflow: 'hidden',
+          display: '-webkit-box',
+          height: 'auto',
+          '-webkit-box-orient': 'vertical',
+          '-webkit-line-clamp': 3,
+        }
+      } else {
+        this.isHidden = false;
+        this.lineClamp = {
+          display: 'block',
+          height: 'auto',
+          '-webkit-box-orient': 'vertical',
+          '-webkit-line-clamp': 'none',
+        }
+      }
+    },
+
+
     async togglePickMovie() {
       const item = 'movie'
       const itemId = this.details.id
@@ -145,6 +179,7 @@ export default {
       }
     },
   },
+
   async created() {
     await this.fetchMovieDetail(this.$route.params.id);
     await this.bringUserInfo()
