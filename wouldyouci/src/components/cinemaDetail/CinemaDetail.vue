@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <div>
     <Title />
     <div class="body">
       <v-card elevation=0>
@@ -37,9 +37,6 @@
           </v-btn>
 
 
-
-
-
           <v-dialog v-model="dialog">
             <template v-slot:activator="{ on }">
               <v-btn
@@ -51,13 +48,8 @@
                 <v-icon>mdi-share-variant</v-icon>
               </v-btn>
             </template>
-            <CinemaOnScreens :movies="details.onscreens" @close="closeModal" />
+            <CinemaOnScreens :onscreens="details.onscreens" @close="closeModal" />
           </v-dialog>
-
-
-
-
-
 
 
         </v-card-actions>
@@ -96,7 +88,7 @@
       </v-card>
     </div>
     <Nav />
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -147,16 +139,14 @@ export default {
       const item = 'cinema'
       const itemId = this.details.id
       await this.togglePick({item, itemId})
-      if ( this.isPicked ){
-        this.isPicked = false
-      } else {
-        this.isPicked = true
-      }
+      this.isPicked = !this.isPicked
     },
     closeModal() {
       this.dialog = false;
-      console.log(this.details.onscreens)
     },
+    splitText() {
+
+    }
 
   },
   async created() {
