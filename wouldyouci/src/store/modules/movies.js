@@ -245,19 +245,18 @@ const actions = {
   },
   submitRatings: ({ getters }, movies) => {
     getters;
+    console.log(movies);
+    let data = [];
+    for (const [key, value] of Object.entries(movies)) {
+      data.push({movie: key, score: value});
+    }
+    console.log(data);
     const token = sessionStorage.getItem('jwt');
     const options = {
       headers: {
         Authorization: `JWT ${token}`
       }
     }
-    let data = [];
-    for (const movie of movies) {
-      if (movie.rating) {
-        data.push({"movie": movie.id, "score": movie.rating})
-      }
-    }
-    console.log(data);
     if (data.length >= 10) {
       axios.post(`${HOST}/user/rating/`, {data}, options)
         .then(res => {

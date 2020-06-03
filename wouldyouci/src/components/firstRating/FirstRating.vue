@@ -15,6 +15,19 @@
         </v-card-text>
       </v-card>
       <v-container fluid>
+        <div class="chip">
+          <v-chip
+            color="#998DE8"
+            text-color="#FFFFFF"
+          >
+            <v-avatar tile>
+              <v-icon>
+                fas fa-film
+              </v-icon>
+            </v-avatar>
+            현재까지 평가한 영화 - {{ beforeCnt }} 편
+          </v-chip>
+        </div>
         <v-row justify="end">
           <v-spacer></v-spacer>
           <v-btn @click="submitRating" text>제출</v-btn>
@@ -41,7 +54,7 @@
               </v-img>
 
               <v-rating
-                @input="addRating(card.id)"
+                @input="addRating({'id': card.id, 'rating': card.rating})"
                 v-model="card.rating"
                 color="#F7FE2E"
                 background-color="#F2F2F2"
@@ -51,11 +64,6 @@
             </v-card>
           </v-col>
         </v-row>
-        <!-- <v-row justify="end">
-          <v-spacer></v-spacer>
-          <v-btn text>제출</v-btn>
-          <v-btn class="next" text @click="goMap">다음에 하기</v-btn>
-        </v-row> -->
         <v-avatar class="cntA" size="6vh" color="#AD8BE8">
           <span>{{ cnt }}</span>
         </v-avatar>
@@ -72,6 +80,14 @@
         </v-btn>
       </v-container>
     </div>
+    <div class="progress" v-if="getLoading">
+      <v-progress-circular
+        :size="70"
+        :width="7"
+        color="#4520EA"
+        indeterminate
+      ></v-progress-circular>
+    </div>
     <Nav />
   </div>
 </template>
@@ -80,7 +96,7 @@
 import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import router from '../../router';
-import { mapActions } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'UserPage',
@@ -95,36 +111,50 @@ export default {
       Flag: false,
       check: {},
       ratedId: {},
-      cnt: 0
+      cnt: 0,
+      beforeCnt: 0
     }
   },
+  computed: {
+    ...mapGetters(['getLoading'])
+  },
   methods: {
-    ...mapActions(['bringRatingMovies', 'submitRatings']),
+    ...mapMutations(['setLoading']),
+    ...mapActions(['bringRatingMovies', 'submitRatings', 'checkRating']),
     goMap() {
       router.push('/');
     },
     async loadMore() {
       console.log('rebring')
       this.Flag = true;
+      this.setLoading(true);
       const res = await this.bringRatingMovies(this.next);
       this.Flag = false;
+      this.setLoading(false);
       this.next += 1;
       console.log(res);
       this.cards = this.cards.concat(res.results);
     },
     submitRating() {
       console.log('submit');
-      this.submitRatings(this.cards);
+      this.submitRatings(this.ratedId);
     },
     goTop() {
       window.scrollTo(0, 0);
     },
-    addRating(cardId) {
-      if (!this.ratedId[cardId]) {
+    addRating(cardInfo) {
+      if (!this.ratedId[cardInfo.id]) {
         this.cnt += 1;
-        this.ratedId[cardId] = 1;
+        this.ratedId[cardInfo.id] = cardInfo.rating;
+      } else {
+        this.ratedId[cardInfo.id] = cardInfo.rating;
       }
     }
+  },
+  async mounted() {
+    const res = await this.checkRating('notLogin');
+    console.log(res);
+    this.beforeCnt = res;
   }
 }
 </script>

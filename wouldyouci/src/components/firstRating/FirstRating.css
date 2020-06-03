@@ -33,3 +33,9 @@
   bottom: 18vh;
   right: 6.7vw;
 }
+
+.progress{
+  position: absolute;
+  top: 44vh;
+  right: 44vw;
+}
