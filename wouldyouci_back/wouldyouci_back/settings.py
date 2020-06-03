@@ -10,7 +10,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['[::1]', '52.78.229.238', 'k02a4061.p.ssafy.io']
+ALLOWED_HOSTS = ['localhost', '[::1]', '52.78.229.238', 'k02a4061.p.ssafy.io']
 
 CORS_ALLOW_CREDENTIALS = True
 

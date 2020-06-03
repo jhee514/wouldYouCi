@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Cinema(models.Model):
     region = models.CharField(max_length=30)
     area = models.CharField(max_length=30)
