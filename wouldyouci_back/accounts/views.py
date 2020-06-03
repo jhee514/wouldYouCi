@@ -1,19 +1,18 @@
+from django.shortcuts import get_object_or_404
 from django.db.models import Count
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
-import os
-from wouldyouci_back.settings import MEDIA_ROOT
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from cinemas.serializers import SimpleCinemaSerializer
 from movies.models import Movie
-from movies.serializers import TasteMovieSerializer
-from .models import Rating, Profile
+from movies.serializers import TasteMovieSerializer, RatingPosterSerializer, SimpleMovieSerializer
+from movies.func import contentsbased_onscreen, recommend_userbased
+from .models import Profile
 from .serializers import UserCreationSerializer, UserDetailSerializer, ProfileSerializer, RatingSerializer
 from django.contrib.auth import get_user_model
 User = get_user_model()
-
 
 
 @api_view(['POST'])
@@ -34,21 +33,64 @@ def create_user(request):
 @permission_classes([IsAuthenticated])
 def get_rating_tf(request):
     user = request.user
+    rating_cnt = user.ratings.count()
+    rating_tf = False
     if user.ratings.count() > 9:
-        data = {'rating_tf': True, 'rating_cnt': user.ratings.count()}
-    else:
-        data = {'rating_tf': False, 'rating_cnt': user.ratings.count()}
-    return Response(status=200, data=data)
+        rating_tf = True
+
+    dataset = {
+        'rating_tf': rating_tf,
+        'rating_cnt': rating_cnt
+    }
+
+    return Response(status=200, data=dataset)
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_index(request):
-    # TODO
-    user = get_object_or_404(User, id=request.user.id)
-    serializer = UserDetailSerializer(user)
 
-    return Response(status=200, data=serializer.data)
+    user = request.user
+    user_serializer = UserDetailSerializer(user)
+    pick_movies = user.pick_movies.all()
+    pick_cinemas = user.pick_cinemas.all()
+    pick_movies_serializer = SimpleMovieSerializer(pick_movies, many=True)
+    pick_cinemas_serializer = SimpleCinemaSerializer(pick_cinemas, many=True)
+
+    rating_tf = False
+    recommend_movies = []
+    recommend_onscreen = []
+    if user.ratings.count() > 9:
+        rating_tf = True
+
+        recommend_id_set = recommend_userbased(user.id)
+        recommend_movie_set = Movie.objects.filter(id__in=recommend_id_set)
+        recommend_serializer = SimpleMovieSerializer(recommend_movie_set, many=True)
+        recommend_movies = recommend_serializer.data
+
+        onscreen_id_set = contentsbased_onscreen(user.id)
+        onscreen_movie_set = Movie.objects.filter(id__in=onscreen_id_set)
+        onscreen_serializer = SimpleMovieSerializer(onscreen_movie_set, many=True)
+        recommend_onscreen = onscreen_serializer.data
+
+    dataset = {
+        'meta': {
+            'rating_tf': rating_tf,
+            'pick_cinemas': pick_cinemas.count(),
+            'pick_movies': pick_movies.count(),
+            'recommend_movies': recommend_movie_set.count(),
+            'recommend_onscreen': onscreen_movie_set.count()
+        },
+        'data': {
+            'user': user_serializer.data,
+            'pick_cinemas': pick_cinemas_serializer.data,
+            'pick_movies': pick_movies_serializer.data,
+            'recommend_movies': recommend_movies,
+            'recommend_onscreen': recommend_onscreen
+        }
+    }
+
+    return Response(status=200, data=dataset)
 
 
 @api_view(['POST', 'DELETE'])
@@ -57,7 +99,6 @@ def change_profile(request):
     user = request.user
     if user.file.exists():
         profile = Profile.objects.get(user=user.id)
-        # os.remove(os.path.join(MEDIA_ROOT, f"{profile.file}"))
         profile.delete()
     if request.method == 'POST':
         if request.FILES:
@@ -88,9 +129,9 @@ def change_password(request):
 
 
 class SmallPagination(PageNumberPagination):
-    page_size = 20
+    page_size = 12
     page_size_query_param = "page_size"
-    max_page_size = 50
+    max_page_size = 60
 
 
 class TasteViewSet(viewsets.ReadOnlyModelViewSet):
@@ -115,24 +156,30 @@ class TasteViewSet(viewsets.ReadOnlyModelViewSet):
         return queryset
 
 
-@api_view(['POST'])
+@api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
-def make_dummy_rating(request):
+def get_create_dummy_rating(request):
     user = request.user
-    for data in request.data['data']:
-        if user.ratings.filter(movie=data['movie']).exists():
-            continue
+    if request.method == 'GET':
+        ratings = user.ratings.all()
+        serializer = RatingPosterSerializer(ratings, many=True)
+        return Response(status=200, data=serializer.data)
 
-        serializer = RatingSerializer(data=data)
-        if serializer.is_valid():
-            new_rating = serializer.save(user=user)
-            movie = new_rating.movie
-            ratings_count = movie.ratings.count()
-            movie_rating = movie.score * (ratings_count - 1)
-            movie_rating = (movie_rating + new_rating.score) / ratings_count
-            movie.score = movie_rating
-            movie.save()
-        else:
-            return Response(status=400, data=serializer.errors)
+    elif request.method == 'POST':
+        for data in request.data['data']:
+            if user.ratings.filter(movie=data['movie']).exists():
+                continue
 
-    return Response(status=203)
+            serializer = RatingSerializer(data=data)
+            if serializer.is_valid():
+                new_rating = serializer.save(user=user)
+                movie = new_rating.movie
+                ratings_count = movie.ratings.count()
+                movie_rating = movie.score * (ratings_count - 1)
+                movie_rating = (movie_rating + new_rating.score) / ratings_count
+                movie.score = movie_rating
+                movie.save()
+            else:
+                return Response(status=400, data=serializer.errors)
+
+        return Response(status=203)

@@ -1,12 +1,13 @@
 from django.db.models import Count
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from movies.serializers import SimpleMovieSerializer, SearchMovieSerializer, SoonMovieSerializer
-from movies.models import Movie, Onscreen
-from .documents import MoviesDocument
+from rest_framework.permissions import AllowAny
+from movies.serializers import SimpleMovieSerializer, SearchMovieSerializer, PremovieSerializer
+from movies.models import Movie
 from cinemas.models import Cinema
 from cinemas.serializers import SearchCinemaSerializer
+from .documents import MoviesDocument
+from datetime import date, timedelta
 from haversine import haversine
 
 
@@ -131,31 +132,25 @@ def search_index(request):
             serializer = SearchCinemaSerializer(cinema)
             near_cinema.append(serializer.data)
 
+    today = date.today()
 
-    # TODO cache and query
-    # 개봉 예정작 중 한 달 이내 개봉 예정작
-    comming_soon = Movie.objects.all()[:8]
-    soon_serializer = SoonMovieSerializer(comming_soon, many=True)
+    comming_soon = Movie.objects.filter(open_date__gte=today,
+                                        open_date__lte=today + timedelta(days=31)).order_by('open_date')
+    soon_serializer = PremovieSerializer(comming_soon, many=True)
 
-    popular_movies = Movie.objects.annotate(num_rating=Count('ratings')).order_by('-num_rating')[:10]
-
+    popular_movies = Movie.objects.exclude(onscreens=None).annotate(num_rating=Count('ratings'))
+    popular_movies = popular_movies.order_by('-num_rating')[:10]
     pop_serializer = SearchMovieSerializer(popular_movies, many=True)
-
-
-    # maybe_like_onscreen = Onscreen.objects.all()
-
 
     dataset = {
         'meta': {
             'near_cinema': len(near_cinema),
             'popular_movies': len(popular_movies),
             'comming_soon': len(comming_soon),
-            # 'maybe_like_onscreen': len(maybe_like_onscreen),
         },
         'near_cinema': near_cinema,
         'popular_movies': pop_serializer.data,
         'comming_soon': soon_serializer.data,
-        # 'maybe_like_onscreen': maybe_like_onscreen,
     }
 
     return Response(status=200, data=dataset, content_type='application.json')

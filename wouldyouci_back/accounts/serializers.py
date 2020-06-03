@@ -24,7 +24,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'file', 'pick_movies', 'pick_cinemas')
+        fields = ('id', 'username', 'file')
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -35,7 +35,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class RatingSerializer(serializers.ModelSerializer):
-    score = serializers.FloatField(required=True, min_value=0, max_value=5)
+    score = serializers.FloatField(required=True, min_value=0.5, max_value=5)
 
     class Meta:
         model = Rating
@@ -51,7 +51,7 @@ class SimpleRatingSerializer(serializers.ModelSerializer):
 
 
 class CinemaRatingSerializer(serializers.ModelSerializer):
-    score = serializers.FloatField(required=True, min_value=0, max_value=5)
+    score = serializers.FloatField(required=True, min_value=0.5, max_value=5)
 
     class Meta:
         model = CinemaRating

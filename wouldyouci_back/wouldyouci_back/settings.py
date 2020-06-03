@@ -10,7 +10,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['[::1]', 'localhost', '127.0.0.1', '62f15d4f.ngrok.io']
+ALLOWED_HOSTS = ['localhost', '[::1]', '52.78.229.238', 'k02a4061.p.ssafy.io']
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -18,6 +18,8 @@ CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:8080',
+    'http://wouldyouci.ga',
+    'https://wouldyouci.ga'
 ]
 
 CORS_ALLOW_METHODS = (
@@ -52,8 +54,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
-    "PAGE_SIZE": 10,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
 }
 
 
@@ -155,11 +157,11 @@ AUTH_USER_MODEL = 'accounts.User'
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'django_cache',
-        'TIMEOUT': 120,
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
         'OPTIONS': {
-            'MAX_ENTRIES': 500
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'PASSWORD': config('PASSWORD')
         }
     }
 }
@@ -167,17 +169,15 @@ CACHES = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': 'k02a4061.p.ssafy.io:9200'
+        'hosts': '127.0.0.1:9200'
     },
 }
 
 
 ROOT_DIR = os.path.dirname(BASE_DIR)
 
-# TODO debug=False 경우 수정 및 확인 필요한 부분
 STATIC_URL = '/static/'
-# STATIC_DIR = os.path.join(BASE_DIR, 'static')
-# STATICFILES_DIRS = [STATIC_DIR, ]
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 MEDIA_URL = '/media/'

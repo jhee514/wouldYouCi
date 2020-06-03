@@ -1,12 +1,12 @@
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
+from datetime import datetime
+from movies.models import Movie, Premovie
+from cinemas.models import Cinema
 from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
-from movies.models import Movie
-from cinemas.models import Cinema
-from imagekit.models import ProcessedImageField
-from imagekit.processors import ResizeToFill
-from datetime import datetime
 
 
 def profile_path(instance, filename):
@@ -48,6 +48,7 @@ class User(AbstractBaseUser):
     get_agreement = models.BooleanField(default=False)
     pick_movies = models.ManyToManyField(Movie, related_name='pick_users')
     pick_cinemas = models.ManyToManyField(Cinema, related_name='pick_users')
+    pick_premovies = models.ManyToManyField(Premovie, related_name='pick_users')
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
