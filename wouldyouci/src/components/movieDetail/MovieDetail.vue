@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <div>
     <Title />
     <div class="body">
       <v-card elevation=0>
@@ -92,7 +92,7 @@
       </v-card>
     </div>
     <Nav />
-  </v-app>
+  </div>
 </template>
 
 <script>
