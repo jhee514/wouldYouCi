@@ -4,13 +4,12 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
-from django.core.paginator import Paginator
 from django.core.cache import cache
 from accounts.serializers import RatingSerializer, SimpleRatingSerializer
 from accounts.models import Rating
 from cinemas.serializers import SearchCinemaSerializer
 from cinemas.models import Cinema
-from .models import Movie, Onscreen
+from .models import Movie
 from .serializers import MovieSerializer
 from .func import contentsbased_by_genres_and_directors
 from django.contrib.auth import get_user_model
@@ -32,7 +31,7 @@ class RatingViewSet(viewsets.ReadOnlyModelViewSet):
         movie_id = self.request.query_params.get('movie', 0)
         movie = get_object_or_404(Movie, id=movie_id)
         queryset = (
-            movie.ratings.filter(comment__isnull=False)
+            movie.ratings.exclude(comment=None)
         )
         return queryset
 
@@ -47,20 +46,13 @@ def movie_detail(request, movie_id):
     if request.user.ratings.count() > 9:
         predicted_score = contentsbased_by_genres_and_directors(request.user.id, movie_id)
 
-    paginator = Paginator(movie.ratings.all(), 10)
-    page_number = request.GET.get('page', 1)
-    page_obj = paginator.get_page(page_number)
-
-    ratings = SimpleRatingSerializer(page_obj.object_list, many=True)
-
-    datasets = {
-        'is_showing': Onscreen.objects.filter(movie=movie_id).exists(),
+    dataset = {
+        'is_showing': movie.onscreens.exists(),
         'predicted_score': predicted_score,
-        'ratings': ratings.data,
     }
-    datasets.update(serializer.data)
+    dataset.update(serializer.data)
 
-    return Response(status=200, data=datasets)
+    return Response(status=200, data=dataset)
 
 
 @api_view(['PATCH'])
@@ -129,10 +121,9 @@ def patch_delete_rating(request, rating_id):
             cache.delete(f'recommend_{user_id}')
             rating.delete()
 
+            movie_rating = 0
             if ratings_count - 1:
                 movie_rating = movie_rating / (ratings_count - 1)
-            else:
-                movie_rating = 0
 
             movie.score = movie_rating
             movie.save()
@@ -146,15 +137,15 @@ def patch_delete_rating(request, rating_id):
 @permission_classes([IsAuthenticated])
 def get_onscreen_cinema(request, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
-    onscreens = movie.onscreens.values_list('cinema', flat=True).distinct()
-    cinemas = Cinema.objects.filter(id__in=onscreens)
+    cinema_id_set = movie.onscreens.values_list('cinema', flat=True).distinct()
+    cinemas = Cinema.objects.filter(id__in=cinema_id_set)
     area = list(cinemas.values_list('area', flat=True).distinct())
     serializer = SearchCinemaSerializer(cinemas, many=True)
 
-    datasets = {
+    dataset = {
         'area': area,
         'data': serializer.data
     }
 
-    return Response(status=200, data=datasets)
+    return Response(status=200, data=dataset)
 

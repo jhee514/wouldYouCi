@@ -1,12 +1,12 @@
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
+from datetime import datetime
+from movies.models import Movie, Premovie
+from cinemas.models import Cinema
 from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
-from movies.models import Movie, Premovie
-from cinemas.models import Cinema
-from imagekit.models import ProcessedImageField
-from imagekit.processors import ResizeToFill
-from datetime import datetime
 
 
 def profile_path(instance, filename):

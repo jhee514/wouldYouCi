@@ -1,28 +1,26 @@
-import pandas as pd
-import numpy as np
+import os
+import time
 import pymysql
-
+import pandas as pd
+from decouple import config
+from datetime import datetime
 from sklearn.linear_model import Lasso
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import RandomizedSearchCV
-import os
-from decouple import config
 from scipy.stats import uniform as sp_rand
-from datetime import datetime
-import time
 
 
-def contentsbased(user_id, movie_id, genres_pk):
-    print('======== 전체영화 예상평점 - GENRE ===========')
+def contentsbased1(user_id, movie_id, genres_p):
+    print('======== 전체영화 예상평점 - 장르 ===========')
     print('START TIME : ', str(datetime.now())[10:19])
     start = time.time()
 
     conn = pymysql.connect(host=config('HOST'), port=3306, user=config('USER'),
                            password=config('PASSWORD'), db=config('DB'))
-    sql = "SELECT * FROM wouldyouci.accounts_rating where user_id=" + str(user_id)
+    sql = 'SELECT * FROM wouldyouci.accounts_rating where user_id=' + str(user_id)
     ratings = pd.read_sql_query(sql, conn)
-    genres = genres_pk
+    genres = genres_p
 
     conn.close()
 
@@ -37,32 +35,32 @@ def contentsbased(user_id, movie_id, genres_pk):
                                   cv=5,
                                   random_state=406)
 
-    print('학습 : ', str(datetime.now())[10:19])
     research.fit(user_profile[genres.columns], user_profile['score'])
     predictions = research.best_estimator_.predict(genres)
     genres.reset_index()
 
-    print('점수 예측 : ', str(datetime.now())[10:19])
     genres['predict'] = predictions
+
+    predicted_score = genres.at[movie_id, 'predict']
     print('END TIME : ', str(datetime.now())[10:19])
+
     end = time.time()
     print('TOTAL TIME : ', end-start)
-    print(genres['predict'])
-    print('EXPECTED SCORE : ', genres.at[movie_id, 'predict'])
+    print('PREDICTED SCORE : ', predicted_score)
     print()
     return pd.DataFrame.to_json(genres['predict'])
 
 
-def contentsbased2(user_id, movie_id, movies_pk):
-    print('======== 전체 영화 예상평점 - GENRE & ACTOR ===========')
+def contentsbased2(user_id, movie_id, movies_p):
+    print('======== 전체 영화 예상평점 - 장르 & 감독 & 배우 ===========')
     print('START TIME : ', str(datetime.now())[10:19])
     start = time.time()
 
     conn = pymysql.connect(host=config('HOST'), port=3306, user=config('USER'),
                            password=config('PASSWORD'), db=config('DB'))
-    sql = "SELECT * FROM wouldyouci.accounts_rating where user_id=" + str(user_id)
+    sql = 'SELECT * FROM wouldyouci.accounts_rating where user_id=' + str(user_id)
     ratings = pd.read_sql_query(sql, conn)
-    movies = movies_pk
+    movies = movies_p
 
     conn.close()
 
@@ -76,8 +74,6 @@ def contentsbased2(user_id, movie_id, movies_pk):
 
     reg.fit(x_train, y_train)
 
-    print('점수예측 : ', str(datetime.now())[10:19])
-
     predictions = reg.predict(movies)
     movies.reset_index()
 
@@ -88,22 +84,21 @@ def contentsbased2(user_id, movie_id, movies_pk):
 
     end = time.time()
     print('TOTAL TIME : ', end-start)
-    # print(movies['predict'])
-    print('EXPECTED SCORE : ', predicted_score)
+    print('PREDICTED SCORE : ', predicted_score)
     print()
     return pd.DataFrame.to_json(movies['predict'])
 
 
-def contentsbased3(user_id, movie_id, movies_pk):
-    print('======== 특정 영화 예상평점 - GENRE & ACTOR ===========')
+def contentsbased3(user_id, movie_id, movies_p):
+    print('======== 특정 영화 예상평점 - 장르 & 감독 & 배우 ===========')
     print('START TIME : ', str(datetime.now())[10:19])
 
     start = time.time()
     conn = pymysql.connect(host=config('HOST'), port=3306, user=config('USER'),
                            password=config('PASSWORD'), db=config('DB'))
-    sql = "SELECT * FROM wouldyouci.accounts_rating where user_id=" + str(user_id)
+    sql = 'SELECT * FROM wouldyouci.accounts_rating where user_id=' + str(user_id)
     ratings = pd.read_sql_query(sql, conn)
-    movies = movies_pk
+    movies = movies_p
 
     conn.close()
 
@@ -128,21 +123,65 @@ def contentsbased3(user_id, movie_id, movies_pk):
 
     columns_score = sum(user_profile.loc[user_id, movies.columns] * movies.loc[movie_id, movies.columns])
 
-    expected_score = intercept + columns_score
+    predicted_score = intercept + columns_score
     print('END TIME : ', str(datetime.now())[10:19])
     end = time.time()
     print('TOTAL TIME : ', end-start)
-    print('EXPECTED SCORE : ', expected_score)
-    return expected_score
+    print('PREDICTED SCORE : ', predicted_score)
+    print()
+    return predicted_score
+
+
+def contentsbased4(user_id, movie_id, movies_p):
+    print('======== 전체 영화 예상평점 - 장르 & 감독 ===========')
+    print('START TIME : ',str(datetime.now())[10:19] )
+
+    start = time.time()
+    conn = pymysql.connect(host=config('HOST'), port=3306, user=config('USER'),
+                           password=config('PASSWORD'), db=config('DB'))
+    sql = 'SELECT * FROM wouldyouci.accounts_rating where user_id=' + str(user_id)
+    ratings = pd.read_sql_query(sql, conn)
+
+    movies = movies_p
+
+    conn.close()
+
+    ratings = ratings.merge(movies, left_on='movie_id', right_index=True)
+    x_train, x_test, y_train, y_test = train_test_split(ratings[movies.columns],
+                                                        ratings['score'],
+                                                        random_state=406,
+                                                        test_size=0.1)
+
+    reg = LinearRegression()
+
+    reg.fit(x_train, y_train)
+
+    predictions = reg.predict(movies)
+    movies.reset_index()
+
+    movies['predict'] = predictions
+
+    predicted_score = movies.at[movie_id, 'predict']
+    print('END TIME : ', str(datetime.now())[10:19])
+    end = time.time()
+    print('TOTAL TIME : ', end-start)
+    print('PREDICTED SCORE : ', predicted_score)
+    return pd.DataFrame.to_json(movies['predict'])
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-genres = pd.read_pickle(os.path.join(BASE_DIR, 'movie_director_train.p'))
 a = time.time()
+genres = pd.read_pickle(os.path.join(BASE_DIR, 'movie_director_train.p'))
+b = time.time()
+print('Time to read pickle file 1: ', b - a)
 movies = pd.read_pickle(os.path.join(BASE_DIR, 'movie_train.p'))
-# print()
-# print('Time to read pickle file: ', time.time() - a)
-# print()
-contentsbased(9000007, 150179, genres)
-# contentsbased2(9000007, 10016, movies)
-# contentsbased3(9000007, 10016, movies)
+c = time.time()
+print('Time to read pickle file 2: ', c - b)
+directors = pd.read_pickle(os.path.join(BASE_DIR, 'movie_director_train.p'))
+d = time.time()
+print('Time to read pickle file 3: ', d - c)
+print()
+contentsbased1(9000007, 10016, genres)
+contentsbased2(9000007, 10016, movies)
+contentsbased3(9000007, 10016, movies)
+contentsbased4(9000007, 10016, directors)

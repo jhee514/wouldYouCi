@@ -4,9 +4,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from movies.serializers import SimpleMovieSerializer, SearchMovieSerializer, PremovieSerializer
 from movies.models import Movie
-from .documents import MoviesDocument
 from cinemas.models import Cinema
 from cinemas.serializers import SearchCinemaSerializer
+from .documents import MoviesDocument
 from datetime import date, timedelta
 from haversine import haversine
 

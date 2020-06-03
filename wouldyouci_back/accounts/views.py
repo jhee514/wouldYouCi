@@ -1,20 +1,18 @@
+from django.shortcuts import get_object_or_404
 from django.db.models import Count
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from cinemas.serializers import SimpleCinemaSerializer
 from movies.models import Movie
 from movies.serializers import TasteMovieSerializer, RatingPosterSerializer, SimpleMovieSerializer
-from .models import Profile
-from .serializers import UserCreationSerializer, UserDetailSerializer, \
-    ProfileSerializer, RatingSerializer
 from movies.func import contentsbased_onscreen, recommend_userbased
+from .models import Profile
+from .serializers import UserCreationSerializer, UserDetailSerializer, ProfileSerializer, RatingSerializer
 from django.contrib.auth import get_user_model
 User = get_user_model()
-
 
 
 @api_view(['POST'])
@@ -35,11 +33,17 @@ def create_user(request):
 @permission_classes([IsAuthenticated])
 def get_rating_tf(request):
     user = request.user
+    rating_cnt = user.ratings.count()
+    rating_tf = False
     if user.ratings.count() > 9:
-        data = {'rating_tf': True, 'rating_cnt': user.ratings.count()}
-    else:
-        data = {'rating_tf': False, 'rating_cnt': user.ratings.count()}
-    return Response(status=200, data=data)
+        rating_tf = True
+
+    dataset = {
+        'rating_tf': rating_tf,
+        'rating_cnt': rating_cnt
+    }
+
+    return Response(status=200, data=dataset)
 
 
 @api_view(['GET'])
@@ -69,8 +73,7 @@ def user_index(request):
         onscreen_serializer = SimpleMovieSerializer(onscreen_movie_set, many=True)
         recommend_onscreen = onscreen_serializer.data
 
-
-    datasets = {
+    dataset = {
         'meta': {
             'rating_tf': rating_tf,
             'pick_cinemas': pick_cinemas.count(),
@@ -87,7 +90,7 @@ def user_index(request):
         }
     }
 
-    return Response(status=200, data=datasets)
+    return Response(status=200, data=dataset)
 
 
 @api_view(['POST', 'DELETE'])

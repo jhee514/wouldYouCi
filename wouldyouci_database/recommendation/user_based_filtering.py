@@ -1,5 +1,5 @@
-import pandas as pd
 import os
+import pandas as pd
 
 
 def userbased(user_id):
@@ -10,5 +10,4 @@ def userbased(user_id):
 
 
 k = userbased(9000009)
-print(k)
-print(k[1])
+print('영화 id 목록 :', k)

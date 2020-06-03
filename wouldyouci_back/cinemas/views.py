@@ -4,14 +4,14 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import viewsets
-import datetime
+from datetime import date, datetime
 from movies.models import Onscreen
 from movies.serializers import OnscreenSerializer, CinemaSerializer
-from .models import Cinema
-from .serializers import SimpleCinemaSerializer
 from accounts.models import CinemaRating
 from accounts.serializers import CinemaRatingSerializer
 from accounts.serializers import SimpleCinemaRatingSerializer
+from .models import Cinema
+from .serializers import SimpleCinemaSerializer
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -35,38 +35,36 @@ def get_cinema_width(request):
 
     serializer = SimpleCinemaSerializer(cinemas, many=True)
 
-    datasets = {
+    dataset = {
         'meta': {
             'total': cinemas.count()
         },
         'documents': serializer.data
     }
 
-    return Response(status=200, data=datasets, content_type='application.json')
+    return Response(status=200, data=dataset)
 
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_fast_movie(request, cinema_id):
-    date = datetime.date.today()
     start_time = request.query_params.get('start_time')
-    start_time = start_time if start_time else datetime.datetime.now().time()
+    start_time = start_time if start_time else datetime.now().time()
 
     onscreen = Onscreen.objects.filter(cinema=cinema_id,
-                                       date=date,
+                                       date=date.today(),
                                        start_time__gte=start_time)
 
     serializer = OnscreenSerializer(onscreen, many=True)
 
-    datasets = {
+    dataset = {
         'meta': {
             'total': onscreen.count()
         },
         'documents': serializer.data
     }
 
-    return Response(status=200, data=datasets, content_type='application.json')
-
+    return Response(status=200, data=dataset)
 
 
 @api_view(['GET'])

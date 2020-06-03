@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import Movie, Onscreen
 from accounts.models import Rating
-from accounts.serializers import SimpleCinemaRatingSerializer
 from cinemas.models import Cinema
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -105,12 +104,11 @@ class RatingPosterSerializer(serializers.ModelSerializer):
 
 class CinemaSerializer(serializers.ModelSerializer):
     onscreens = OnscreenSerializer(many=True, read_only=True)
-    cinema_ratings = SimpleCinemaRatingSerializer(many=True, read_only=True)
 
     class Meta:
         model = Cinema
         fields = ('id', 'name', 'type', 'img', 'address', 'url', 'tel',
-                  'public', 'parking', 'onscreens', 'score', 'cinema_ratings')
+                  'public', 'parking', 'onscreens', 'score')
 
 
 class OnscreenCinemaSerializer(serializers.ModelSerializer):

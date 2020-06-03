@@ -1,52 +1,60 @@
-import pandas as pd
+import os
 import pymysql
-from datetime import datetime
-
-# 최신작 영화 긁어올때마다 한번씩
 import surprise
+import pandas as pd
+from decouple import config
+from datetime import datetime
 
 
 # 장르만
-def get_train_data() :
-    conn = pymysql.connect(host='k02a4061.p.ssafy.io', port=3306, user='root', password='wouldyoucinema',
-                           db='wouldyouci')
-    sql = "SELECT * FROM wouldyouci.movies_movie_genres"
+def get_train_data(BASE_DIR):
+    print('장르 학습 시작')
+    conn = pymysql.connect(host=config('HOST'), port=3306, user=config('USER'),
+                           password=config('PASSWORD'), db=config('DB'))
+    sql = 'SELECT * FROM wouldyouci.movies_movie_genres'
 
     movie_genres = pd.read_sql_query(sql, conn, index_col='movie_id')
-    genres = pd.read_csv('./genres.csv', index_col='id')
+
+    path = os.path.join(BASE_DIR, 'genres.csv')
+    genres = pd.read_csv(path, index_col='id')
 
     movie_genres = movie_genres.drop('id', axis='columns')
-    movie_genres['genre_id'] = movie_genres['genre_id'].apply(lambda x: genres.loc[x, 'name']+"|")
+    movie_genres['genre_id'] = movie_genres['genre_id'].apply(lambda x: genres.loc[x, 'name']+'|')
     movie_genres = movie_genres.groupby('movie_id').sum()
 
     genres_dummies = movie_genres['genre_id'].str.get_dummies(sep='|')
 
-    genres_dummies.to_pickle('./genre_train.p')
+    path = os.path.join(BASE_DIR, 'genres_train.p')
+    genres_dummies.to_pickle(path)
     conn.close()
+    print('종료')
+
 
 # 장르 + 영화인 전부
-def get_train_data2() :
-    conn = pymysql.connect(host='k02a4061.p.ssafy.io', port=3306, user='root', password='wouldyoucinema',
-                           db='wouldyouci')
-    sql = "SELECT * FROM wouldyouci.movies_movie_genres"
-    sql2 = "SELECT * FROM wouldyouci.movies_movie_directors"
-    sql3 = "SELECT * FROM wouldyouci.movies_movie_actors"
-    sql4 = "SELECT * FROM wouldyouci.movies_people"
+def get_train_data2(BASE_DIR):
+    print('장르 + 영화인 전부 학습 시작')
+    conn = pymysql.connect(host=config('HOST'), port=3306, user=config('USER'),
+                           password=config('PASSWORD'), db=config('DB'))
+    sql = 'SELECT * FROM wouldyouci.movies_movie_genres'
+    sql2 = 'SELECT * FROM wouldyouci.movies_movie_directors'
+    sql3 = 'SELECT * FROM wouldyouci.movies_movie_actors'
+    sql4 = 'SELECT * FROM wouldyouci.movies_people'
 
     movie_genres = pd.read_sql_query(sql, conn, index_col='movie_id')
     movie_directors = pd.read_sql_query(sql2, conn, index_col='movie_id')
     movie_actors = pd.read_sql_query(sql3, conn, index_col='movie_id')
     people = pd.read_sql_query(sql4, conn, index_col='id')
 
-    genres = pd.read_csv('./genres.csv', index_col='id')
+    path = os.path.join(BASE_DIR, 'genres.csv')
+    genres = pd.read_csv(path, index_col='id')
 
     movie_people = pd.concat([movie_directors, movie_actors])
 
     movie_genres = movie_genres.drop('id', axis='columns')
     movie_people = movie_people.drop('id', axis='columns')
 
-    movie_genres['genre_id'] = movie_genres['genre_id'].apply(lambda x: genres.loc[x, 'name'] + "|")
-    movie_people['people_id'] = movie_people['people_id'].apply(lambda x: people.loc[x, 'name'] + "|")
+    movie_genres['genre_id'] = movie_genres['genre_id'].apply(lambda x: genres.loc[x, 'name'] + '|')
+    movie_people['people_id'] = movie_people['people_id'].apply(lambda x: people.loc[x, 'name'] + '|')
 
     movie_genres = movie_genres.groupby('movie_id').sum()
     movie_people = movie_people.groupby('movie_id').sum()
@@ -56,28 +64,33 @@ def get_train_data2() :
 
     train = people_dummies.merge(genres_dummies, on='movie_id')
 
-    train.to_pickle('./movie_train.p')
+    path = os.path.join(BASE_DIR, 'movie_train.p')
+    train.to_pickle(path)
     conn.close()
+    print('종료')
+
 
 # 장르 + 감독만
-def get_train_data3() :
-    conn = pymysql.connect(host='k02a4061.p.ssafy.io', port=3306, user='root', password='wouldyoucinema',
-                           db='wouldyouci')
-    sql = "SELECT * FROM wouldyouci.movies_movie_genres"
-    sql2 = "SELECT * FROM wouldyouci.movies_movie_directors"
-    sql4 = "SELECT * FROM wouldyouci.movies_people"
+def get_train_data3(BASE_DIR):
+    print('장르 + 감독 학습 시작')
+    conn = pymysql.connect(host=config('HOST'), port=3306, user=config('USER'),
+                           password=config('PASSWORD'), db=config('DB'))
+    sql = 'SELECT * FROM wouldyouci.movies_movie_genres'
+    sql2 = 'SELECT * FROM wouldyouci.movies_movie_directors'
+    sql4 = 'SELECT * FROM wouldyouci.movies_people'
 
     movie_genres = pd.read_sql_query(sql, conn, index_col='movie_id')
     movie_directors = pd.read_sql_query(sql2, conn, index_col='movie_id')
     people = pd.read_sql_query(sql4, conn, index_col='id')
 
-    genres = pd.read_csv('./genres.csv', index_col='id')
+    path = os.path.join(BASE_DIR, 'genres.csv')
+    genres = pd.read_csv(path, index_col='id')
 
     movie_genres = movie_genres.drop('id', axis='columns')
     movie_directors = movie_directors.drop('id', axis='columns')
 
-    movie_genres['genre_id'] = movie_genres['genre_id'].apply(lambda x: genres.loc[x, 'name'] + "|")
-    movie_directors['people_id'] = movie_directors['people_id'].apply(lambda x: people.loc[x, 'name'] + "|")
+    movie_genres['genre_id'] = movie_genres['genre_id'].apply(lambda x: genres.loc[x, 'name'] + '|')
+    movie_directors['people_id'] = movie_directors['people_id'].apply(lambda x: people.loc[x, 'name'] + '|')
 
     movie_genres = movie_genres.groupby('movie_id').sum()
     movie_directors = movie_directors.groupby('movie_id').sum()
@@ -87,25 +100,30 @@ def get_train_data3() :
 
     train = people_dummies.merge(genres_dummies, on='movie_id')
 
-    train.to_pickle('./movie_director_train.p')
+    path = os.path.join(BASE_DIR, 'movie_director_train.p')
+    train.to_pickle(path)
     conn.close()
+    print('종료')
 
-# 이건 처음 장르 테이블 가져오기 / 한번만 쓰고 더이상 안씀
-def get_genre_info() :
-    conn = pymysql.connect(host='k02a4061.p.ssafy.io', port=3306, user='root', password='wouldyoucinema',
-                           db='wouldyouci')
-    sql = "SELECT * FROM wouldyouci.movies_genre;"
+
+# 장르 테이블 가져오기
+def get_genre_info(BASE_DIR):
+    conn = pymysql.connect(host=config('HOST'), port=3306, user=config('USER'),
+                           password=config('PASSWORD'), db=config('DB'))
+    sql = 'SELECT * FROM wouldyouci.movies_genre'
     result = pd.read_sql_query(sql, conn)
 
-    result.to_csv(r'genres.csv', index=True)
+    path = os.path.join(BASE_DIR, 'genres.csv')
+    result.to_csv(path, index=True)
 
     conn.close()
 
-def KNN_train():
-    print('START TIME : ', str(datetime.now())[10:19])
-    conn = pymysql.connect(host='k02a4061.p.ssafy.io', port=3306, user='root', password='wouldyoucinema',
-                           db='wouldyouci')
-    sql = "SELECT * FROM wouldyouci.accounts_rating"
+
+def KNN_train(BASE_DIR):
+    print('KNN 학습 시작 : ', str(datetime.now())[10:19])
+    conn = pymysql.connect(host=config('HOST'), port=3306, user=config('USER'),
+                           password=config('PASSWORD'), db=config('DB'))
+    sql = 'SELECT * FROM wouldyouci.accounts_rating'
     data = pd.read_sql_query(sql, conn)
     conn.close()
     df = data[['user_id', 'movie_id', 'score']]
@@ -201,8 +219,12 @@ def KNN_train():
                 recommand_dic['movie_id'].append(item)
 
     pickle = pd.DataFrame(recommand_dic)
-    pd.to_pickle(pickle, "./KNN.p")
-    print('END TIME : ', str(datetime.now())[10:19])
+
+    path = os.path.join(BASE_DIR, 'KNN.p')
+    pd.to_pickle(pickle, path)
+
+    print('종료 : ', str(datetime.now())[10:19])
+
 
 # 테이블을 딕셔너리로 만드는 함수
 def recur_dictify(frame):
@@ -213,5 +235,11 @@ def recur_dictify(frame):
     d = {k: recur_dictify(g.iloc[:, 1:]) for k, g in grouped}
     return d
 
-# KNN_train()
-get_train_data3()
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+get_genre_info(BASE_DIR)
+get_train_data(BASE_DIR)
+get_train_data2(BASE_DIR)
+get_train_data3(BASE_DIR)
+KNN_train(BASE_DIR)
