@@ -66,7 +66,7 @@ const actions = {
           console.log(res);
           commit('setLoading', false);
           commit("setToken", res.data.token);
-          dispatch("checkRating");
+          dispatch("checkRating", 'login');
           // router.push("/firstRating");
         })
         .catch(err => {
@@ -120,7 +120,7 @@ const actions = {
             Accept: "application/json"
           }
         }
-        axios.post(`${HOST}/user/`, data, options)
+        axios.post(`${HOST}/user/signup/`, data, options)
           .then(res => {
             console.log(res);
             commit('setLoading', false);
@@ -164,28 +164,42 @@ const actions = {
     sessionStorage.removeItem("jwt");
     router.push("/signup");
   },
-  checkRating: ({ commit }) => {
+  checkRating: ({ commit }, type) => {
     const token = sessionStorage.getItem('jwt');
     const options = {
       headers: {
         Authorization: `JWT ${token}`
       }
     }
-    axios.get(`${HOST}/user/login/rating/`, options)
-      .then(res => {
-        commit('setLoading', false);
-        if (!res.data.rating_tf) {
-          console.log('평가 안 함');
-          router.push('/firstRating');
-        } else {
-          console.log('평가 함');
-          router.push('/');
-        }
-        console.log(res);
+    if (type === 'login') {
+      axios.get(`${HOST}/user/login/rating/`, options)
+        .then(res => {
+          commit('setLoading', false);
+          if (!res.data.rating_tf) {
+            console.log('평가 안 함');
+            router.push('/firstRating');
+          } else {
+            console.log('평가 함');
+            router.push('/');
+          }
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    } else {
+      return new Promise(function(resolve, reject) {
+        axios.get(`${HOST}/user/login/rating/`, options)
+          .then(res => {
+            console.log(res);
+            resolve(res.data.rating_cnt);
+          })
+          .catch(err => {
+            console.log(err);
+            reject(Error('error'));
+          })
       })
-      .catch(err => {
-        console.log(err);
-      })
+    }
   },
   changePassword: ({ getters }, userInfo) => {
     getters;
