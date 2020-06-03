@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import Rating, Profile, CinemaRating
-from movies.serializers import TasteMovieSerializer
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -25,7 +24,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'file', 'pick_movies', 'pick_cinemas')
+        fields = ('id', 'username', 'file')
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -49,14 +48,6 @@ class SimpleRatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
         fields = ('id', 'comment', 'score', 'updated_at', 'user')
-
-
-class RatingPosterSerializer(serializers.ModelSerializer):
-    movie = TasteMovieSerializer(read_only=True)
-
-    class Meta:
-        model = Rating
-        fields = ('id', 'movie', 'score')
 
 
 class CinemaRatingSerializer(serializers.ModelSerializer):

@@ -6,9 +6,9 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 import datetime
 from movies.models import Onscreen
-from movies.serializers import OnscreenSerializer
+from movies.serializers import OnscreenSerializer, CinemaSerializer
 from .models import Cinema
-from .serializers import SimpleCinemaSerializer, CinemaSerializer
+from .serializers import SimpleCinemaSerializer
 from accounts.models import CinemaRating
 from accounts.serializers import CinemaRatingSerializer
 from accounts.serializers import SimpleCinemaRatingSerializer
@@ -93,9 +93,13 @@ def pick_cinema(request, cinema_id):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_cinema_rating(request):
+    user = request.user
+    if user.cinema_ratings.filter(movie=request.data['cinema']).exists():
+        return Response(status=403, data={'message': '이미 평가한 영화관입니다.'})
+
     serializer = CinemaRatingSerializer(data=request.data)
     if serializer.is_valid():
-        new_rating = serializer.save(user=request.user)
+        new_rating = serializer.save(user=user)
 
         cinema = new_rating.cinema
         ratings_count = cinema.cinema_ratings.count()

@@ -82,4 +82,4 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 get_genre_info(BASE_DIR)
 get_train_data(BASE_DIR)
-get_train_data2(BASE_DIR)
+# get_train_data2(BASE_DIR)
