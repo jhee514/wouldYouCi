@@ -8,6 +8,12 @@
   
 }
 
+.movieScore {
+  font-size: 3vh;
+  text-align: center;
+  vertical-align: middle;
+}
+
 .user{
   font-size: 1.5vh;
   display: inline-block;

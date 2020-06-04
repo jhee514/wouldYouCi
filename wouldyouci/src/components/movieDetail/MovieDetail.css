@@ -1,17 +1,23 @@
 .body{
-    min-height: 82vh;
-    /* height: auto; */
-    margin-top: 3vh;
-    margin-bottom: 10vh;
-    margin-left: 5vw;
-    margin-right: 5vw;
+  min-height: 82vh;
+  /* height: auto; */
+  margin-top: 3vh;
+  margin-bottom: 10vh;
+  margin-left: 5vw;
+  margin-right: 5vw;
+}
+
+.links {
+  padding: 16px;
+}
+
+.summary {
+  height: auto;
+  padding: 16px;
+  margin-bottom: 20px;
   }
 
-  .trailer{
-    margin:0 auto;
-    text-align: center;
-  }
-
-  .summary {
-    height: auto;
-  }
+.button {
+  padding: 0px;
+  margin: 0px;
+}

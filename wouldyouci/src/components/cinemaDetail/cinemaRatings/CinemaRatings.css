@@ -8,6 +8,13 @@
   
 }
 
+.cinemaScore {
+  font-size: 3vh;
+  text-align: center;
+  vertical-align: middle;
+  size: 20;
+}
+
 .user{
   font-size: 1.5vh;
   display: inline-block;
@@ -21,7 +28,7 @@
   /* vertical-align: baseline; */
   text-align: right;
   vertical-align: middle;
-  
+  size: 14;  
 }
 
 .content{

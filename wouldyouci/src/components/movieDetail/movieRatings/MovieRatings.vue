@@ -1,13 +1,31 @@
 <template>
   <div 
-    class="ratings"
+    class="ratings"      
     v-infinite-scroll="loadMore"
     infinite-scroll-disabled="busy"
-    infinite-scroll-distance="250"
+    infinite-scroll-distance="10"
     >
-    <RatingForm @submitRating="addRating"/>
+    <div class="movieScore">
+      <span>{{ Number(this.details.score.toFixed(2)) }} </span>
+      <v-rating
+        class="score"
+        :value="details.score"
+        background-color="orange lighten-3"
+        color="amber"
+        dense
+        half-increments
+        readonly
+        size=20
+        ></v-rating>
+    </div>
+    
+    <RatingForm v-if="!scored" @submitRating="addRating"/>
+    <div v-else>리뷰를 작성한 영화입니다.</div>
 
-    <v-list v-if="isRatings">
+    <v-list 
+      v-if="isRatings"
+
+      >
       <template v-for="(rating, index) in ratings">
         <v-list-item :key="index">
           <v-list-item-avatar class="avatar">
@@ -19,13 +37,22 @@
                  {{ rating.user.username }} | {{ formatDate(rating.updated_at) }}
                 </div>
                 <div class="score">
-                  <Score :score="rating.score" />
+                  <v-rating
+                    class="score"
+                    :value="rating.score"
+                    background-color="orange lighten-3"
+                    color="amber"
+                    dense
+                    half-increments
+                    readonly
+                    size=14
+                    ></v-rating>
                 </div>
               </div>
               <div class="content">
                 <p class="comment">{{ rating.comment}}</p>
                 
-                <div v-if="rating.user.username == user.username" class="button">
+                <div v-if="rating.user.username == currentUser.username" class="button">
                   <v-dialog v-model="dialog">
                     <template v-slot:activator="{ on }">
                       <v-btn
@@ -37,7 +64,7 @@
                         <v-icon>mdi-pencil</v-icon>
                       </v-btn>
                     </template>
-                    <RatingEditForm :rating="rating" @close="closeModal" @editRating="editRating"/>
+                    <RatingEditForm :rating="rating" :index="index" @close="closeModal" @editRating="editRating"/>
                   </v-dialog>
 
                   <v-btn 
@@ -64,22 +91,20 @@
     </v-list>
 
     <p v-else>
-      리뷰를 남겨주세요 :)
+      첫번째 리뷰를 남겨주세요 :)
     </p>
   </div>
 </template>
 
 <script>
-import Score from '../../ratingForm/Score';
 import RatingForm from '../../ratingForm/RatingForm';
 import RatingEditForm from '../../ratingForm/RatingEditForm';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'MovieRatings',
-  props:["details", "user", ],
+  props:["details", ],
   components: {
-    Score,
     RatingForm,
     RatingEditForm,
   },
@@ -89,13 +114,25 @@ export default {
       busy: false,
       page: 1,
       dialog: false,
-      isRatings: this.details.ratings.length,
+      isRatings: false,
       ratings: [],
+      currentUser: '',
+      scored: false,
     }
   },
+  
+  created() {
+    var jwt = require('jsonwebtoken');
+    const token = sessionStorage.getItem('jwt');
+    var decoded = jwt.decode(token, {complete: true});
+    this.currentUser = decoded.payload
+    if (this.details.has_score) {
+      this.scored = true
+    }
+  },
+
   computed: {
     ...mapGetters(['getMovieRatings']),
-
   },
   methods: {
     ...mapActions(['fetchRatings', 'postRating', 'delRating', 'patchRating' ]),
@@ -107,16 +144,19 @@ export default {
         movie: this.details.id, 
         page: this.page++,
         };
-      const res = await this.fetchRatings({item, params})
+      const resData = await this.fetchRatings({item, params})
       this.busy = false;
-      for ( const rating of res) {
-        this.ratings.push(rating);
+      if ( resData.count > 0 ) {
+        this.isRatings = true;
+        for ( const rating of resData.results) {
+          this.ratings.push(rating);
+        }
       }
     },
 
     formatDate(date) {
-      var moment = require('moment');
-      return moment(date).format('YYYY.MM.DD')
+      var dayjs = require('dayjs')
+      return dayjs(date).format('YYYY.MM.DD')
     },
     
     closeModal() {
@@ -133,32 +173,33 @@ export default {
           this.isRatings = false
         }
       }
+      this.scored = false
     },
     
     async addRating(rating){
       const item = 'movie'
       rating[item] = this.details.id;
       const res = await this.postRating({item, rating});
-      res.data["user"] = this.user;
+      res.data["user"] = this.currentUser;
       if ( this.isRatings ) {
         this.ratings.unshift(res.data)
       } else {
         this.isRatings = true
         this.ratings.push(res.data)
       }
+      this.scored = true
+
     },
     
     async editRating(editedRating) {
       this.dialog = false;
       const item = 'movie';
       editedRating[item] = this.details.id;
-      const params = {item, editedRating};
-      const res = await this.patchRating(params);
-      const formerIndex = this.ratings.indexOf(this.ratings.find(el => {
-        el.id === editedRating.id 
-        }))
-      res.data["user"] = this.user;
-      this.ratings.splice(formerIndex, 1, res.data)
+      await this.patchRating({item, editedRating});
+      this.ratings = [];
+      this.page = 1;
+      this.loadMore();
+
     },
 
     goTop() {

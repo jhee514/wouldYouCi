@@ -7,7 +7,7 @@
       dense
       half-increments
       readonly
-      size="14"></v-rating>
+      ></v-rating>
 </template>
 
 <script>
