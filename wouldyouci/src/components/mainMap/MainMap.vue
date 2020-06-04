@@ -87,6 +87,7 @@ export default {
     ...mapMutations(['setLoading']),
     ...mapActions(['init', 'bringHereCinema', 'bringMovies']),
     marking(value) {
+      const HOST = process.env.VUE_APP_SERVER_HOST;
       if (value.type === 'user') {
         const marker = new this.google.maps.Marker({position: value.position, map: this.map, icon: value.icon})
         this.myMarker = marker;
@@ -104,22 +105,22 @@ export default {
         if (value.position.length) {
           for (const v of value.position) {
             let theaterIcon = {
-              url: "https://image.flaticon.com/icons/svg/2892/2892617.svg",
+              url: `${HOST}/media/wouldyouci/wouldyouci.png`,
               scaledSize: new this.google.maps.Size(40, 40)
             }
             if (v.type === 'CGV') {
               theaterIcon = {
-                url: "https://lh3.googleusercontent.com/proxy/jDXUVkzo27nTCsrQPiSO2FjTaD2cZudfy8FbLa0oAcf7F0Hv7a4PvXt7Le3NhK8RAZ1q8V2BuDXuquPxwuROikFOpySsuQ9heVtv0fYJvcG7aeqRljqEYYZg88MvOHNpS2nxdDIS5PgGP4WEZZLhgJA6Mxu08VEqvVpmILAblVLsuYyCltKTZwSZ9hmeUVC4aZEZjmrNZ1GWxG05Ne71Png1",
-                scaledSize: new this.google.maps.Size(80, 80)
+                url: `${HOST}/media/wouldyouci/cgv.png`,
+                scaledSize: new this.google.maps.Size(40, 40)
               }
             } else if (v.type === '메가박스') {
               theaterIcon = {
-                url: "../../assets/pop_megabox.png",
-                scaledSize: new this.google.maps.Size(120, 90)
+                url: `${HOST}/media/wouldyouci/megabox.png`,
+                scaledSize: new this.google.maps.Size(40, 40)
               }
             } else if (v.type === '롯데시네마') {
               theaterIcon = {
-                url: "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F253EA643581EB30A2A",
+                url: `${HOST}/media/wouldyouci/lotte.png`,
                 scaledSize: new this.google.maps.Size(40, 40)
               }
             }

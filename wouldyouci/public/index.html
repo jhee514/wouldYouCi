@@ -23,10 +23,10 @@
       if('serviceWorker' in navigator){
         navigator.serviceWorker.register('sw.js')//serviceWorker등록 
         .then(function(success){
-            console.log('Service Worker 등록 완료', success);
+          success;
         })
         .catch(function(error){
-            console.log('Service Worker 등록 실패', error);
+          error;
         })
       }
     </script>
