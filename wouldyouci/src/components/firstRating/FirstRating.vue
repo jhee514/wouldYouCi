@@ -41,27 +41,48 @@
             :key="card.name"
             cols="6"
             sm="4"
+            md="2"
+            lg="2"
           >
+
+
+          <v-hover v-slot:default="{ hover }">
+            
             <v-card 
               class="movieCard"
             >
+
               <v-img
                 :src="card.poster"
                 class="white--text align-end"
-                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                height="40vh"
+                height="50vh"
+                contain
               >
               </v-img>
 
-              <v-rating
-                @input="addRating({'id': card.id, 'rating': card.rating})"
-                v-model="card.rating"
-                color="#F7FE2E"
-                background-color="#F2F2F2"
-                half-increments
-                small
-              ></v-rating>
+              <v-expand-transition>
+                <div
+                  v-if="hover || card.rating >0"
+                  class="d-flex transition-fast-in-fast-out v-card--reveal display-3 white--text"
+
+                >
+                      <h4>{{card.name}}  </h4>
+
+                      <v-rating
+                    @input="addRating({'id': card.id, 'rating': card.rating})"
+                    v-model="card.rating"
+                    color="#FDD835"
+                    background-color="#757575"
+                    half-increments
+                    medium
+                    hover
+                  ></v-rating>
+                </div>
+              </v-expand-transition>
+
+              
             </v-card>
+            </v-hover>
           </v-col>
         </v-row>
         <v-avatar class="cntA" size="6vh" color="#AD8BE8">
