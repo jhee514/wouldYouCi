@@ -87,7 +87,7 @@
         right
         fab
         @click="goTop"
-      ><v-icon>mdi-arrow-up</v-icon></v-btn>
+        ><v-icon>mdi-arrow-up</v-icon></v-btn>
     </v-list>
 
     <p v-else>

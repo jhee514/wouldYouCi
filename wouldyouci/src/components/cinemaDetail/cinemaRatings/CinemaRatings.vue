@@ -24,7 +24,6 @@
     
     <v-list 
       v-if="isRatings"
-
       >
       <template v-for="(rating, index) in ratings" track-by="$index">
         <v-list-item :key="index">
@@ -72,8 +71,7 @@
                   <i class="fas fa-times fa-xs"></i>
                 </v-btn>
               </div>
-
-              </div>
+            </div>
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -86,7 +84,7 @@
         right
         fab
         @click="goTop"
-      ><v-icon>mdi-arrow-up</v-icon></v-btn>
+        ><v-icon>mdi-arrow-up</v-icon></v-btn>
     </v-list>
 
     <p v-else>

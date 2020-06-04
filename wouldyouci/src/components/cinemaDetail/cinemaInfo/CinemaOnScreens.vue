@@ -6,12 +6,12 @@
       color="white"
       light
       right
-    >
+      >
       <v-tab
         v-show="item.content.length"
         v-for="(item, idx) in items"
         :key="idx"
-      >
+        >
         {{ item.tab }}
       </v-tab>
     </v-tabs>
@@ -20,11 +20,11 @@
       <v-tab-item
         v-for="(item, idx) in items"
         :key="idx"
-      >
+        >
         <v-timeline
           align-top
           dense
-        >
+          >
           <v-timeline-item
             v-for="(movie, idx) in item.content"
             :key="idx"

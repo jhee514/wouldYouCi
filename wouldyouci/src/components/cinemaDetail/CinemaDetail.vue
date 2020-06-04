@@ -8,7 +8,7 @@
             v-if="details.img"
             class="media"
             :src="details.img"
-          >
+           >
           </v-img>
           <v-img 
             v-else
@@ -66,11 +66,11 @@
           color="amber"
           centered
           fixed-tabs
-        >
+          >
           <v-tab
             v-for="item in items"
             :key="item.tab"
-          >
+            >
             {{ item.tab }}
           </v-tab>
         </v-tabs>
@@ -78,7 +78,7 @@
           <v-tab-item
             v-for="item in items"
             :key="item.tab"
-          >
+            >
             <v-card flat>
               <v-card-text>
                 <component 

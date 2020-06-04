@@ -29,10 +29,6 @@
             <v-icon>mdi-heart</v-icon>
           </v-btn>
     
-    
-
-
-
 
           <!-- 상영중인 영화관 모달 -->
           <v-dialog v-if="details.is_showing" v-model="dialog">
@@ -48,20 +44,6 @@
             </template>
             <ShowingCinemas @close="closeModal" />
           </v-dialog>
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -83,11 +65,11 @@
           color="orange dark-3"
           centered
           fixed-tabs
-        >
+          >
           <v-tab
             v-for="item in items"
             :key="item.tab"
-          >
+            >
             {{ item.tab }}
           </v-tab>
         </v-tabs>
@@ -95,7 +77,7 @@
           <v-tab-item
             v-for="item in items"
             :key="item.tab"
-          >
+            >
             <v-card flat>
               <v-card-text>
                 <component 
