@@ -1,12 +1,15 @@
-
 <template>
   <div class="cinemaInfo">
     <p>
       <span class="item">
-        홈페이지 
+        홈페이지
       </span>
       <span class="content">
-        {{ details.url }}
+        <v-btn
+        text
+        target="_blank"
+        :href="details.url" 
+        >홈페이지</v-btn>
       </span>
     </p>
     <p>
@@ -37,15 +40,18 @@
       <span class="item">
         전화
       </span>
-      <span class="content">
-      {{ details.tel }}
-      </span>
+      <a 
+        class="tel"
+        :href="'tel' + details.tel"
+        >
+        {{ details.tel }}
+      </a>
     </p>
   </div>
 </template>
 <script>
 export default {
-  name: 'CinemaDetail',
+  name: 'CinemaInfo',
   props: ["details"],
   components: {
   },

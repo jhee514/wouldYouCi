@@ -17,5 +17,3 @@ export default {
 
 }
 </script>
-
-<style src="./Ratings.css" scoped></style>

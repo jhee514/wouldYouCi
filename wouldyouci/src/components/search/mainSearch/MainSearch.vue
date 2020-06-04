@@ -1,16 +1,13 @@
 <template>
   <div>
     <div class="content">
-      <div style="text-align : left">근처 영화관<br/></div>
-      <TheaterList v-bind:TheaterList="TheaterList" />
+      <TheaterList v-bind:Label="'근처 영화관'" v-bind:pos="pos" v-bind:TheaterList="TheaterList" />
     </div>
     <div class="current">
-      <div style="text-align : left">현재 상영작 순위<br/></div>
-      <CinemaList v-bind:CinemaList="Populars" />
+      <CinemaList v-bind:Label="'현재 상영작 순위'" v-bind:CinemaList="Populars" />
     </div>
     <div class="released">
-      <div style="text-align : left"> 개봉예정작<br/></div>
-      <CinemaList v-bind:CinemaList="Commings" />
+      <CinemaList v-bind:Label="'개봉예정작'" v-bind:CinemaList="Commings" />
     </div>
   </div>
 </template>
@@ -25,7 +22,7 @@ export default {
      CinemaList,
      TheaterList
    },
-   props:['Commings', 'Populars', 'TheaterList']
+   props:['Commings', 'Populars', 'TheaterList', 'pos']
 
 
 }

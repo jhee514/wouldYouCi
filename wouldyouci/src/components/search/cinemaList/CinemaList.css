@@ -1,19 +1,9 @@
-.cinemaList {
-  margin-top: 3vh;
-  margin-bottom: 3vh;
+.noThea {
+  margin-top: 1.5vh;
+  margin-bottom: 1.5vh;
 }
 
-div.v-card__text {
-  padding-top: 1vh;
-}
-
-
-#app > div > div.search > div > div > div.content > div.ma-4.v-card.v-sheet.theme--light {
-  margin-top: 2vh;
-  margin-bottom: 2vh;
-}
-
-#app > div > div.search > div > div > div.content > div.ma-4.v-card.v-sheet.theme--light > div {
+.noTheaExp {
   text-align: center;
   position: relative;
   top: 40%;

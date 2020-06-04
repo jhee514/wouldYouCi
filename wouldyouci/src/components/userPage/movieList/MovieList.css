@@ -1,5 +1,9 @@
-#app > div > div.userPage > div.prefer > div > div > div {
+.noContent {
+  margin-top: 1.5vh;
+  margin-bottom: 1.5vh;
   text-align: center;
-  position: relative;
-  top: 40%;
+}
+
+div.noContentExp {
+  padding-top: 7vh;
 }
