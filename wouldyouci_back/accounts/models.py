@@ -90,8 +90,8 @@ class Rating(models.Model):
     score = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='ratings')  # movie.ratings
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')  # user.ratings
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='ratings')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')
 
     class Meta:
         ordering = ('-updated_at',)
@@ -102,8 +102,8 @@ class CinemaRating(models.Model):
     score = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE, related_name='cinema_ratings')  # movie.ratings
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cinema_ratings')  # user.ratings
+    cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE, related_name='cinema_ratings')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cinema_ratings')
 
     class Meta:
         ordering = ('-updated_at',)

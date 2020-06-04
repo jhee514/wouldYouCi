@@ -60,26 +60,29 @@ def user_index(request):
     rating_tf = False
     recommend_movies = []
     recommend_onscreen = []
+    recommend_movies_cnt = 0
+    recommend_onscreen_cnt = 0
     if user.ratings.count() > 9:
         rating_tf = True
 
-        recommend_id_set = recommend_userbased(user.id)
-        recommend_movie_set = Movie.objects.filter(id__in=recommend_id_set)
+        recommend_movie_set = recommend_userbased(user.id)
         recommend_serializer = SimpleMovieSerializer(recommend_movie_set, many=True)
         recommend_movies = recommend_serializer.data
+        recommend_movies_cnt = recommend_movie_set.count()
 
         onscreen_id_set = contentsbased_onscreen(user.id)
         onscreen_movie_set = Movie.objects.filter(id__in=onscreen_id_set)
         onscreen_serializer = SimpleMovieSerializer(onscreen_movie_set, many=True)
         recommend_onscreen = onscreen_serializer.data
+        recommend_onscreen_cnt = onscreen_movie_set.count()
 
     dataset = {
         'meta': {
             'rating_tf': rating_tf,
             'pick_cinemas': pick_cinemas.count(),
             'pick_movies': pick_movies.count(),
-            'recommend_movies': recommend_movie_set.count(),
-            'recommend_onscreen': onscreen_movie_set.count()
+            'recommend_movies': recommend_movies_cnt,
+            'recommend_onscreen': recommend_onscreen_cnt,
         },
         'data': {
             'user': user_serializer.data,

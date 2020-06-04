@@ -41,10 +41,11 @@ class RatingViewSet(viewsets.ReadOnlyModelViewSet):
 def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
     serializer = MovieSerializer(movie)
-
+    user = request.user
     predicted_score = 0
-    if request.user.ratings.count() > 9:
-        predicted_score = contentsbased_by_genres_and_directors(request.user.id, movie_id)
+
+    if user.ratings.count() > 9:
+        predicted_score = contentsbased_by_genres_and_directors(user.id, movie_id)
 
     dataset = {
         'is_showing': movie.onscreens.exists(),
