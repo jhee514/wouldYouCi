@@ -10,7 +10,7 @@
       <v-rating
         class="score"
         :value="details.score"
-        background-color="orange lighten-3"
+        background-color="amber lighten-3"
         color="amber"
         dense
         half-increments
@@ -24,11 +24,10 @@
 
     <v-list 
       v-if="isRatings"
-
       >
       <template v-for="(rating, index) in ratings">
         <v-list-item :key="index">
-          <v-list-item-avatar class="avatar">
+          <v-list-item-avatar class="avatar" small>
             <span class="white--text headline">{{ rating.user.username[0] }}</span>          
           </v-list-item-avatar>
           <v-list-item-content>
@@ -40,7 +39,7 @@
                   <v-rating
                     class="score"
                     :value="rating.score"
-                    background-color="orange lighten-3"
+                    background-color="amber lighten-3"
                     color="amber"
                     dense
                     half-increments
@@ -79,6 +78,8 @@
         </v-list-item>
       </template>
       <v-btn
+        v-if="ratings.length > 5"
+        class="upbutton"
         color="amber"
         small
         dark
@@ -118,6 +119,7 @@ export default {
       ratings: [],
       currentUser: '',
       scored: false,
+
     }
   },
   
@@ -133,6 +135,7 @@ export default {
 
   computed: {
     ...mapGetters(['getMovieRatings']),
+ 
   },
   methods: {
     ...mapActions(['fetchRatings', 'postRating', 'delRating', 'patchRating' ]),

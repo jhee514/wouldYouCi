@@ -10,7 +10,7 @@
       <v-rating
         class="score"
         :value="details.score"
-        background-color="orange lighten-3"
+        background-color="amber lighten-3"
         color="amber"
         dense
         half-increments
@@ -39,7 +39,7 @@
                 <v-rating
                   class="score"
                   :value="rating.score"
-                  background-color="orange lighten-3"
+                  background-color="amber lighten-3"
                   color="amber"
                   dense
                   half-increments

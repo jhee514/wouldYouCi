@@ -1,7 +1,6 @@
 <template>
-  <div class="container">
+  <div v-if="details.trailer" class="trailer-container">
     <iframe 
-      v-if="details.trailer"
       class="iframe"
       type="text/html" 
       allow="autoplay"
@@ -9,8 +8,11 @@
       allowfullscreen
       :src="details.trailer"
       ></iframe>
+  </div>
+  
+  <div v-else class="image-container">
     <v-img
-      v-else-if="details.poster"
+      v-if="details.poster"
       class="media"
       :src="details.poster" />
     <v-img 

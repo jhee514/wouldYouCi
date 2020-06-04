@@ -46,6 +46,10 @@
   text-align: right;
 }
 
+.upbutton{
+  margin-bottom: 6vh;
+}
+
 i.fas,
 i.fab {
   size: 2px,

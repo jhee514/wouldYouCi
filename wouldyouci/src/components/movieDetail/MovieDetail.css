@@ -12,11 +12,18 @@
 }
 
 .summary {
+  font-size: 3.5vw;
   height: auto;
-  padding: 16px;
-  margin-bottom: 20px;
+  padding: 0px;
+  margin: 16px;
   }
 
+.tabCard {
+  border-radius: 25px;
+  border: 2px solid #73AD21;
+  margin-left: 5vw;
+  margin-right: 5vw;
+}
 .button {
   padding: 0px;
   margin: 0px;

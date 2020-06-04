@@ -92,7 +92,6 @@
 
       </v-card>
     </div>
-    <Nav />
   </div>
 </template>
 
