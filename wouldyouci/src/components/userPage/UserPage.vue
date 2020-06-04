@@ -160,7 +160,6 @@ export default {
   async mounted() {
     this.setLoading(true);
     await this.bringUserInfo();
-    console.log(this.getUserInfo)
     const HOST = process.env.VUE_APP_SERVER_HOST;
     if (this.getUserInfo.data.user.file.length) {
       this.profileURL = `${HOST}/${this.getUserInfo.data.user.file[0]}`;
@@ -172,7 +171,6 @@ export default {
     this.recommendedMovies = this.getUserInfo.data.recommend_movies;
     const res = await this.bringRatedMovies();
     this.ratedMovies = res;
-    console.log(res)
     this.setLoading(false);
   }
 }

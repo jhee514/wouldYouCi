@@ -108,7 +108,6 @@ export default {
       if (this.searchType === 'movies') {
         axios.get(`${HOST}/search/movie/`, params)
           .then(res => {
-            console.log(res);
             this.items = res.data;
             this.isloading = false;
           })
@@ -116,7 +115,6 @@ export default {
       } else {
         axios.get(`${HOST}/search/cinema/`, params)
           .then(res => {
-            console.log(res);
             this.items = res.data;
             this.isloading = false;
           })
@@ -157,7 +155,6 @@ export default {
             await this.bringAddress(this.pos);
             await this.bringInitSearchInfo(this.pos);
             this.nowAddress = this.getAddress;
-            console.log(this.getInitSearchInfo);
             this.nearTheater = this.getInitSearchInfo.near_cinema;
             this.commings = this.getInitSearchInfo.comming_soon;
             this.populars = this.getInitSearchInfo.popular_movies;
@@ -184,7 +181,6 @@ export default {
         await this.bringAddress(this.pos);
         await this.bringInitSearchInfo(this.pos);
         this.nowAddress = this.getAddress;
-        console.log(this.getInitSearchInfo);
         this.nearTheater = this.getInitSearchInfo.near_cinema;
         this.commings = this.getInitSearchInfo.comming_soon;
         this.populars = this.getInitSearchInfo.popular_movies;
