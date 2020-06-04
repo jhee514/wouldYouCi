@@ -28,6 +28,7 @@ const state = {
   movieRatings: [],
   cinemaDetail: [],
   cinemaRatings: [],
+  movieShowingCinemas: [],
 };
 
 const getters = {
@@ -44,6 +45,7 @@ const getters = {
   getMovieRatings: state => state.movieRatings,
   getCinemaDetail: state => state.cinemaDetail,
   getCinemaRatings: state => state.cinemaRatings,
+  getMovieShowingCinemas: state => state.movieShowingCinemas,
 };
 
 const mutations = {
@@ -61,6 +63,7 @@ const mutations = {
   setMovieRatings: (state, ratings) => state.movieRatings = ratings,
   setCinemaDetail: (state, details) => state.cinemaDetail = details,
   setCinemaRatings: (state, ratings) => state.cinemaRatings = ratings,
+  setMovieShowingCinemas: (state, cinemas) => state.movieShowingCinemas = cinemas,
 };
 
 const actions = {
@@ -383,8 +386,8 @@ const actions = {
     return new Promise(function(resolve, reject) {
       axios.get(`${HOST}/${item}/rating/page/`, options)
         .then(res => {
-          console.log(res.data.results)
-          resolve(res.data.results)
+          console.log(res.data)
+          resolve(res.data)
         })
         .catch(err => {
           console.log(err);
@@ -410,7 +413,11 @@ const actions = {
         })
         .catch(err => {
           console.log(err);
-          reject(Error('erroe'));
+          console.log(err.response.status);
+          reject(Error('error'));
+          if (err.response.status == 403) {
+            alert('이미 리뷰를 작성하셨습니다.')
+          }
         })
       })
   },
@@ -452,6 +459,28 @@ const actions = {
       })
     })
   },
+  
+  fetchMovieShowingCinemas: ({ commit }, movieId) => {
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`
+      }
+    }
+    return new Promise(function(resolve, reject) {
+      axios.get(`${HOST}/movie/${movieId}/onscreen/`, options)
+        .then(res => {
+          commit('setMovieShowingCinemas', res.data);
+          console.log(res)
+          resolve('ok')
+        })
+        .catch(err => {
+          console.log(err);
+          reject(Error('error'))
+        })
+    })
+  },
+
   
 
 };

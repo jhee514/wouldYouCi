@@ -278,7 +278,7 @@ const actions = {
       axios.get(`${HOST}/user/`, options)
         .then(res => {
           commit('setUserInfo', res.data)
-          console.log(res);
+          console.log(res.data);
           resolve('ok');
         })
         .catch(err => {

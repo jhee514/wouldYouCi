@@ -12,6 +12,7 @@
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "dayjs": "^1.8.28",
+    "jsonwebtoken": "^8.5.1",
     "moment": "^2.26.0",
     "vue": "^2.6.11",
     "vue-infinite-scroll": "^2.0.2",

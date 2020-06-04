@@ -43,7 +43,7 @@
 
 export default {
   name: "RatingEditForm",
-  props:["rating"],
+  props:["rating", "index"],
   data() {
     return {
       rules: [
@@ -56,6 +56,7 @@ export default {
         score: this.rating.score,
         comment: this.rating.comment,
         user: this.rating.user,
+        index: this.index,
       },
     }
   },
