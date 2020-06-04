@@ -31,11 +31,11 @@
     </v-slide-group>
     <v-card
       v-else
-      class="ma-4"
+      class="noThea"
       height="20vh"
       width="90vw"
     >
-      <div class="noThea">
+      <div class="noTheaExp">
         근처에 영화관이 없습니다.
       </div>
     </v-card>
