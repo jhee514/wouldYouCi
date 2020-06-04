@@ -4,7 +4,7 @@
       {{ Label }}
     </div>
     <v-slide-group
-      class="pa-4 cinemaList"
+      class="cinemaList"
       active-class="success"
     >
       <v-slide-item
@@ -13,9 +13,8 @@
       >
         <v-card
           class="ma-4"
-          height="45vh"
+          height="auto"
           width="45vw"
-          style="margin-right:2vh"
           @click="goDetail(cinema.id)"
           dark
         >

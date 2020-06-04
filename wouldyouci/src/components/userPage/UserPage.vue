@@ -31,9 +31,20 @@
       </div>
       <div class="prefer" v-if="tab===0">
         <span>선호하는 영화관</span>
-        <MovieList v-bind:CinemaList="theaterList"/>
+        <TheaterList v-bind:TheaterList="theaterList"/>
         <span>찜한 영화</span>
         <MovieList v-bind:CinemaList="wishMovies"/>
+        <span>나에게 추천하는 상영 중 영화</span>
+        <MovieList v-if="recommendedOnscreen.length" v-bind:CinemaList="recommendedOnscreen"/>
+        <v-card class="noReco" v-else>
+          <div class="exp">
+            현재 데이터가 부족해 영화 추천이 불가능 합니다.
+          </div>
+          <v-btn text @click="goFirstRating">
+            영화 평가하러 가기
+            <v-icon small style="margin-left:3vw;">fas fa-arrow-right</v-icon>
+          </v-btn>
+        </v-card>
         <span>나에게 추천하는 영화</span>
         <MovieList v-if="recommendedMovies.length" v-bind:CinemaList="recommendedMovies"/>
         <v-card class="noReco" v-else>
@@ -50,6 +61,14 @@
         <RatingMovies v-bind:CinemaList="ratedMovies"/>
       </div>
     </div>
+    <v-overlay :value="getLoading">
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          color="#4520EA"
+          indeterminate
+        ></v-progress-circular>
+      </v-overlay>
     <Nav />
   </div>
 </template>
@@ -59,12 +78,13 @@ import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import UserInfo from './userInfo/UserInfo.vue';
 import MovieList from './movieList/MovieList.vue';
+import TheaterList from './movieList/TheaterList.vue';
 import SettingCard from './settingCard/SettingCard.vue';
 import ChangeUserImage from './changeUserInfo/ChangeUserImage.vue';
 import ChangeUserPass from './changeUserInfo/ChangeUserPass.vue';
 import RatingMovies from './ratingMovies/RatingMovies.vue';
 import router from '../../router';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'UserPage',
@@ -73,6 +93,7 @@ export default {
     Title,
     UserInfo,
     MovieList,
+    TheaterList,
     SettingCard,
     ChangeUserImage,
     ChangeUserPass,
@@ -83,6 +104,7 @@ export default {
       theaterList: null,
       ratedMovies: null,
       wishMovies: null,
+      recommendedOnscreen: [],
       recommendedMovies: [],
       isShow: false,
       isShowChangeImgDialog: false,
@@ -94,9 +116,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getUserInfo'])
+    ...mapGetters(['getUserInfo', 'getLoading'])
   },
   methods: {
+    ...mapMutations(['setLoading']),
     ...mapActions(['bringUserInfo', 'bringRatedMovies']),
     closeDialog(type) {
       if (type === "image") {
@@ -135,17 +158,22 @@ export default {
     }
   },
   async mounted() {
+    this.setLoading(true);
     await this.bringUserInfo();
+    console.log(this.getUserInfo)
     const HOST = process.env.VUE_APP_SERVER_HOST;
-    if (this.getUserInfo.file.length) {
-      this.profileURL = `${HOST}/${this.getUserInfo.file[0]}`;
+    if (this.getUserInfo.data.user.file.length) {
+      this.profileURL = `${HOST}/${this.getUserInfo.data.user.file[0]}`;
     }
-    this.userName = this.getUserInfo.username;
-    this.theaterList = this.getUserInfo.pick_cinemas;
-    this.wishMovies = this.getUserInfo.pick_movies;
+    this.userName = this.getUserInfo.data.user.username;
+    this.theaterList = this.getUserInfo.data.pick_cinemas;
+    this.wishMovies = this.getUserInfo.data.pick_movies;
+    this.recommendedOnscreen = this.getUserInfo.data.recommend_onscreen;
+    this.recommendedMovies = this.getUserInfo.data.recommend_movies;
     const res = await this.bringRatedMovies();
     this.ratedMovies = res;
     console.log(res)
+    this.setLoading(false);
   }
 }
 </script>

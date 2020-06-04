@@ -1,27 +1,27 @@
 <template>
   <div>
     <v-slide-group
-      dark
+      class="pa-4 cinemaList"
       active-class="success"
-      v-if="CinemaList && CinemaList.length"
+      v-if="TheaterList && TheaterList.length"
     >
       <v-slide-item
-        v-for="(cinema, idx) in CinemaList"
+        v-for="(theater, idx) in TheaterList"
         :key="idx"
       >
         <v-card
-          class="ma-4"
+          dark
           height="auto"
-          width="40vw"
-          @click="goDetail(cinema.id)"
+          width="50vw"
+          @click="goDetail(theater.id)"
         >
           <v-img 
-            :src="cinema.poster"
-            height="30vh"
-            width="40vw"
+            :src=theater.img
+            height="15vh"
+            width="50vw"
           >
           </v-img>
-          <v-card-text>{{ cinema.name }}</v-card-text>
+          <v-card-text><h4>{{ theater.name }}</h4></v-card-text>
         </v-card>
       </v-slide-item>
     </v-slide-group>
@@ -40,14 +40,13 @@
 </template>
 
 <script>
-import router from "@/router";
-
+import router from '../../../router';
 export default {
-  name: 'MovieList',
-  props: ["CinemaList"],
+  name: 'TheaterMovie',
+  props: ['TheaterList', 'Label'],
   methods: {
-    goDetail(movieId) {
-      router.push(`/movie/${movieId}`);
+    goDetail(id) {
+      router.push(`/cinema/${id}`)
     }
   }
 }
