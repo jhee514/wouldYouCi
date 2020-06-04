@@ -1,20 +1,26 @@
 <template>
-  <v-bottom-navigation
-    grow
-    color="teal"
+<v-bottom-navigation
+    v-model="bottomNav"
     height="7vh"
+    app
     fixed
+    grow
+    shift
+    align="center"
   >
-    <v-btn @click="goMap">
-      <v-icon>fas fa-map-marked-alt</v-icon>
+    <v-btn small @click="goMap">
+      <span>Nearby</span>
+      <v-icon>mdi-map-marker-outline</v-icon>
     </v-btn>
 
-    <v-btn @click="goSearch">
-      <v-icon>fas fa-film</v-icon>
+    <v-btn small @click="goSearch">
+      <span>Search</span>
+      <v-icon>mdi-magnify</v-icon>
     </v-btn>
 
-    <v-btn @click="goUserPage">
-      <v-icon>fas fa-user</v-icon>
+    <v-btn small @click="goUserPage">
+      <span>My Page</span>
+      <v-icon>mdi-account-outline</v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>

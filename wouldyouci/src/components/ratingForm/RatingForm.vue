@@ -4,7 +4,7 @@
       <v-rating
         v-model="rating.score"
         color="amber"
-        background-color="orange lighten-3"
+        background-color="amber lighten-3"
         half-increments
         hover
         size="18">
@@ -19,12 +19,12 @@
         rows="1"
         auto-grow
         hide-details="auto"
-        color="orange darken-3"
+        color="amber darken-3"
         dense
       ></v-textarea>
       <v-btn 
         class="button"
-        color="orange darken-3" 
+        color="amber darken-3" 
         icon
         text 
         @click.prevent="submitForm(rating)"

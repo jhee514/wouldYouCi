@@ -1,11 +1,8 @@
-.container {
-  float: none;
-  clear: both;
+.trailer-container {
   width: 100%;
   position: relative;
   padding-bottom: 56.25%;
   padding-top: 25px;
-  height: 0;
 }
 
 .iframe {
@@ -18,6 +15,11 @@
   padding: 16px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.image-container {
+  padding:16px;
+
 }
 
 .media {

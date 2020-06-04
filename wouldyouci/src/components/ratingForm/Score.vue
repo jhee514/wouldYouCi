@@ -2,7 +2,7 @@
    <v-rating
       class="score"
       :value=score
-      background-color="orange lighten-3"
+      background-color="amber lighten-3"
       color="amber"
       dense
       half-increments
