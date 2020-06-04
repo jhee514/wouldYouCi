@@ -63,15 +63,12 @@ const actions = {
         commit('setLoading', true);
         axios.post(`${HOST}/user/login/`, data, options)
         .then(res => {
-          console.log(res);
           commit('setLoading', false);
           commit("setToken", res.data.token);
           dispatch("checkRating", 'login');
           // router.push("/firstRating");
         })
         .catch(err => {
-          console.log(err)
-          console.log(userInfo)
           commit('setLoading', false);
           if (err.response && err.response.data.non_field_errors.length) {
             commit("pushError", "아이디 혹은 패스워드가 올바르지 않습니다.")
@@ -122,7 +119,7 @@ const actions = {
         }
         axios.post(`${HOST}/user/signup/`, data, options)
           .then(res => {
-            console.log(res);
+            res;
             commit('setLoading', false);
             const credentials = {
               userName: userInfo.userName,
@@ -131,8 +128,6 @@ const actions = {
             dispatch("login", credentials);
           })
           .catch(err => {
-            console.log(err.response);
-            console.log(userInfo);
             commit('setLoading', false);
             if (err.response && err.response.data.message.username){
               for (let i=0; i<err.response.data.message.username.length; i++){
@@ -176,26 +171,22 @@ const actions = {
         .then(res => {
           commit('setLoading', false);
           if (!res.data.rating_tf) {
-            console.log('평가 안 함');
             router.push('/firstRating');
           } else {
-            console.log('평가 함');
             router.push('/');
           }
-          console.log(res);
         })
         .catch(err => {
-          console.log(err);
+          err;
         })
     } else {
       return new Promise(function(resolve, reject) {
         axios.get(`${HOST}/user/login/rating/`, options)
           .then(res => {
-            console.log(res);
             resolve(res.data.rating_cnt);
           })
           .catch(err => {
-            console.log(err);
+            err;
             reject(Error('error'));
           })
       })
@@ -203,7 +194,6 @@ const actions = {
   },
   changePassword: ({ getters }, userInfo) => {
     getters;
-    console.log(userInfo.password)
     const token = sessionStorage.getItem('jwt');
     const options = {
       headers: {
@@ -215,17 +205,16 @@ const actions = {
     };
     axios.patch(`${HOST}/user/password/`, data, options)
       .then(res => {
-        console.log(res);
+        res;
         alert('비밀번호가 변경되었습니다.')
       })
       .catch(err => {
-        console.log(err);
+        err;
         alert('비밀번호를 변경하는데 오류가 발생하였습니다.')
       })
   },
   registerProfile: ({ getters }, image) => {
     getters;
-    console.log(image);
     const data = new FormData();
     data.append('file', image);
     const token = sessionStorage.getItem('jwt');
@@ -238,11 +227,11 @@ const actions = {
     return new Promise(function(resolve, reject) {
       axios.post(`${HOST}/user/profile/`, data, options)
         .then(res => {
-          console.log(res);
+          res;
           resolve('ok');
         })
         .catch(err => {
-          console.log(err);
+          err;
           reject(Error('error'));
         })
     })
@@ -258,11 +247,11 @@ const actions = {
     return new Promise(function(resolve, reject) {
       axios.delete(`${HOST}/user/profile/`, options)
         .then(res => {
-          console.log(res);
+          res;
           resolve('ok');
         })
         .catch(err => {
-          console.log(err);
+          err;
           reject(Error('error'));
         })
     })
@@ -278,11 +267,10 @@ const actions = {
       axios.get(`${HOST}/user/`, options)
         .then(res => {
           commit('setUserInfo', res.data)
-          console.log(res);
           resolve('ok');
         })
         .catch(err => {
-          console.log(err);
+          err;
           reject(Error('error'));
         })
     })
