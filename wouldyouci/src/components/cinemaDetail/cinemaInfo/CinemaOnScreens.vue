@@ -49,8 +49,10 @@
     
         <v-tabs
           v-model="tab"
-          background-color="amber"
-          dark
+          background-color="pink lighten-2"
+          color="white"
+          light
+          right
         >
           <v-tab
             v-for="(item, idx) in items"
