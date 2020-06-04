@@ -3,27 +3,8 @@
     <Title />
     <div class="body">
       <v-card elevation=0>
-        <div 
-          v-if="details.trailer"
-          class="trailer"
-          >
-            <iframe 
-              id="player"
-              type="text/html" 
-              width="auto" 
-              height="auto"
-              allow="autoplay"
-              allowfullscreen
-              frameborder=0
-              :src=details.trailer
-              ></iframe>
-        </div>
-        <div v-else>
-           <v-img 
-            center
-            width="auto"
-            :src="details.poster" />
-        </div>
+
+        <MovieTrailer class="trailer" :details="details" />
 
         <v-list-item two-line>
           <v-list-item-content>
@@ -98,6 +79,7 @@
 <script>
 import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
+import MovieTrailer from './movieTrailer/MovieTrailer';
 import MovieInfo from './movieInfo/MovieInfo';
 import MovieRatings from './movieRatings/MovieRatings';
 import Score from '../ratingForm/Score';
@@ -109,6 +91,7 @@ export default {
   components: {
     Nav,
     Title,
+    MovieTrailer,
     MovieInfo,
     MovieRatings,
     Score,
