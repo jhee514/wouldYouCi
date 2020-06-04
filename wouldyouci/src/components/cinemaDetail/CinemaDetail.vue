@@ -42,10 +42,9 @@
               <v-btn
                 v-on="on"
                 icon 
-                color="grey"
-                x-small
+                color="pink"
                 >
-                <v-icon>mdi-share-variant</v-icon>
+                <v-icon>mdi-filmstrip</v-icon>
               </v-btn>
             </template>
             <CinemaOnScreens :onscreens="details.onscreens" @close="closeModal" />
@@ -57,7 +56,7 @@
         <v-tabs
           v-model="tab"
           background-color="white"
-          color="orange dark-3"
+          color="amber"
           centered
           fixed-tabs
         >
