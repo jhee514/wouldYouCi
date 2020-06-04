@@ -10,7 +10,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['localhost', '[::1]', '03bdb72f2778.ngrok.io', '52.78.229.238', 'k02a4061.p.ssafy.io']
+ALLOWED_HOSTS = ['localhost', '[::1]', '52.78.229.238', 'k02a4061.p.ssafy.io']
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -155,15 +155,15 @@ USE_TZ = True
 AUTH_USER_MODEL = 'accounts.User'
 
 
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django_redis.cache.RedisCache',
-#         'LOCATION': 'redis://127.0.0.1:6379/1',
-#         'OPTIONS': {
-#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-#         }
-#     }
-# }
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
 
 
 ELASTICSEARCH_DSL = {

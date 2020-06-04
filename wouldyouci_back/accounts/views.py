@@ -65,8 +65,7 @@ def user_index(request):
     if user.ratings.count() > 9:
         rating_tf = True
 
-        recommend_id_set = recommend_userbased(user.id)
-        recommend_movie_set = Movie.objects.filter(id__in=recommend_id_set)
+        recommend_movie_set = recommend_userbased(user.id)
         recommend_serializer = SimpleMovieSerializer(recommend_movie_set, many=True)
         recommend_movies = recommend_serializer.data
         recommend_movies_cnt = recommend_movie_set.count()
