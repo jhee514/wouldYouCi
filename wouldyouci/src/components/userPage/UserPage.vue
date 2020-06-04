@@ -149,9 +149,9 @@ export default {
     },
     async changeP() {
       await this.bringUserInfo();
-      if (this.getUserInfo.file.length) {
+      if (this.getUserInfo.data.user.file.length) {
         const HOST = process.env.VUE_APP_SERVER_HOST;
-        this.profileURL = `${HOST}/${this.getUserInfo.file[0]}`;
+        this.profileURL = `${HOST}/${this.getUserInfo.data.user.file[0]}`;
       } else {
         this.profileURL = null;
       }
