@@ -38,7 +38,7 @@
       </v-btn>
     </div>
     <div class="movieCard" v-if="showMovieCard">
-      <TheaterMovie v-bind:theaterMovieList="getMovies"/>
+      <TheaterMovie v-bind:theaterName="theaterName" v-bind:theaterMovieList="getMovies"/>
     </div>
     <Nav />
   </div>
@@ -74,6 +74,7 @@ export default {
       theaterMovieList: [],
       markers: [],
       theaterId: null,
+      theaterName: null,
       cardLoading: false,
       isChangeLocation: false,
       myMarker: null
@@ -101,11 +102,33 @@ export default {
       } else {
         if (value.position.length) {
           for (const v of value.position) {
-            const marker = new this.google.maps.Marker({position: {lat: Number(v.y), lng: Number(v.x)}, map: this.map, icon: value.icon, label:v.name, animation: this.google.maps.Animation.DROP})
+            console.log(v)
+            let theaterIcon = {
+              url: "https://image.flaticon.com/icons/svg/2892/2892617.svg",
+              scaledSize: new this.google.maps.Size(40, 40)
+            }
+            if (v.type === 'CGV') {
+              theaterIcon = {
+                url: "https://lh3.googleusercontent.com/proxy/jDXUVkzo27nTCsrQPiSO2FjTaD2cZudfy8FbLa0oAcf7F0Hv7a4PvXt7Le3NhK8RAZ1q8V2BuDXuquPxwuROikFOpySsuQ9heVtv0fYJvcG7aeqRljqEYYZg88MvOHNpS2nxdDIS5PgGP4WEZZLhgJA6Mxu08VEqvVpmILAblVLsuYyCltKTZwSZ9hmeUVC4aZEZjmrNZ1GWxG05Ne71Png1",
+                scaledSize: new this.google.maps.Size(80, 80)
+              }
+            } else if (v.type === '메가박스') {
+              theaterIcon = {
+                url: "https://w.namu.la/s/1fcec37b924dd133f451ac4d3fa4563469da23ca9732d78a9d47e2944060da9feb6f1a8f76837f259f6a822db6976ce89eb266548c3de58fe221923cbc54abd716912500d9e43895fb66fca700f7c90462bde78b32fb68c10db8c5a0e44418f5",
+                scaledSize: new this.google.maps.Size(120, 90)
+              }
+            } else if (v.type === '롯데시네마') {
+              theaterIcon = {
+                url: "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F253EA643581EB30A2A",
+                scaledSize: new this.google.maps.Size(40, 40)
+              }
+            }
+            const marker = new this.google.maps.Marker({position: {lat: Number(v.y), lng: Number(v.x)}, map: this.map, icon: theaterIcon, animation: this.google.maps.Animation.DROP})
             this.markers.push(marker);
             this.google.maps.event.addListener(marker, 'click', async function() {
               console.log(v)
               this.theaterId = v.id;
+              this.theaterName = v.name;
               this.cardLoading = true;
               console.log(this.theaterId)
               if (this.isTimeChange) {
@@ -169,11 +192,7 @@ export default {
       }
       await this.bringHereCinema(bound);
       this.theaterMovieList = this.getTheaterMovies;
-      const theaterIcon = {
-        url: "https://image.flaticon.com/icons/svg/2892/2892617.svg",
-        scaledSize: new this.google.maps.Size(40, 40)
-      }
-      this.marking({type: 'theater', position: this.theaterMovieList, icon: theaterIcon});
+      this.marking({type: 'theater', position: this.theaterMovieList});
       this.isChangeLocation = false;
       this.loading = false;
     },
@@ -236,12 +255,8 @@ export default {
             url : "https://image.flaticon.com/icons/svg/684/684908.svg",
             scaledSize: new this.google.maps.Size(40, 40)
           }
-          const theaterIcon = {
-            url: "https://image.flaticon.com/icons/svg/2892/2892617.svg",
-            scaledSize: new this.google.maps.Size(40, 40)
-          }
           this.marking({type: 'user', position: pos, icon: hereIcon});
-          this.marking({type: 'theater', position: this.theaterMovieList, icon: theaterIcon});
+          this.marking({type: 'theater', position: this.theaterMovieList});
         }.bind(this), function() {
           this.handleLocationError(true, this.map.getCenter());
         }.bind(this))
@@ -287,12 +302,8 @@ export default {
             url : "https://image.flaticon.com/icons/svg/684/684908.svg",
             scaledSize: new this.google.maps.Size(40, 40)
           }
-          const theaterIcon = {
-            url: "https://image.flaticon.com/icons/svg/2892/2892617.svg",
-            scaledSize: new this.google.maps.Size(40, 40)
-          }
           this.marking({type: 'user', position: pos, icon: hereIcon});
-          this.marking({type: 'theater', position: this.theaterMovieList, icon: theaterIcon});
+          this.marking({type: 'theater', position: this.theaterMovieList});
         }.bind(this), function() {
           this.handleLocationError(true, this.map.getCenter());
         }.bind(this))
