@@ -78,7 +78,7 @@ def create_rating(request):
     serializer = RatingSerializer(data=request.data)
     if serializer.is_valid():
 
-        cache.delete(f'recommend_{user.id}')
+        # cache.delete(f'recommend_{user.id}')
         new_rating = serializer.save(user=user)
 
         movie = new_rating.movie
@@ -107,7 +107,7 @@ def patch_delete_rating(request, rating_id):
             serializer = RatingSerializer(instance=rating, data=request.data)
             if serializer.is_valid():
 
-                cache.delete(f'recommend_{user_id}')
+                # cache.delete(f'recommend_{user_id}')
                 update_rating = serializer.save()
 
                 movie_rating = (movie_rating + update_rating.score) / ratings_count
@@ -118,7 +118,7 @@ def patch_delete_rating(request, rating_id):
             return Response(status=400, data=serializer.errors)
 
         elif request.method == 'DELETE':
-            cache.delete(f'recommend_{user_id}')
+            # cache.delete(f'recommend_{user_id}')
             rating.delete()
 
             movie_rating = 0

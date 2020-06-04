@@ -21,7 +21,7 @@ def recommend_userbased(user_id):
 
 
 def contentsbased_onscreen(user_id):
-    genres = MoviesConfig.genres
+    genres = MoviesConfig.genre_pickle
 
     ratings = pd.DataFrame(list(Rating.objects.filter(user=user_id).values('score', 'movie_id')))
 
@@ -61,27 +61,27 @@ def contentsbased_onscreen(user_id):
 
 
 def contentsbased_by_genres_and_directors(user_id, movie_id):
-    data = cache.get(f'recommend_{user_id}')
+    # data = cache.get(f'recommend_{user_id}')
 
-    if data is None:
-        movies = MoviesConfig.movies
+    # if data is None:
+    movies = MoviesConfig.movie_pickle
 
-        ratings = pd.DataFrame(list(Rating.objects.filter(user=user_id).values('score', 'movie_id')))
-        ratings = ratings.merge(movies, left_on='movie_id', right_index=True)
-        x_train, x_test, y_train, y_test = train_test_split(ratings[movies.columns],
-                                                            ratings['score'],
-                                                            random_state=406,
-                                                            test_size=0.1)
-        reg = LinearRegression()
-        reg.fit(x_train, y_train)
+    ratings = pd.DataFrame(list(Rating.objects.filter(user=user_id).values('score', 'movie_id')))
+    ratings = ratings.merge(movies, left_on='movie_id', right_index=True)
+    x_train, x_test, y_train, y_test = train_test_split(ratings[movies.columns],
+                                                        ratings['score'],
+                                                        random_state=406,
+                                                        test_size=0.1)
+    reg = LinearRegression()
+    reg.fit(x_train, y_train)
 
-        predictions = reg.predict(movies)
-        movies.reset_index()
+    predictions = reg.predict(movies)
+    movies.reset_index()
 
-        movies['predict'] = predictions
-        data = movies[['predict']]
+    movies['predict'] = predictions
+    data = movies[['predict']]
 
-        cache.set(f'recommend_{user_id}', data)
+        # cache.set(f'recommend_{user_id}', data)
 
     predicted_score = data.at[movie_id, 'predict']
 
