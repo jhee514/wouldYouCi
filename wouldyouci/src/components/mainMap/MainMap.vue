@@ -305,7 +305,8 @@ export default {
           }
           this.marking({type: 'user', position: pos, icon: hereIcon});
           this.marking({type: 'theater', position: this.theaterMovieList});
-        }.bind(this), function() {
+        }.bind(this), function(err) {
+          alert(err.message);
           this.handleLocationError(true, this.map.getCenter());
         }.bind(this))
       }
