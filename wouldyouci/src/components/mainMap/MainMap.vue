@@ -16,7 +16,7 @@
     </v-dialog>
     <div id="map" ref="map">
     </div>
-    <v-overlay :value="cardLoading">
+    <v-overlay :value="getLoading">
       <v-progress-circular
         :size="70"
         :width="7"
@@ -49,7 +49,7 @@ import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import TimeSelector from './timeSelector/TimeSelector.vue';
 import TheaterMovie from './theaterMovie/TheaterMovie.vue';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'MainMap',
@@ -75,15 +75,15 @@ export default {
       markers: [],
       theaterId: null,
       theaterName: null,
-      cardLoading: false,
       isChangeLocation: false,
       myMarker: null
     }
   },
   computed: {
-    ...mapGetters(['getTheaterMovies', 'getMovies'])
+    ...mapGetters(['getTheaterMovies', 'getMovies', 'getLoading'])
   },
   methods: {
+    ...mapMutations(['setLoading']),
     ...mapActions(['init', 'bringHereCinema', 'bringMovies']),
     marking(value) {
       console.log(value)
@@ -129,14 +129,14 @@ export default {
               console.log(v)
               this.theaterId = v.id;
               this.theaterName = v.name;
-              this.cardLoading = true;
+              this.setLoading(true);
               console.log(this.theaterId)
               if (this.isTimeChange) {
                 await this.bringMovies({theaterID: v.id, time: this.time});
               } else {
                 await this.bringMovies({theaterID: v.id, time: null});
               }
-              this.cardLoading = false;
+              this.setLoading(false);
               if (this.cardInfo && this.cardInfo !== marker) {
                 this.showMovieCard = false;
                 this.toggleBounce(this.cardInfo);
@@ -208,9 +208,9 @@ export default {
           setTimeout(function() {
             this.showMovieCard = true;
           }.bind(this), 1);
-          this.cardLoading = true;
+          this.setLoading(true);
           await this.bringMovies({theaterID: this.theaterId, time: this.time});
-          this.cardLoading = false;
+          this.setLoading(false);
         }
       }
     },
@@ -218,9 +218,9 @@ export default {
       this.time = new Date().toLocaleTimeString();
       this.isTimeChange = false;
       if (this.showMovieCard) {
-        this.cardLoading = true;
+        this.setLoading(true);
         await this.bringMovies({theaterID: this.theaterId, time: null});
-        this.cardLoading = false;
+        this.setLoading(false);
       }
     },
     clearMarker() {
@@ -266,6 +266,7 @@ export default {
     }
   },
   async mounted() {
+    this.setLoading(true);
     try {
       console.log(this)
       this.google = await this.init();
@@ -311,6 +312,7 @@ export default {
     } catch (error) {
       console.log(error);
     }
+    this.setLoading(false);
   }
 }
 </script>

@@ -178,33 +178,48 @@ const actions = {
     })
   },
   bringAddress: ({ commit }, pos) => {
-    const KOptions = {
-      headers: {
-        Authorization: `KakaoAK ${KAKAO_API_KEY}`
+    if (pos) {
+      const KOptions = {
+        headers: {
+          Authorization: `KakaoAK ${KAKAO_API_KEY}`
+        }
       }
+      return new Promise(function(resolve, reject) {
+        axios.get(`https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${pos.lng}&y=${pos.lat}`, KOptions)
+        .then(res => {
+          console.log(res);
+          commit('setAddress', res.data.documents[0].address_name);
+          resolve('ok')
+        })
+        .catch(err => {
+          console.log(err);
+          reject(Error('error'));
+        })
+      })
+    } else {
+      return new Promise(function(resolve) {
+        commit('setAddress', '위치 정보를 허용해주세요.')
+        resolve('ok');
+      })
     }
-    return new Promise(function(resolve, reject) {
-      axios.get(`https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${pos.lng}&y=${pos.lat}`, KOptions)
-      .then(res => {
-        console.log(res);
-        commit('setAddress', res.data.documents[0].address_name);
-        resolve('ok')
-      })
-      .catch(err => {
-        console.log(err);
-        reject(Error('error'));
-      })
-    })
   },
   bringInitSearchInfo: ({ commit }, pos) => {
+    console.log('init은 들어옴')
     const token = sessionStorage.getItem('jwt');
-    const options = {
+    let options = {
       headers: {
         Authorization: `JWT ${token}`
-      },
-      params: {
-        x: pos.lng,
-        y: pos.lat
+      }
+    }
+    if (pos) {
+      options = {
+        headers: {
+          Authorization: `JWT ${token}`
+        },
+        params: {
+          x: pos.lng,
+          y: pos.lat
+        }
       }
     }
     return new Promise(function(resolve, reject) {
