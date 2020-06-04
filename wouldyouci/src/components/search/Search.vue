@@ -41,7 +41,7 @@
         </v-btn>
       </div>
       <div v-if="getSearchMode">
-        <MainSearch v-if="getSearchMode==='before'" v-bind:Commings="commings" v-bind:Populars="populars" v-bind:TheaterList="nearTheater"/>
+        <MainSearch v-if="getSearchMode==='before'" v-bind:pos="pos" v-bind:Commings="commings" v-bind:Populars="populars" v-bind:TheaterList="nearTheater"/>
         <AfterSearch v-else v-bind:KeyWords="keywordProps" v-bind:Type="searchTypeProps" v-bind:ResultList="cards" v-bind:Similar="similar"/>
       </div>
       <v-overlay :value="getLoading">
@@ -108,7 +108,6 @@ export default {
       if (this.searchType === 'movies') {
         axios.get(`${HOST}/search/movie/`, params)
           .then(res => {
-            console.log(res);
             this.items = res.data;
             this.isloading = false;
           })
@@ -116,7 +115,6 @@ export default {
       } else {
         axios.get(`${HOST}/search/cinema/`, params)
           .then(res => {
-            console.log(res);
             this.items = res.data;
             this.isloading = false;
           })
@@ -152,16 +150,17 @@ export default {
           };
           this.pos = pos;
         }.bind(this))
-        setTimeout(async function() {
-          await this.bringAddress(this.pos);
-          await this.bringInitSearchInfo(this.pos);
-          this.nowAddress = this.getAddress;
-          console.log(this.getInitSearchInfo);
-          this.nearTheater = this.getInitSearchInfo.near_cinema;
-          this.commings = this.getInitSearchInfo.comming_soon;
-          this.populars = this.getInitSearchInfo.popular_movies;
-          this.setLoading(false);
-        }.bind(this), 400)
+        if (this.pos) {
+          setTimeout(async function() {
+            await this.bringAddress(this.pos);
+            await this.bringInitSearchInfo(this.pos);
+            this.nowAddress = this.getAddress;
+            this.nearTheater = this.getInitSearchInfo.near_cinema;
+            this.commings = this.getInitSearchInfo.comming_soon;
+            this.populars = this.getInitSearchInfo.popular_movies;
+            this.setLoading(false);
+          }.bind(this), 400)
+        }
       } else {
         this.setLoading(false);
         alert('위치 설정을 켜주세요.');
@@ -182,7 +181,6 @@ export default {
         await this.bringAddress(this.pos);
         await this.bringInitSearchInfo(this.pos);
         this.nowAddress = this.getAddress;
-        console.log(this.getInitSearchInfo);
         this.nearTheater = this.getInitSearchInfo.near_cinema;
         this.commings = this.getInitSearchInfo.comming_soon;
         this.populars = this.getInitSearchInfo.popular_movies;

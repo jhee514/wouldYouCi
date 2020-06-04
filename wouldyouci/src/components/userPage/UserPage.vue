@@ -140,18 +140,18 @@ export default {
     },
     async deleteP() {
       await this.bringUserInfo();
-      if (this.getUserInfo.file.length) {
+      if (this.getUserInfo.data.user.file.length) {
         const HOST = process.env.VUE_APP_SERVER_HOST;
-        this.profileURL = `${HOST}/${this.getUserInfo.file[0]}`;
+        this.profileURL = `${HOST}/${this.getUserInfo.data.user.file[0]}`;
       } else {
         this.profileURL = null;
       }
     },
     async changeP() {
       await this.bringUserInfo();
-      if (this.getUserInfo.file.length) {
+      if (this.getUserInfo.data.user.file.length) {
         const HOST = process.env.VUE_APP_SERVER_HOST;
-        this.profileURL = `${HOST}/${this.getUserInfo.file[0]}`;
+        this.profileURL = `${HOST}/${this.getUserInfo.data.user.file[0]}`;
       } else {
         this.profileURL = null;
       }
@@ -160,7 +160,6 @@ export default {
   async mounted() {
     this.setLoading(true);
     await this.bringUserInfo();
-    console.log(this.getUserInfo)
     const HOST = process.env.VUE_APP_SERVER_HOST;
     if (this.getUserInfo.data.user.file.length) {
       this.profileURL = `${HOST}/${this.getUserInfo.data.user.file[0]}`;
@@ -172,7 +171,6 @@ export default {
     this.recommendedMovies = this.getUserInfo.data.recommend_movies;
     const res = await this.bringRatedMovies();
     this.ratedMovies = res;
-    console.log(res)
     this.setLoading(false);
   }
 }

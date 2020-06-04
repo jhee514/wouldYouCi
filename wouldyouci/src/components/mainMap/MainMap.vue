@@ -16,7 +16,7 @@
     </v-dialog>
     <div id="map" ref="map">
     </div>
-    <v-overlay :value="cardLoading">
+    <v-overlay :value="getLoading">
       <v-progress-circular
         :size="70"
         :width="7"
@@ -49,7 +49,7 @@ import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import TimeSelector from './timeSelector/TimeSelector.vue';
 import TheaterMovie from './theaterMovie/TheaterMovie.vue';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'MainMap',
@@ -75,18 +75,19 @@ export default {
       markers: [],
       theaterId: null,
       theaterName: null,
-      cardLoading: false,
       isChangeLocation: false,
-      myMarker: null
+      myMarker: null,
+      infowindows:[]
     }
   },
   computed: {
-    ...mapGetters(['getTheaterMovies', 'getMovies'])
+    ...mapGetters(['getTheaterMovies', 'getMovies', 'getLoading'])
   },
   methods: {
+    ...mapMutations(['setLoading']),
     ...mapActions(['init', 'bringHereCinema', 'bringMovies']),
     marking(value) {
-      console.log(value)
+      const HOST = process.env.VUE_APP_SERVER_HOST;
       if (value.type === 'user') {
         const marker = new this.google.maps.Marker({position: value.position, map: this.map, icon: value.icon})
         this.myMarker = marker;
@@ -98,45 +99,43 @@ export default {
           infoWindow.setPosition({lat: value.position.lat, lng: value.position.lng});
           infoWindow.setContent('현재 위치입니다. 실제 위치와 500m 정도 차이가 날 수 있습니다.');
           infoWindow.open(this.map);
+          this.infowindows.push(infoWindow);
         }.bind(this))
       } else {
         if (value.position.length) {
           for (const v of value.position) {
-            console.log(v)
             let theaterIcon = {
-              url: "https://image.flaticon.com/icons/svg/2892/2892617.svg",
+              url: `${HOST}/media/wouldyouci/wouldyouci.png`,
               scaledSize: new this.google.maps.Size(40, 40)
             }
             if (v.type === 'CGV') {
               theaterIcon = {
-                url: "https://lh3.googleusercontent.com/proxy/jDXUVkzo27nTCsrQPiSO2FjTaD2cZudfy8FbLa0oAcf7F0Hv7a4PvXt7Le3NhK8RAZ1q8V2BuDXuquPxwuROikFOpySsuQ9heVtv0fYJvcG7aeqRljqEYYZg88MvOHNpS2nxdDIS5PgGP4WEZZLhgJA6Mxu08VEqvVpmILAblVLsuYyCltKTZwSZ9hmeUVC4aZEZjmrNZ1GWxG05Ne71Png1",
-                scaledSize: new this.google.maps.Size(80, 80)
+                url: `${HOST}/media/wouldyouci/cgv.png`,
+                scaledSize: new this.google.maps.Size(40, 40)
               }
             } else if (v.type === '메가박스') {
               theaterIcon = {
-                url: "https://w.namu.la/s/1fcec37b924dd133f451ac4d3fa4563469da23ca9732d78a9d47e2944060da9feb6f1a8f76837f259f6a822db6976ce89eb266548c3de58fe221923cbc54abd716912500d9e43895fb66fca700f7c90462bde78b32fb68c10db8c5a0e44418f5",
-                scaledSize: new this.google.maps.Size(120, 90)
+                url: `${HOST}/media/wouldyouci/megabox.png`,
+                scaledSize: new this.google.maps.Size(40, 40)
               }
             } else if (v.type === '롯데시네마') {
               theaterIcon = {
-                url: "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F253EA643581EB30A2A",
+                url: `${HOST}/media/wouldyouci/lotte.png`,
                 scaledSize: new this.google.maps.Size(40, 40)
               }
             }
             const marker = new this.google.maps.Marker({position: {lat: Number(v.y), lng: Number(v.x)}, map: this.map, icon: theaterIcon, animation: this.google.maps.Animation.DROP})
             this.markers.push(marker);
             this.google.maps.event.addListener(marker, 'click', async function() {
-              console.log(v)
               this.theaterId = v.id;
               this.theaterName = v.name;
-              this.cardLoading = true;
-              console.log(this.theaterId)
+              this.setLoading(true);
               if (this.isTimeChange) {
                 await this.bringMovies({theaterID: v.id, time: this.time});
               } else {
                 await this.bringMovies({theaterID: v.id, time: null});
               }
-              this.cardLoading = false;
+              this.setLoading(false);
               if (this.cardInfo && this.cardInfo !== marker) {
                 this.showMovieCard = false;
                 this.toggleBounce(this.cardInfo);
@@ -164,7 +163,13 @@ export default {
       infoWindow.setContent(browserHasGeolocation?
                               '오류: 지리적 위치 서비스가 실패했습니다. 위치 제공을 허용해주세요':
                               '오류: 브라우저가 지리적 위치를 지원하지 않습니다.');
-      infoWindow.open(this.map)
+      infoWindow.open(this.map);
+      this.infowindows.push(infoWindow);
+      if (browserHasGeolocation) {
+        alert('위치 정보 제공에 동의해주세요.')
+      } else {
+        alert('브라우저가 지리적 위치를 지원하지 않습니다.')
+      }
     },
     toggleBounce(marker) {
       if (marker.getAnimation() !== null) {
@@ -183,7 +188,6 @@ export default {
       this.clearMarker();
       const mapBound = this.map.getBounds();
       this.mapBound = mapBound;
-      console.log(mapBound)
       const bound = {
         x1: mapBound.Ua.i,
         y1: mapBound.Ya.i,
@@ -208,9 +212,9 @@ export default {
           setTimeout(function() {
             this.showMovieCard = true;
           }.bind(this), 1);
-          this.cardLoading = true;
+          this.setLoading(true);
           await this.bringMovies({theaterID: this.theaterId, time: this.time});
-          this.cardLoading = false;
+          this.setLoading(false);
         }
       }
     },
@@ -218,20 +222,25 @@ export default {
       this.time = new Date().toLocaleTimeString();
       this.isTimeChange = false;
       if (this.showMovieCard) {
-        this.cardLoading = true;
+        this.setLoading(true);
         await this.bringMovies({theaterID: this.theaterId, time: null});
-        this.cardLoading = false;
+        this.setLoading(false);
       }
     },
     clearMarker() {
       for (const marker of this.markers) {
         marker.setMap(null);
       }
+      for (const infowindow of this.infowindows) {
+        infowindow.close();
+      }
     },
     findMyPos() {
       this.isChangeLocation = false;
       this.clearMarker();
-      this.myMarker.setMap(null);
+      if (this.myMarker) {
+        this.myMarker.setMap(null);
+      }
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async function(position) {
           const pos = {
@@ -241,7 +250,6 @@ export default {
           this.map.setCenter(pos);
           const mapBound = this.map.getBounds();
           this.mapBound = mapBound;
-          console.log(mapBound)
           const bound = {
             x1: mapBound.Ua.i,
             y1: mapBound.Ya.i,
@@ -261,15 +269,14 @@ export default {
           this.handleLocationError(true, this.map.getCenter());
         }.bind(this))
       } else {
-        alert('위치 정보 제공 동의를 해주세요');
+        this.handleLocationError(false, this.map.getCenter());
       }
     }
   },
   async mounted() {
+    this.setLoading(true);
     try {
-      console.log(this)
       this.google = await this.init();
-      console.log(this.google)
       this.map = new this.google.maps.Map(this.$refs.map, {
         center: { lat: 37.501401, lng: 127.039686 },
         zoom: 14,
@@ -280,6 +287,12 @@ export default {
           this.closeMovieCard();
         }
       }.bind(this))
+      this.map.addListener('dragend', function() {
+        this.isChangeLocation = true;
+      }.bind(this))
+      this.map.addListener('zoom_changed', function() {
+        this.isChangeLocation = true;
+      }.bind(this))
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async function(position) {
           const pos = {
@@ -287,16 +300,9 @@ export default {
             lng: position.coords.longitude
           };
           this.map.setCenter(pos);
-          this.map.addListener('dragend', function() {
-            this.isChangeLocation = true;
-          }.bind(this))
-          this.map.addListener('zoom_changed', function() {
-            this.isChangeLocation = true;
-          }.bind(this))
           const bound = {x1: pos.lng - 0.01544952392, y1: pos.lat - 0.01721547104, x2: pos.lng + 0.01544952392, y2: pos.lat + 0.01721150239};
           await this.bringHereCinema(bound);
           this.theaterMovieList = this.getTheaterMovies;
-          console.log(this.theaterMovieList);
           this.nowHere = pos;
           const hereIcon = {
             url : "https://image.flaticon.com/icons/svg/684/684908.svg",
@@ -309,8 +315,9 @@ export default {
         }.bind(this))
       }
     } catch (error) {
-      console.log(error);
+      this.handleLocationError(false, this.map.getCenter());
     }
+    this.setLoading(false);
   }
 }
 </script>

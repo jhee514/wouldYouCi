@@ -9,7 +9,6 @@ var resolveInitPromise;
 var rejectInitPromise;
 
 const initPromise = new Promise((resolve, reject) => {
-  console.log('in initPromise')
   resolveInitPromise = resolve;
   rejectInitPromise = reject;
 });
@@ -68,7 +67,6 @@ const mutations = {
 
 const actions = {
   init: ({ getters, commit }) => {
-    console.log('init')
     if (getters.getInitialized) return initPromise;
     commit("setInitialized", true);
     window["initMap"] = () => resolveInitPromise(window.google);
@@ -79,11 +77,9 @@ const actions = {
     script.type="text/javascript"
     script.onerror = rejectInitPromise;
     document.querySelector("body").appendChild(script);
-    // console.log(initPromise)
     return initPromise;
   },
   bringHereCinema: ({ commit }, bound) => {
-    console.log(bound)
     const params = {
       params: {
         x1: bound.x1,
@@ -95,12 +91,11 @@ const actions = {
     return new Promise(function(resolve, reject) {
       axios.get(`${HOST}/cinema/map/`, params)
         .then(res => {
-          console.log(res);
           commit('setTheaterMovies', res.data.documents);
           resolve('ok');
         })
         .catch(err => {
-          console.log(err);
+          err;
           reject(Error('error'))
         })
     })
@@ -130,32 +125,28 @@ const actions = {
         }
       };
     }
-    console.log(params);
     return new Promise(function(resolve, reject) {
       axios.get(`${HOST}/cinema/map/${theaterID}/movie/`, params)
         .then(res => {
-          console.log(res);
           commit('setMovies', res.data.documents);
           resolve('ok');
         })
         .catch(err => {
-          console.log(err);
+          err;
           reject(Error('error'))
         })
     })
   },
   searchMovies: ({ commit }, keywords) => {
-    console.log(keywords);
     return new Promise(function(resolve, reject) {
       axios.get(`${HOST}/search/movie/${keywords}/`)
         .then(res => {
-          console.log(res);
           commit('setSearchList', res.data.search_result);
           commit('setSearchSimiList', res.data.similar_result);
           resolve(res.data);
         })
         .catch(err => {
-          console.log(err);
+          err;
           commit('setSearchList', null);
           commit('setSearchSimiList', null);
           reject(Error('error'));
@@ -163,17 +154,15 @@ const actions = {
     })
   },
   searchTheater: ({ commit }, keywords) => {
-    console.log(keywords);
     return new Promise(function(resolve, reject) {
       axios.get(`${HOST}/search/cinema/${keywords}/`)
         .then(res => {
-          console.log(res);
           commit('setSearchList', res.data.search_result);
           commit('setSearchSimiList', res.data.similar_result);
           resolve('ok');
         })
         .catch(err => {
-          console.log(err);
+          err;
           commit('setSearchList', null);
           commit('setSearchSimiList', null);
           reject(Error('error'));
@@ -181,44 +170,56 @@ const actions = {
     })
   },
   bringAddress: ({ commit }, pos) => {
-    const KOptions = {
-      headers: {
-        Authorization: `KakaoAK ${KAKAO_API_KEY}`
+    if (pos) {
+      const KOptions = {
+        headers: {
+          Authorization: `KakaoAK ${KAKAO_API_KEY}`
+        }
       }
+      return new Promise(function(resolve, reject) {
+        axios.get(`https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${pos.lng}&y=${pos.lat}`, KOptions)
+        .then(res => {
+          commit('setAddress', res.data.documents[0].address_name);
+          resolve('ok')
+        })
+        .catch(err => {
+          err;
+          reject(Error('error'));
+        })
+      })
+    } else {
+      return new Promise(function(resolve) {
+        commit('setAddress', '위치 정보를 허용해주세요.')
+        resolve('ok');
+      })
     }
-    return new Promise(function(resolve, reject) {
-      axios.get(`https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=${pos.lng}&y=${pos.lat}`, KOptions)
-      .then(res => {
-        console.log(res);
-        commit('setAddress', res.data.documents[0].address_name);
-        resolve('ok')
-      })
-      .catch(err => {
-        console.log(err);
-        reject(Error('error'));
-      })
-    })
   },
   bringInitSearchInfo: ({ commit }, pos) => {
     const token = sessionStorage.getItem('jwt');
-    const options = {
+    let options = {
       headers: {
         Authorization: `JWT ${token}`
-      },
-      params: {
-        x: pos.lng,
-        y: pos.lat
+      }
+    }
+    if (pos) {
+      options = {
+        headers: {
+          Authorization: `JWT ${token}`
+        },
+        params: {
+          x: pos.lng,
+          y: pos.lat
+        }
       }
     }
     return new Promise(function(resolve, reject) {
       axios.get(`${HOST}/search/`, options)
       .then(res => {
-        console.log(res);
         commit('setInitSearchInfo', res.data);
         resolve('ok');
       })
       .catch(err => {
-        console.log(err);
+        err;
         reject(Error('error'));
       })
     })
@@ -237,23 +238,20 @@ const actions = {
     return new Promise(function(resolve, reject) {
       axios.get(`${HOST}/user/rating/page/`, options)
         .then(res => {
-          console.log(res);
           resolve(res.data);
         })
         .catch(err => {
-          console.log(err);
+          err;
           reject(Error('error'));
         })
     })
   },
   submitRatings: ({ getters }, movies) => {
     getters;
-    console.log(movies);
     let data = [];
     for (const [key, value] of Object.entries(movies)) {
       data.push({movie: key, score: value});
     }
-    console.log(data);
     const token = sessionStorage.getItem('jwt');
     const options = {
       headers: {
@@ -263,11 +261,11 @@ const actions = {
     if (data.length >= 10) {
       axios.post(`${HOST}/user/rating/`, {data}, options)
         .then(res => {
-          console.log(res);
+          res;
           router.push('/');
         })
         .catch(err => {
-          console.log(err);
+          err;
         })
     } else {
       alert(`현재까지 ${data.length}개의 영화를 평가하셨습니다.\n추천을 받기 위해선 최소 10개 이상의 영화를 평가해주셔야 합니다.`);
@@ -284,18 +282,16 @@ const actions = {
     return new Promise(function(resolve, reject) {
       axios.get(`${HOST}/user/rating/`, options)
         .then(res => {
-          console.log(res);
           resolve(res.data);
         })
         .catch(err => {
-          console.log(err);
+          err;
           reject(Error('error'));
         })
     })
   },
-
-
   fetchMovieDetail: ({ getters, commit }, movieId) => {
+    getters;
     const token = sessionStorage.getItem('jwt');
     const options = {
       headers: {
@@ -306,14 +302,10 @@ const actions = {
       axios.get(`${HOST}/movie/${movieId}/`, options)
         .then(res => {
           commit('setMovieDetail', res.data);
-          if (!getters.getMovieDetail) {
-            console.log('no movie data')
-          }
-          console.log(res)
           resolve('ok')
         })
         .catch(err => {
-          console.log(err);
+          err;
           reject(Error('error'))
         })
     })
@@ -329,11 +321,10 @@ const actions = {
       axios.get(`${HOST}/cinema/${cinemaId}/`, options)
         .then(res => {
           commit('setCinemaDetail', res.data);
-          console.log(res)
           resolve('ok')
         })
         .catch(err => {
-          console.log(err);
+          err;
           reject(Error('error'))
         })
     })
@@ -347,11 +338,11 @@ const actions = {
     }
     axios.patch(`${HOST}/movie/${movieId}/pick/`, movieId, options)
       .then(res => {
-        console.log(res);
+        res;
         return dispatch('fetchMovieDetail', movieId);
       })
       .catch(err => {
-        console.log(err)
+        err;
       })
   },
   togglePick: ({dispatch}, {item, itemId}) => {
@@ -363,7 +354,7 @@ const actions = {
     }
     axios.patch(`${HOST}/${item}/${itemId}/pick/`, 1, options)
       .then(res => {
-        console.log(res);
+        res;
         if ( item == 'cinema' ) {
           return dispatch('fetchCinemaDetail', itemId)
         } else {
@@ -371,7 +362,7 @@ const actions = {
         }
       })
       .catch(err => {
-        console.log(err)
+        err;
       })
   },
   fetchRatings: ({ commit }, {item, params} ) => {
@@ -390,7 +381,7 @@ const actions = {
           resolve(res.data)
         })
         .catch(err => {
-          console.log(err);
+          err;
           reject(Error('error'))
         })
     })
@@ -407,8 +398,6 @@ const actions = {
     return new Promise(function(resolve, reject) {
       axios.post(`${HOST}/${item}/rating/`, rating, options)
         .then(res => {
-          console.log(res);
-          dispatch;
           resolve(res);
         })
         .catch(err => {
@@ -431,11 +420,10 @@ const actions = {
     }
     axios.delete(`${HOST}/${item}/rating/${ratingId}/`, options)
       .then(res => {
-        console.log(res);
-        }
-      )
+        res;
+      })
       .catch(err => {
-        console.log(err);
+        err;
       })
     },
   patchRating: ({dispatch}, {item, editedRating}) => {
@@ -450,11 +438,10 @@ const actions = {
     return new Promise(function(resolve, reject) {
     axios.patch(`${HOST}/${item}/rating/${editedRating.id}/`, editedRating, options)
       .then(res => {
-        console.log(res);
         resolve(res);
       })
       .catch(err => {
-        console.log(err);
+        err;
         reject(Error('error'));
       })
     })
