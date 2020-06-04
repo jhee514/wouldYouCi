@@ -1,18 +1,54 @@
-//push & notification 하기전에 예제로 만들어봤습니다.
-let CACHE_NAME = 'pwa-offline-v1';
-let filesToCache = [
-    //캐싱할것 
+
+// CODELAB: Update cache names any time any of the cached files change.
+const CACHE_NAME = 'static-cache-v1';
+
+// CODELAB: Add list of files to cache here.
+const FILES_TO_CACHE = [
+  '/offline.html',
 ];
 
-//서비스 워커 설치(웹 지원 캐싱)
-self.addEventListener('install',function(event){
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-        .then(function(cache){
-            return cache.addAll(filesToCache); //pwa 파일에 다 집어 넣어라
-        })
-        .catch(function(error){
-            console.log('caching error : ' + error);
-        })
-    );
+self.addEventListener('install', (evt) => {
+  console.log('[ServiceWorker] Install');
+  // CODELAB: Precache static resources here.
+  evt.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log('[ServiceWorker] Pre-caching offline page');
+      return cache.addAll(FILES_TO_CACHE);
+    })
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (evt) => {
+  console.log('[ServiceWorker] Activate');
+  // CODELAB: Remove previous cached data from disk.
+  evt.waitUntil(
+    caches.keys().then((keyList) => {
+      return Promise.all(keyList.map((key) => {
+        if (key !== CACHE_NAME) {
+          console.log('[ServiceWorker] Removing old cache', key);
+          return caches.delete(key);
+        }
+      }));
+    })
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', (evt) => {
+  console.log('[ServiceWorker] Fetch', evt.request.url);
+  // CODELAB: Add fetch event handler here.
+  if (evt.request.mode !== 'navigate') {
+    // Not a page navigation, bail.
+    return;
+  }
+  evt.respondWith(
+    fetch(evt.request)
+      .catch(() => {
+        return caches.open(CACHE_NAME)
+          .then((cache) => {
+            return cache.match('offline.html');
+          });
+      })
+  );
 });
