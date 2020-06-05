@@ -92,8 +92,8 @@ def recur_dictify(frame):
 
 def KNN_train():
     print('트레인 시작')
-    conn = pymysql.connect(host='k02a4061.p.ssafy.io', port=3306, user='root', password='wouldyoucinema',
-                           db='wouldyouci')
+    conn = pymysql.connect(host=config('HOST'), port=3306, user=config('USER'),
+                           password=config('PASSWORD'), db=config('DB'))
     sql = 'SELECT * FROM wouldyouci.accounts_rating'
     data = pd.read_sql_query(sql, conn)
     conn.close()
