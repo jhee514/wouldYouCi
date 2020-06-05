@@ -43,7 +43,7 @@ class RatingSerializer(serializers.ModelSerializer):
 
 
 class SimpleRatingSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+    user = UserDetailSerializer(read_only=True)
 
     class Meta:
         model = Rating
@@ -59,7 +59,7 @@ class CinemaRatingSerializer(serializers.ModelSerializer):
 
 
 class SimpleCinemaRatingSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+    user = UserDetailSerializer(read_only=True)
 
     class Meta:
         model = CinemaRating

@@ -5,3 +5,4 @@ accounts/fixtures/*
 movies/fixtures/*
 cinemas/fixtures/*
 media/profile/*
+utils/*.p
