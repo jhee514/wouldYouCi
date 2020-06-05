@@ -154,14 +154,6 @@ def updateMEGABOX(tg_url, tg_date, cinema_pk):
     TICKET_BASE = 'https://www.megabox.co.kr/booking/seat?playSchdlNo='
     driver.get(tg_url)
     time.sleep(2)
-
-    # 내일 날짜로 조회
-    dotdate = getDotDate(tg_date)
-    dayxPath = '//*[@date-data=\"' + dotdate + '\"]'
-    tmr_btn = driver.find_element_by_xpath(dayxPath)
-    tmr_btn.click()
-    time.sleep(2)
-
     source = driver.page_source          
     soup = BeautifulSoup(source, 'html.parser')
     movie_list = soup.find_all('div', {'class': 'theater-list'})
@@ -291,14 +283,6 @@ def updateLOTTE(tg_url, tg_date, cinema_pk):
 
     ck_date = str(int(tg_date[-2:]))
     LOTTE_ONSCREEN = []
-    # 내일 날짜로 조회
-    for day in day_list:
-        day_text = day.find_element_by_tag_name('strong').text
-        if day_text == ck_date:
-            tg_btn = day.find_element_by_tag_name('label')
-            tg_btn.click()
-            time.sleep(2)
-            break
     source = driver.page_source          
     soup = BeautifulSoup(source, 'html.parser')
     movie_list = soup.find_all('div', {'class': 'time_select_wrap ty2 timeSelect'})
@@ -433,7 +417,12 @@ def updateETC(tg_url, tg_date, cinema_pk):
                 DAEHAN_ONSCREEN.append(new_onscreen_info)
                 onscreen_pk += 1
         return DAEHAN_ONSCREEN
-                
+    if cinema_pk in (75, 84):
+        driver.get(tg_url)
+        time.sleep(1)
+        source = driver.page_source          
+        soup = BeautifulSoup(source, 'html.parser')
+
 
 def getDaehanReserverInfo(tg_str):
     st_idx = tg_str.index('(')
@@ -462,8 +451,12 @@ def getDaehanMovieName(tg_str):
         res = res[:-1]
     return res
 
+
+with open('cinemas.json', 'r', encoding='UTF-8-sig') as fr:
+    cinemas = json.load(fr)
+
 today = datetime.date.today()
-tr = today + datetime.timedelta(days=1)
+tr = today
 tommorow = tr.strftime('%Y-%m-%d')
 
 change_time = {
@@ -477,21 +470,10 @@ change_time = {
 }
 
 onscreen_pk = int(tr.strftime('%Y%m%d0001')[2:])
+onscreen_movie = {}
+on_screen = []
 def getScreenInfo():
-    global cinemas
-    global on_screen
-    global onscreen_movie
     global driver
-    
-    with open('cinemas.json', 'r', encoding='UTF-8-sig') as fr:
-        cinemas = json.load(fr)
-
-    with open('07_on_screen_today.json', 'r', encoding='UTF-8') as fr:
-        on_screen = json.load(fr)
-
-    with open('07_movie_dict_today.json', 'r', encoding='UTF-8') as fr:
-        onscreen_movie = json.load(fr)
-        
     driver = webdriver.Chrome(chromedriver_dir)
     for cinema in cinemas:
         base_url = cinema['fields']['url']
@@ -526,8 +508,8 @@ def getScreenInfo():
         
     driver.quit()
 
-    with open('07_on_screen.json', 'w', encoding='UTF-8') as fp:
+    with open('07_on_screen_today.json', 'w', encoding='UTF-8') as fp:
         json.dump(on_screen, fp, ensure_ascii=False, indent=4)
 
-    with open('07_movie_dict.json', 'w', encoding='UTF-8') as fp:
+    with open('07_movie_dict_today.json', 'w', encoding='UTF-8') as fp:
         json.dump(onscreen_movie, fp, ensure_ascii=False, indent=4)

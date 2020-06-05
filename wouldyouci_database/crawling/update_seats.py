@@ -175,28 +175,30 @@ def updateMEGABOX(cinema_info, driver):
     soup = BeautifulSoup(source, 'html.parser')
     movie_list = soup.find_all('div', {'class': 'theater-list'})
     for movie_col in movie_list:
-        theater_type = movie_col.find('div', {'class': 'theater-type'})
-        hall_name = theater_type.find('p', {'class': 'theater-name'}).text
-        total_seat = theater_type.find('p', {'class': 'chair'}).text[2:-1]
-        theater_time = movie_col.find('div', {'class': 'theater-time'})
-        movie_d = theater_time.find('div', {'class': 'theater-type-area'}).text
-        movie_info = movie_d + ' | ' + hall_name
-        movie_timetable = theater_time.find_all('td')
-        for movie_time in movie_timetable:
-            if movie_time.get('class') == 'end-time':
-                continue
-            else:
-                book_code = movie_time.get('play-schdl-no')
-                movie_code = movie_time.get('rpst-movie-no')
-                play_info = movie_time.find('div', {'class': 'play-time'})
-                if movie_code:
-                    cm_code = int(movie_code)
-                    if play_info:
-                        play_time = play_info.find('p').text
-                        start_end = divideTime(play_time)
-                        seat_left = movie_time.find('p', {'class': 'chair'}).text[:-1]
-                        start_time = start_end[0]
-                        updateSeats(cinema_pk, cm_code, start_time, total_seat, movie_info, seat_left)
+        theater_type_list = movie_col.find_all('div', {'class': 'theater-type-box'})
+        for box in theater_type_list:
+            theater_type = box.find('div', {'class': 'theater-type'})
+            hall_name = theater_type.find('p', {'class': 'theater-name'}).text
+            total_seat = theater_type.find('p', {'class': 'chair'}).text[2:-1]
+            theater_time = movie_col.find('div', {'class': 'theater-time'})
+            movie_d = theater_time.find('div', {'class': 'theater-type-area'}).text
+            movie_info = movie_d + ' | ' + hall_name
+            movie_timetable = theater_time.find_all('td')
+            for movie_time in movie_timetable:
+                if movie_time.get('class') == 'end-time':
+                    continue
+                else:
+                    book_code = movie_time.get('play-schdl-no')
+                    movie_code = movie_time.get('rpst-movie-no')
+                    play_info = movie_time.find('div', {'class': 'play-time'})
+                    if movie_code:
+                        cm_code = int(movie_code)
+                        if play_info:
+                            play_time = play_info.find('p').text
+                            start_end = divideTime(play_time)
+                            seat_left = movie_time.find('p', {'class': 'chair'}).text[:-1]
+                            start_time = start_end[0]
+                            updateSeats(cinema_pk, cm_code, start_time, total_seat, movie_info, seat_left)
 
 
 def updateLOTTE(cinema_info, driver):
