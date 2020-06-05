@@ -50,7 +50,6 @@ def get_cinema_width(request):
 def get_fast_movie(request, cinema_id):
     start_time = request.query_params.get('start_time')
     start_time = start_time if start_time else datetime.now().time()
-
     onscreen = Onscreen.objects.filter(cinema=cinema_id,
                                        date=date.today(),
                                        start_time__gte=start_time)
@@ -70,9 +69,21 @@ def get_fast_movie(request, cinema_id):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def cinema_detail(request, cinema_id):
+    user = request.user
+
     cinema = get_object_or_404(Cinema, id=cinema_id)
     serializer = CinemaSerializer(cinema)
-    return Response(status=200, data=serializer.data)
+
+    has_score = user.cinema_ratings.filter(cinema=cinema_id).exists()
+    pick_cinemas = user.pick_cinemas.filter(id=cinema_id).exists()
+
+    dataset = {
+        'has_score': has_score,
+        'pick_cinemas': pick_cinemas,
+    }
+    dataset.update(serializer.data)
+
+    return Response(status=200, data=dataset)
 
 
 @api_view(['PATCH'])
@@ -92,7 +103,7 @@ def pick_cinema(request, cinema_id):
 @permission_classes([IsAuthenticated])
 def create_cinema_rating(request):
     user = request.user
-    if user.cinema_ratings.filter(movie=request.data['cinema']).exists():
+    if user.cinema_ratings.filter(cinema=request.data['cinema']).exists():
         return Response(status=403, data={'message': '이미 평가한 영화관입니다.'})
 
     serializer = CinemaRatingSerializer(data=request.data)

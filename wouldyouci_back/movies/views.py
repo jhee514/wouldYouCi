@@ -31,7 +31,7 @@ class RatingViewSet(viewsets.ReadOnlyModelViewSet):
         movie_id = self.request.query_params.get('movie', 0)
         movie = get_object_or_404(Movie, id=movie_id)
         queryset = (
-            movie.ratings.exclude(comment=None)
+            movie.ratings.all()
         )
         return queryset
 
@@ -42,12 +42,17 @@ def movie_detail(request, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
     serializer = MovieSerializer(movie)
     user = request.user
+    has_score = user.ratings.filter(movie=movie_id).exists()
+    pick_movies = user.pick_movies.filter(id=movie_id).exists()
+
     predicted_score = 0
 
     if user.ratings.count() > 9:
         predicted_score = contentsbased_by_genres_and_directors(user.id, movie_id)
 
     dataset = {
+        'has_score': has_score,
+        'pick_movies': pick_movies,
         'is_showing': movie.onscreens.exists(),
         'predicted_score': predicted_score,
     }
