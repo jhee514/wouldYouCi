@@ -1,6 +1,4 @@
 [
-    "SELECT *  FROM movies_onscreen WHERE cinema_id = 41 AND date = \"2020-06-05\" AND start_time = \"16:05\" AND cm_code = 1309400 AND total_seats = \"118\"",
-    "SELECT *  FROM movies_onscreen WHERE cinema_id = 41 AND date = \"2020-06-05\" AND start_time = \"20:45\" AND cm_code = 1309400 AND total_seats = \"118\"",
-    "SELECT *  FROM movies_onscreen WHERE cinema_id = 62 AND date = \"2020-06-05\" AND start_time = \"20:00\" AND cm_code = 11977 AND total_seats = \"124\"",
-    "SELECT *  FROM movies_onscreen WHERE cinema_id = 72 AND date = \"2020-06-05\" AND start_time = \"17:35\" AND cm_code = 11977 AND total_seats = \"178\""
+    "SELECT *  FROM movies_onscreen WHERE cinema_id = 72 AND date = \"2020-06-05\" AND start_time = \"18:50\" AND cm_code = 15834 AND total_seats = \"178\"",
+    "SELECT *  FROM movies_onscreen WHERE cinema_id = 72 AND date = \"2020-06-05\" AND start_time = \"20:50\" AND cm_code = 15834 AND total_seats = \"178\""
 ]

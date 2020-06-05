@@ -180,7 +180,7 @@ def updateMEGABOX(cinema_info, driver):
             theater_type = box.find('div', {'class': 'theater-type'})
             hall_name = theater_type.find('p', {'class': 'theater-name'}).text
             total_seat = theater_type.find('p', {'class': 'chair'}).text[2:-1]
-            theater_time = movie_col.find('div', {'class': 'theater-time'})
+            theater_time = box.find('div', {'class': 'theater-time'})
             movie_d = theater_time.find('div', {'class': 'theater-type-area'}).text
             movie_info = movie_d + ' | ' + hall_name
             movie_timetable = theater_time.find_all('td')
