@@ -50,27 +50,6 @@
     },
     {
         "model": "movies.people",
-        "pk": 435371,
-        "fields": {
-            "name": "빅토르 모니고테"
-        }
-    },
-    {
-        "model": "movies.people",
-        "pk": 438812,
-        "fields": {
-            "name": "에바 해크"
-        }
-    },
-    {
-        "model": "movies.people",
-        "pk": 306146,
-        "fields": {
-            "name": "호세 모타"
-        }
-    },
-    {
-        "model": "movies.people",
         "pk": 432471,
         "fields": {
             "name": "치타"
@@ -176,6 +155,27 @@
     },
     {
         "model": "movies.people",
+        "pk": 435371,
+        "fields": {
+            "name": "빅토르 모니고테"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 438812,
+        "fields": {
+            "name": "에바 해크"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 306146,
+        "fields": {
+            "name": "호세 모타"
+        }
+    },
+    {
+        "model": "movies.people",
         "pk": 9711,
         "fields": {
             "name": "박상현"
@@ -260,6 +260,34 @@
     },
     {
         "model": "movies.people",
+        "pk": 120695,
+        "fields": {
+            "name": "이와모토 히토시"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 349930,
+        "fields": {
+            "name": "쿠로시마 유이나"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 341781,
+        "fields": {
+            "name": "키쿠치 후마"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 127016,
+        "fields": {
+            "name": "네코제 츠바키"
+        }
+    },
+    {
+        "model": "movies.people",
         "pk": 8628,
         "fields": {
             "name": "마츠바라 치에코"
@@ -295,55 +323,6 @@
     },
     {
         "model": "movies.people",
-        "pk": 120695,
-        "fields": {
-            "name": "이와모토 히토시"
-        }
-    },
-    {
-        "model": "movies.people",
-        "pk": 349930,
-        "fields": {
-            "name": "쿠로시마 유이나"
-        }
-    },
-    {
-        "model": "movies.people",
-        "pk": 341781,
-        "fields": {
-            "name": "키쿠치 후마"
-        }
-    },
-    {
-        "model": "movies.people",
-        "pk": 127016,
-        "fields": {
-            "name": "네코제 츠바키"
-        }
-    },
-    {
-        "model": "movies.people",
-        "pk": 392214,
-        "fields": {
-            "name": "김지환"
-        }
-    },
-    {
-        "model": "movies.people",
-        "pk": 274063,
-        "fields": {
-            "name": "앙트완 블로시에르"
-        }
-    },
-    {
-        "model": "movies.people",
-        "pk": 307756,
-        "fields": {
-            "name": "에밀리 로빈슨"
-        }
-    },
-    {
-        "model": "movies.people",
         "pk": 154110,
         "fields": {
             "name": "채수응"
@@ -368,6 +347,13 @@
         "pk": 438523,
         "fields": {
             "name": "주아휘"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 392214,
+        "fields": {
+            "name": "김지환"
         }
     },
     {
@@ -417,6 +403,55 @@
         "pk": 438613,
         "fields": {
             "name": "성곡"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 274063,
+        "fields": {
+            "name": "앙트완 블로시에르"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 307756,
+        "fields": {
+            "name": "에밀리 로빈슨"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 375078,
+        "fields": {
+            "name": "후이 허"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 249346,
+        "fields": {
+            "name": "스테판 고엘"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 90096,
+        "fields": {
+            "name": "이완수"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 44848,
+        "fields": {
+            "name": "장용철"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 161922,
+        "fields": {
+            "name": "김풍"
         }
     },
     {

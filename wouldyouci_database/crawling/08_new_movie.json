@@ -111,59 +111,6 @@
     },
     {
         "model": "movies.movie",
-        "pk": 185380,
-        "fields": {
-            "name": "프랑스 여자",
-            "name_eng": "A French Woman",
-            "watch_grade": "15세 관람가",
-            "running_time": "89분 ",
-            "summary": "“그 순간이 기억나,\n그 때가 제일 행복했던 것 같아”\n한때 배우를 꿈꿨지만 파리 유학 후 그곳에서 프랑스인 남편과 정착한 ‘미라’.\n이별의 아픔을 겪고 오랜만에 한국에 돌아온 그녀는 20년 전 공연예술아카데미에서\n함께 공부했던 옛 친구들, 영화 감독 ‘영은’과 연극 연출가 ‘성우’와 재회한다.\n2년 전 세상을 떠난 후배 배우 ‘해란’에 대한 기억을 떠올리려 애쓰지만\n어느 것도 선명하지 않은 기억 속에서 ‘미라’는 한 순간에 그때 그 시절 과거로 돌아가 \n꿈과 현실이 교차하고 과거와 현재를 넘나드는 아주 특별한 여행을 하게 되는데…\n",
-            "open_date": "2020-06-04",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20200515_262/1589519519892tStin_JPEG/movie_image.jpg",
-            "directors": [
-                3922
-            ],
-            "genres": [
-                1
-            ],
-            "actors": [
-                3533,
-                2633,
-                3093,
-                155120
-            ],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
-        "pk": 191436,
-        "fields": {
-            "name": "슈퍼스타 뚜루",
-            "name_eng": "Turu: the wacky hen",
-            "watch_grade": "전체 관람가",
-            "running_time": "79분 ",
-            "summary": "보잘것없던 촌닭! 슈퍼스타가 되다!\n노래하는 암탉의 화려한 무대 속으로 꼬!꼬!\n알을 낳지 못해 놀림당하던 암탉 ‘뚜루’! 하지만 마음씨 착한 ‘이사벨’ 할머니는 그런 ‘뚜루’에게 노래하는 재능이 있다는 사실을 알고 음악을 알려준다.농장에서 함께 행복한 시간을 보내던 ‘뚜루’와 ‘이사벨’ 할머니!그러던 어느 날 할머니가 지붕에서 떨어지는 사고를 당해기억을 잃어버리게 되고 ‘뚜루’마저 알아보지 못한다.할머니의 기억을 찾기 위해 ‘뚜루’는 서커스단에서 노래를 부르기 시작하고 뛰어난 실력에 단숨에 슈퍼스타가 된다.하지만 욕심쟁이 단장 ‘트래블리’는 ‘뚜루’를 차지하기 위해 음모를 꾸미는데…\n",
-            "open_date": "2020-06-04",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20200518_1/15897821674803Ytys_JPEG/movie_image.jpg",
-            "directors": [
-                435371
-            ],
-            "genres": [
-                17,
-                15
-            ],
-            "actors": [
-                438812,
-                306146
-            ],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
         "pk": 34431,
         "fields": {
             "name": "영웅-천하의시작",
@@ -269,6 +216,59 @@
                 85807,
                 437971,
                 438230
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 185380,
+        "fields": {
+            "name": "프랑스 여자",
+            "name_eng": "A French Woman",
+            "watch_grade": "15세 관람가",
+            "running_time": "89분 ",
+            "summary": "“그 순간이 기억나,\n그 때가 제일 행복했던 것 같아”\n한때 배우를 꿈꿨지만 파리 유학 후 그곳에서 프랑스인 남편과 정착한 ‘미라’.\n이별의 아픔을 겪고 오랜만에 한국에 돌아온 그녀는 20년 전 공연예술아카데미에서\n함께 공부했던 옛 친구들, 영화 감독 ‘영은’과 연극 연출가 ‘성우’와 재회한다.\n2년 전 세상을 떠난 후배 배우 ‘해란’에 대한 기억을 떠올리려 애쓰지만\n어느 것도 선명하지 않은 기억 속에서 ‘미라’는 한 순간에 그때 그 시절 과거로 돌아가 \n꿈과 현실이 교차하고 과거와 현재를 넘나드는 아주 특별한 여행을 하게 되는데…\n",
+            "open_date": "2020-06-04",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20200515_262/1589519519892tStin_JPEG/movie_image.jpg",
+            "directors": [
+                3922
+            ],
+            "genres": [
+                1
+            ],
+            "actors": [
+                3533,
+                2633,
+                3093,
+                155120
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 191436,
+        "fields": {
+            "name": "슈퍼스타 뚜루",
+            "name_eng": "Turu: the wacky hen",
+            "watch_grade": "전체 관람가",
+            "running_time": "79분 ",
+            "summary": "보잘것없던 촌닭! 슈퍼스타가 되다!\n노래하는 암탉의 화려한 무대 속으로 꼬!꼬!\n알을 낳지 못해 놀림당하던 암탉 ‘뚜루’! 하지만 마음씨 착한 ‘이사벨’ 할머니는 그런 ‘뚜루’에게 노래하는 재능이 있다는 사실을 알고 음악을 알려준다.농장에서 함께 행복한 시간을 보내던 ‘뚜루’와 ‘이사벨’ 할머니!그러던 어느 날 할머니가 지붕에서 떨어지는 사고를 당해기억을 잃어버리게 되고 ‘뚜루’마저 알아보지 못한다.할머니의 기억을 찾기 위해 ‘뚜루’는 서커스단에서 노래를 부르기 시작하고 뛰어난 실력에 단숨에 슈퍼스타가 된다.하지만 욕심쟁이 단장 ‘트래블리’는 ‘뚜루’를 차지하기 위해 음모를 꾸미는데…\n",
+            "open_date": "2020-06-04",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20200518_1/15897821674803Ytys_JPEG/movie_image.jpg",
+            "directors": [
+                435371
+            ],
+            "genres": [
+                17,
+                15
+            ],
+            "actors": [
+                438812,
+                306146
             ],
             "score": 0
         }
@@ -406,34 +406,6 @@
     },
     {
         "model": "movies.movie",
-        "pk": 183427,
-        "fields": {
-            "name": "조금씩, 천천히 안녕",
-            "name_eng": "A Long GoodBye",
-            "watch_grade": "전체 관람가",
-            "running_time": "127분 ",
-            "summary": "천천히 멀어질수록 조금씩 가까워지는 \n우리의 이별이 시작되었다.\n아버지의 70번째 생일날, \n두 딸 ‘마리’와 ‘후미’를 불러 모은 어머니는 \n아버지가 치매에 걸렸다는 충격적인 소식을 전한다.  \n\n“많은 것들이 점점 멀어져…”\n\n‘후미’네 가족은 서서히 기억을 잃어가는 아버지와 헤어짐을 준비하며\n자신의 아픔과 서로의 상처를 조금씩 보듬어가기 시작하는데…\n\n당신에게 전하는 특별한 작별 인사\n“조금씩, 천천히 안녕”",
-            "open_date": "2020-05-27",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20200514_17/1589432302442ftAeW_JPEG/movie_image.jpg",
-            "directors": [
-                316728
-            ],
-            "genres": [
-                12,
-                1
-            ],
-            "actors": [
-                43166,
-                9828,
-                8628,
-                4160
-            ],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
         "pk": 167658,
         "fields": {
             "name": "에어로너츠",
@@ -454,31 +426,6 @@
             "actors": [
                 130312,
                 115832
-            ],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
-        "pk": 193992,
-        "fields": {
-            "name": "런 보이 런",
-            "name_eng": "RUN BOY RUN",
-            "watch_grade": "15세 관람가",
-            "running_time": "100분 ",
-            "summary": "우리, 어디서부터 잘못된 걸까?\n촉망받는 달리기 선수였던 ‘도원’은 불의의 사고로 부상을 당한 후 도망치듯 전학을 온 학교에서 어릴 적 함께 달리던 단짝 ‘진수’를 만난다.재회의 반가움도 잠시, 순수했던 과거와 다른 모습의 ‘진수’와 함께 하던 ‘도원’은 예상치 못한 사건에 휩쓸리게 되는데…점점 나락으로 빠지는 상황을 벗어나 같은 꿈을 꾸던 미래를 맞이할 수 있을까?\n",
-            "open_date": "2020-05-28",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20200520_144/1589941594270Acogh_JPEG/movie_image.jpg",
-            "directors": [
-                342505
-            ],
-            "genres": [
-                1
-            ],
-            "actors": [
-                406802,
-                424667
             ],
             "score": 0
         }
@@ -511,28 +458,6 @@
     },
     {
         "model": "movies.movie",
-        "pk": 178566,
-        "fields": {
-            "name": "괴물의 아이",
-            "name_eng": "FREAK CHILD",
-            "watch_grade": "",
-            "running_time": "5분 ",
-            "summary": "교육열이 높은 엄마에 의해 괴물로 변해가는 아이. \n\n[제14회 인디애니페스트]",
-            "open_date": "2018",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20180817_172/1534493737141XrH9g_JPEG/movie_image.jpg",
-            "directors": [
-                392214
-            ],
-            "genres": [
-                15
-            ],
-            "actors": [],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
         "pk": 193806,
         "fields": {
             "name": "킬러의 보디가드 무삭제 특별판",
@@ -559,53 +484,28 @@
     },
     {
         "model": "movies.movie",
-        "pk": 180350,
+        "pk": 183427,
         "fields": {
-            "name": "레미: 집 없는 아이",
-            "name_eng": "Remi: Nobody’s Boy",
+            "name": "조금씩, 천천히 안녕",
+            "name_eng": "A Long GoodBye",
             "watch_grade": "전체 관람가",
-            "running_time": "108분 ",
-            "summary": "인생 멘토와 함께 꿈과 가족을 찾아 떠난 \n소년의 아주 특별한 여행!\n자신이 버려진 아이란 걸 알게 된 소년 레미는\n어느 날 거리의 음악가 비탈리스를 만나게 된다.\n소년이 가진 아름다운 목소리와 노래의 재능을 알아본 비탈리스는\n레미에게 따뜻한 스승이자 인생 멘토가 되어주고,\n두 사람은 동물 친구들과 함께 프랑스 전역을 여행하며 공연을 이어간다.\n\n거듭되는 시련들 속에서도 희망을 잃지 않고 꿈을 노래하던 레미는\n어느 날 자신의 출생에 숨겨진 비밀을 풀어줄 단서를 알게 되는데...\n과연, 레미는 자신의 진짜 가족을 찾을 수 있을까?",
-            "open_date": "2020-05-28",
+            "running_time": "127분 ",
+            "summary": "천천히 멀어질수록 조금씩 가까워지는 \n우리의 이별이 시작되었다.\n아버지의 70번째 생일날, \n두 딸 ‘마리’와 ‘후미’를 불러 모은 어머니는 \n아버지가 치매에 걸렸다는 충격적인 소식을 전한다.  \n\n“많은 것들이 점점 멀어져…”\n\n‘후미’네 가족은 서서히 기억을 잃어가는 아버지와 헤어짐을 준비하며\n자신의 아픔과 서로의 상처를 조금씩 보듬어가기 시작하는데…\n\n당신에게 전하는 특별한 작별 인사\n“조금씩, 천천히 안녕”",
+            "open_date": "2020-05-27",
             "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20200520_187/1589940155568BsYic_JPEG/movie_image.jpg",
+            "poster": "https://movie-phinf.pstatic.net/20200514_17/1589432302442ftAeW_JPEG/movie_image.jpg",
             "directors": [
-                274063
+                316728
             ],
             "genres": [
-                1,
                 12,
-                6
-            ],
-            "actors": [
-                3343,
-                437881
-            ],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
-        "pk": 147033,
-        "fields": {
-            "name": "비홀드 마이 하트",
-            "name_eng": "Behold My Heart",
-            "watch_grade": "12세 관람가",
-            "running_time": "81분 ",
-            "summary": "로맨틱한 남편이자 다정한 아빠였으며, 따뜻한 음악을 노래한 뮤지션 ‘스티븐’.그가 떠나고 남겨진 아내 ‘마거릿’과 십대 아들 ‘마커스’는그 어떤 말로도 위로되지 않는 힘겨운 시간을 보내는데...“당신이 있어 참 행복했습니다”\n",
-            "open_date": "2020-05-21",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20200428_197/15880491681885NH5d_JPEG/movie_image.jpg",
-            "directors": [
-                38423
-            ],
-            "genres": [
                 1
             ],
             "actors": [
-                2379,
-                371011,
-                11939
+                43166,
+                9828,
+                8628,
+                4160
             ],
             "score": 0
         }
@@ -640,6 +540,31 @@
     },
     {
         "model": "movies.movie",
+        "pk": 193992,
+        "fields": {
+            "name": "런 보이 런",
+            "name_eng": "RUN BOY RUN",
+            "watch_grade": "15세 관람가",
+            "running_time": "100분 ",
+            "summary": "우리, 어디서부터 잘못된 걸까?\n촉망받는 달리기 선수였던 ‘도원’은 불의의 사고로 부상을 당한 후 도망치듯 전학을 온 학교에서 어릴 적 함께 달리던 단짝 ‘진수’를 만난다.재회의 반가움도 잠시, 순수했던 과거와 다른 모습의 ‘진수’와 함께 하던 ‘도원’은 예상치 못한 사건에 휩쓸리게 되는데…점점 나락으로 빠지는 상황을 벗어나 같은 꿈을 꾸던 미래를 맞이할 수 있을까?\n",
+            "open_date": "2020-05-28",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20200520_144/1589941594270Acogh_JPEG/movie_image.jpg",
+            "directors": [
+                342505
+            ],
+            "genres": [
+                1
+            ],
+            "actors": [
+                406802,
+                424667
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
         "pk": 143462,
         "fields": {
             "name": "초능력소년사건",
@@ -665,6 +590,28 @@
                 438601,
                 438523
             ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 178566,
+        "fields": {
+            "name": "괴물의 아이",
+            "name_eng": "FREAK CHILD",
+            "watch_grade": "",
+            "running_time": "5분 ",
+            "summary": "교육열이 높은 엄마에 의해 괴물로 변해가는 아이. \n\n[제14회 인디애니페스트]",
+            "open_date": "2018",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20180817_172/1534493737141XrH9g_JPEG/movie_image.jpg",
+            "directors": [
+                392214
+            ],
+            "genres": [
+                15
+            ],
+            "actors": [],
             "score": 0
         }
     },
@@ -718,6 +665,33 @@
     },
     {
         "model": "movies.movie",
+        "pk": 180350,
+        "fields": {
+            "name": "레미: 집 없는 아이",
+            "name_eng": "Remi: Nobody’s Boy",
+            "watch_grade": "전체 관람가",
+            "running_time": "108분 ",
+            "summary": "인생 멘토와 함께 꿈과 가족을 찾아 떠난 \n소년의 아주 특별한 여행!\n자신이 버려진 아이란 걸 알게 된 소년 레미는\n어느 날 거리의 음악가 비탈리스를 만나게 된다.\n소년이 가진 아름다운 목소리와 노래의 재능을 알아본 비탈리스는\n레미에게 따뜻한 스승이자 인생 멘토가 되어주고,\n두 사람은 동물 친구들과 함께 프랑스 전역을 여행하며 공연을 이어간다.\n\n거듭되는 시련들 속에서도 희망을 잃지 않고 꿈을 노래하던 레미는\n어느 날 자신의 출생에 숨겨진 비밀을 풀어줄 단서를 알게 되는데...\n과연, 레미는 자신의 진짜 가족을 찾을 수 있을까?",
+            "open_date": "2020-05-28",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20200520_187/1589940155568BsYic_JPEG/movie_image.jpg",
+            "directors": [
+                274063
+            ],
+            "genres": [
+                1,
+                12,
+                6
+            ],
+            "actors": [
+                3343,
+                437881
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
         "pk": 193101,
         "fields": {
             "name": "신세계",
@@ -746,6 +720,125 @@
     },
     {
         "model": "movies.movie",
+        "pk": 147033,
+        "fields": {
+            "name": "비홀드 마이 하트",
+            "name_eng": "Behold My Heart",
+            "watch_grade": "12세 관람가",
+            "running_time": "81분 ",
+            "summary": "로맨틱한 남편이자 다정한 아빠였으며, 따뜻한 음악을 노래한 뮤지션 ‘스티븐’.그가 떠나고 남겨진 아내 ‘마거릿’과 십대 아들 ‘마커스’는그 어떤 말로도 위로되지 않는 힘겨운 시간을 보내는데...“당신이 있어 참 행복했습니다”\n",
+            "open_date": "2020-05-21",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20200428_197/15880491681885NH5d_JPEG/movie_image.jpg",
+            "directors": [
+                38423
+            ],
+            "genres": [
+                1
+            ],
+            "actors": [
+                2379,
+                371011,
+                11939
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 193109,
+        "fields": {
+            "name": "마담 버터플라이",
+            "name_eng": "Madama Butterfly",
+            "watch_grade": "전체 관람가",
+            "running_time": "198분 ",
+            "summary": "소프라노 헤 휘가 미 해군 장교 핑커튼에게 모든 것을 바치는 헌신적인 게이샤로 등장한다. 핑커튼 역은 테너 안드레아 카레가 맡았고, 메조소프라노 엘리자베스 드숑이 버터플라이를 위해 헌신하는 하녀 스즈키 역을 불렀다. 토니상을 수상한 뮤지컬 배우이자 바리톤 가수인 파울로 스조트가 메트에서 처음으로 샤플레스 역을 노래했다. 피에르 조르조 모란디가 앤서니 밍겔라의 아름답고 분위기 있는 이 프로덕션을 지휘했다.\n",
+            "open_date": "2019",
+            "trailer": "",
+            "poster": "",
+            "directors": [
+                371644
+            ],
+            "genres": [
+                29
+            ],
+            "actors": [
+                375078
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 153221,
+        "fields": {
+            "name": "천국보다 낯선",
+            "name_eng": "About Heaven",
+            "watch_grade": "",
+            "running_time": "85분 ",
+            "summary": "지상낙원으로 알려진 스위스. 그곳에 사는 스위스 사람들은 사후 세계를 어떻게 생각할까? \n이 질문의 답을 찾기 위해 다큐멘터리 감독 스테판 고엘은 주위의 다양한 사람들이 \n사후를 어떻게 그리는지를 인터뷰한다. 꿈과 열정, 그리고 공포에 대한 사람들의 놀랍고, \n솔직하고, 즐겁고, 때로는 가슴 아픈 대화의 기록.\n\n[제 13회 EBS 국제다큐영화제]\n",
+            "open_date": "2015",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20160926_263/1474869036751BrHv5_JPEG/movie_image.jpg",
+            "directors": [
+                249346
+            ],
+            "genres": [
+                10
+            ],
+            "actors": [],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 54605,
+        "fields": {
+            "name": "아비정전",
+            "name_eng": "Father At The Front",
+            "watch_grade": "12세 관람가",
+            "running_time": "21분 ",
+            "summary": "뜻대로 되는 것이라곤 TV 리모컨뿐인 아버지. 12살 소년은 건설현장에서 일하는 아버지로부터 뜻밖의 선언을 듣게 된다. 오늘부터 나는 일을 하지 않기로 했다. 중학교도 고등학교도 대학도...어쩌면 유학도 가야하지만, 무엇보다 일을 하지 않고도 굶어죽지 않아야 한다. 뜨거운 여름, 그 방법을 찾아 길을 나선 아버지와 아들의 이상한(?) 동행. (Watching TV with a remote control is the only thing that he can do. One day, A 12-year-old boy was pronounced by his father, who worked at a construction site. “No more I’ll work for the money.” The son had to enter into the middle school, high school, college, maybe go abroad for study, but most of all, they had to feed themselves. Hot summer day, the father and son his son left to find the way.)연출의도 Director's Statement. 아비정전(挺戰). 자식을 둔 아들을 일컬어 ‘아비’라고 한다. 낮추어 부르는 말이며, 아버지의 옛말이다. 정전(挺戰)은 ‘스스로 앞장서서 싸우다’라는 의미로 해석된다. 아버지, 스스로 앞장서서 싸우다. 무기력한 아버지의 모습을 역설적으로 표현하고 싶었다. 또한 아버지가 잊고 살아가는 꿈 혹은 판타지. 아버지와 아들의 짧은 여행을 그려보고 싶다. 허탈감에 빠진 아버지가 일탈을 통해 작은 여유를 찾고 잊었던 꿈을 생각하며 아련한 시간이 되도록 만들고 싶다. (아비-정전(ABI-JOENGJUN). ‘Abi’ means a son who has children. It is piece of slang, and old expression of ‘Father’. ‘Jeongjung’ means ‘Go straight forward to fight’. \"Father at the front\" I want to express a weak father’s figure paradoxically. Also, I want to express a dream or fantasy that our father’s had forgotten. I want to describe a father and son’s short travel. The father deviates from the reality, and he memorizes his dream.)\n",
+            "open_date": "2008",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20111223_52/1324629205817Ythz6_JPEG/movie_image.jpg",
+            "directors": [
+                90096
+            ],
+            "genres": [
+                1,
+                2,
+                12
+            ],
+            "actors": [
+                44848,
+                51175
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 144626,
+        "fields": {
+            "name": "접속",
+            "name_eng": "",
+            "watch_grade": "15세 관람가",
+            "running_time": "",
+            "summary": "세계로 뻗어가는 한국 애니메이션의 활약상과 애니메이션 장르에 대한 대중적 관심을 불러올 국내 최초! 신개념 애니메이션 정보 프로그램\n",
+            "open_date": "2015-10-30",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20151103_88/1446527807136Ux37N_JPEG/movie_image.jpg",
+            "directors": [],
+            "genres": [],
+            "actors": [
+                161922
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
         "pk": 194289,
         "fields": {
             "name": "국도극장",
@@ -766,6 +859,23 @@
                 338646
             ],
             "score": 0
+        }
+    },
+    {
+        "pk": 1,
+        "model": "movies.movie",
+        "fields": {
+            "name": "정보 없음",
+            "name_eng": "404 Not Found",
+            "watch_grade": "관계자외 출입금지",
+            "running_time": "",
+            "summary": "영화 정보를 찾지 못하였습니다.\n",
+            "open_date": "2019-07-01",
+            "trailer": "",
+            "poster": "",
+            "directors": [],
+            "genres": [],
+            "actors": []
         }
     }
 ]

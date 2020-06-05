@@ -333,6 +333,10 @@ def renameMega(tg_str):
     else:
         return res
 
+
+chromedriver_dir=r'C:\Users\multicampus\Downloads\chromedriver\chromedriver.exe'
+load_dotenv(verbose=True)
+
 with open('06_complete.json', 'r', encoding='UTF-8') as fr:
     complete_list = json.load(fr)
 
@@ -342,14 +346,10 @@ with open('05_people_save.json', 'r', encoding='UTF-8') as fr:
 with open('04_peoples_save.json', 'r', encoding='UTF-8') as fr:
     people_check = json.load(fr)
 
-chromedriver_dir=r'C:\Users\multicampus\Downloads\chromedriver\chromedriver.exe'
-driver = webdriver.Chrome(chromedriver_dir)
-load_dotenv(verbose=True)
-
 new_movie = []
 new_people = []
 not_found = {
-    'pk': 99999999,
+    'pk': 1,
     'model': 'movies.movie',
     'fields': {
             "name": "정보 없음",
@@ -367,6 +367,9 @@ not_found = {
     }
 
 def matchingMovieCode():
+    global driver
+    driver = webdriver.Chrome(chromedriver_dir)
+
     with open('07_movie_dict.json', 'r', encoding='UTF-8') as fr:
         movie_dict = json.load(fr)
 
@@ -391,11 +394,10 @@ def matchingMovieCode():
                 v['NAVER'] = naver_code
                 
         else:
-            v['NAVER'] = "99999999"
-
-    # new_movie.append(not_found)
+            v['NAVER'] = "1"
 
     driver.quit()
+    new_movie.append(not_found)
 
     with open('08_new_movie.json', 'w', encoding='UTF-8') as fp:
         json.dump(new_movie, fp, ensure_ascii=False, indent=4)
@@ -409,5 +411,5 @@ def matchingMovieCode():
     # with open('06_complete.json', 'w', encoding='UTF-8') as fp:
     #     json.dump(complete_list, fp, ensure_ascii=False, indent=4)
 
-    # with open('04_people_save.json', 'w', encoding='UTF-8') as fp:
+    # with open('04_peoples_save.json', 'w', encoding='UTF-8') as fp:
     #     json.dump(people_check, fp, ensure_ascii=False, indent=4)

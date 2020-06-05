@@ -1,14 +1,5 @@
 import json
 
-with open('07_on_screen.json', 'r', encoding='UTF-8') as fr:
-    on_screen = json.load(fr)
-
-with open('08_movie_match.json', 'r', encoding='UTF-8') as fr:
-    code_dict = json.load(fr)
-
-with open('cinemas.json', 'r', encoding='UTF-8-sig') as fr:
-    cinema_list = json.load(fr)
-
 def findCinemaCompany(tg_pk):
     if tg_pk == 74:
         return 'DAEHAN'
@@ -29,6 +20,17 @@ def getNaverCode(tg_code, company):
                 return v.get('NAVER')
 
 def movieCodeChange():
+    global cinema_list
+    global code_dict
+    with open('07_on_screen.json', 'r', encoding='UTF-8') as fr:
+        on_screen = json.load(fr)
+
+    with open('08_movie_match.json', 'r', encoding='UTF-8') as fr:
+        code_dict = json.load(fr)
+
+    with open('cinemas.json', 'r', encoding='UTF-8-sig') as fr:
+        cinema_list = json.load(fr)
+
     for movie in on_screen:
         compnay_movie_code = str(movie['fields']['movie'])
         cinema_pk = movie['fields']['cinema']
@@ -37,7 +39,7 @@ def movieCodeChange():
         if naver_code:
             movie['fields']['movie'] = int(naver_code)
         else:
-            movie['fields']['movie'] = 99999999999
+            movie['fields']['movie'] = 1
 
     with open('09_onscreen.json', 'w', encoding='UTF-8') as fp:
         json.dump(on_screen, fp, ensure_ascii=False, indent=4)
