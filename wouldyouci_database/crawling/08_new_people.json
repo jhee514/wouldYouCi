@@ -155,27 +155,6 @@
     },
     {
         "model": "movies.people",
-        "pk": 435371,
-        "fields": {
-            "name": "빅토르 모니고테"
-        }
-    },
-    {
-        "model": "movies.people",
-        "pk": 438812,
-        "fields": {
-            "name": "에바 해크"
-        }
-    },
-    {
-        "model": "movies.people",
-        "pk": 306146,
-        "fields": {
-            "name": "호세 모타"
-        }
-    },
-    {
-        "model": "movies.people",
         "pk": 9711,
         "fields": {
             "name": "박상현"
@@ -225,37 +204,23 @@
     },
     {
         "model": "movies.people",
-        "pk": 393135,
+        "pk": 435371,
         "fields": {
-            "name": "지혜원"
+            "name": "빅토르 모니고테"
         }
     },
     {
         "model": "movies.people",
-        "pk": 135692,
+        "pk": 438812,
         "fields": {
-            "name": "미노드 목탄"
+            "name": "에바 해크"
         }
     },
     {
         "model": "movies.people",
-        "pk": 438143,
+        "pk": 306146,
         "fields": {
-            "name": "소모뚜"
-        }
-    },
-    {
-        "model": "movies.people",
-        "pk": 438142,
-        "fields": {
-            "name": "소띠하"
-        }
-    },
-    {
-        "model": "movies.people",
-        "pk": 438141,
-        "fields": {
-            "name": "송명훈"
+            "name": "호세 모타"
         }
     },
     {
@@ -354,6 +319,41 @@
         "pk": 392214,
         "fields": {
             "name": "김지환"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 393135,
+        "fields": {
+            "name": "지혜원"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 135692,
+        "fields": {
+            "name": "미노드 목탄"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 438143,
+        "fields": {
+            "name": "소모뚜"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 438142,
+        "fields": {
+            "name": "소띠하"
+        }
+    },
+    {
+        "model": "movies.people",
+        "pk": 438141,
+        "fields": {
+            "name": "송명훈"
         }
     },
     {

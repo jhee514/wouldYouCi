@@ -174,7 +174,7 @@ def updateMEGABOX(tg_url, tg_date, cinema_pk):
             theater_type = box.find('div', {'class': 'theater-type'})
             hall_name = theater_type.find('p', {'class': 'theater-name'}).text
             total_seat = theater_type.find('p', {'class': 'chair'}).text[2:-1]
-            theater_time = movie_col.find('div', {'class': 'theater-time'})
+            theater_time = box.find('div', {'class': 'theater-time'})
             movie_d = theater_time.find('div', {'class': 'theater-type-area'}).text
             movie_info = movie_d + ' | ' + hall_name
             movie_timetable = theater_time.find_all('td')
@@ -404,10 +404,10 @@ def updateETC(tg_url, tg_date, cinema_pk):
                 movie_code = reserve_option[1][1:]
 
                 if onscreen_movie.get(movie_name):
-                    onscreen_movie[movie_name]['DAEHAN'] = movie_code
+                    onscreen_movie[movie_name]['DAEHAN'] = str(int(movie_code))
                 else:
                     onscreen_movie[movie_name] = {
-                        'DAEHAN': movie_code
+                        'DAEHAN': str(int(movie_code))
                     }
 
 

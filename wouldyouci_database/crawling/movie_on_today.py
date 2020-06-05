@@ -166,7 +166,7 @@ def updateMEGABOX(tg_url, tg_date, cinema_pk):
             theater_type = box.find('div', {'class': 'theater-type'})
             hall_name = theater_type.find('p', {'class': 'theater-name'}).text
             total_seat = theater_type.find('p', {'class': 'chair'}).text[2:-1]
-            theater_time = movie_col.find('div', {'class': 'theater-time'})
+            theater_time = box.find('div', {'class': 'theater-time'})
             movie_d = theater_time.find('div', {'class': 'theater-type-area'}).text
             movie_info = movie_d + ' | ' + hall_name
             movie_timetable = theater_time.find_all('td')
@@ -264,7 +264,7 @@ def getDotDate(tdate):
             res += tdate[idx]
     return res
     
-def updateLOTTE(tg_url, tg_date, cinema_pk):
+def updateLOTTE(tg_url, tg_date, cin_pk):
     global onscreen_pk
     global onscreen_movie
     driver.get(tg_url)
@@ -324,7 +324,7 @@ def updateLOTTE(tg_url, tg_date, cinema_pk):
                 'pk': onscreen_pk,
                 'model': 'movies.onscreen',
                 'fields': {
-                    'cinema': cinema_pk,
+                    'cinema': cin_pk,
                     'movie': int(movie_code),
                     'date': tg_date,
                     'info': new_movie_info,
@@ -388,10 +388,10 @@ def updateETC(tg_url, tg_date, cinema_pk):
                 movie_code = reserve_option[1][1:]
 
                 if onscreen_movie.get(movie_name):
-                    onscreen_movie[movie_name]['DAEHAN'] = movie_code
+                    onscreen_movie[movie_name]['DAEHAN'] = str(int(movie_code))
                 else:
                     onscreen_movie[movie_name] = {
-                        'DAEHAN': movie_code
+                        'DAEHAN': str(int(movie_code))
                     }
 
 
@@ -478,7 +478,7 @@ def getScreenInfo():
     for cinema in cinemas:
         base_url = cinema['fields']['url']
         company = cinema['fields']['type']
-
+        new_on_screen = []
         if company == 'CGV':
             base_url_info = urllib.parse.urlsplit(base_url).query
             new_on_screen = updateCGV(base_url_info, tommorow, cinema['pk'])

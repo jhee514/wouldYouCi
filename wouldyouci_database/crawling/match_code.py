@@ -61,6 +61,7 @@ def getNaverInfo(movie_name, director_name):
         "X-Naver-Client-Id":NAVER_CLIENT_ID,
         "X-Naver-Client-secret":NAVER_CLIENT_SECRET,
     }
+    print(movie_name)
     req = requests.get(NAVER_REQUEST_URL+"query="+movie_name+"&display=100", headers = header).json()
     req_items = req['items']
     if req_items:
