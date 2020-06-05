@@ -30,11 +30,11 @@
           </v-chip>
         </div>
         <v-row justify="end">
-          <v-spacer></v-spacer>
-          <!-- <v-btn @click="submitRating" text>제출</v-btn> -->
-          <v-btn class="next" text @click="goMap">
+          <v-btn color="rgba(173, 139, 232, 0.9)" class="next" text @click="goMap">
             다음에 하기<v-icon small>fas fa-arrow-right</v-icon>
           </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="rgba(173, 139, 232, 0.9)" @click="submitRating" text>저 장</v-btn>
         </v-row>
         <v-row dense justify="center">
           <v-col
@@ -42,7 +42,8 @@
             :key="card.name"
             cols="6"
             xs="6"
-
+            sm="3"
+            md="3"
           >
 
 
@@ -64,11 +65,11 @@
               <v-expand-transition>
                 <div
                   v-if="hover || card.rating >0"
-                  class="d-flex transition-fast-in-fast-out v-card--reveal display-3 white--text"
-
+                  class="d-flex transition-fast-in-fast-out v-card--reveal"
                 >
-                      <h5>{{card.name}}  </h5>
-
+                  <div class="rating">
+                    {{card.name}}
+                    <v-divider></v-divider>
                       <v-rating
                     @input="addRating({'id': card.id, 'rating': card.rating})"
                     v-model="card.rating"
@@ -78,6 +79,7 @@
                     small
                     hover
                   ></v-rating>
+                  </div>
                 </div>
               </v-expand-transition>
 
