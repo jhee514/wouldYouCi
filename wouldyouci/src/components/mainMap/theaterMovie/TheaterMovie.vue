@@ -42,10 +42,9 @@
       </v-slide-item>
     </v-slide-group>
   <v-card
-    class="ma-4 noItem"
+    class="noItem"
     height="30vh"
     width="95vw"
-    style="margin-right:2vh"
     v-else
   >
     <div class="noMovie">

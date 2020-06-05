@@ -19,7 +19,7 @@ const getters = {
 };
 
 const mutations = {
-  setLoginMode: state => (state.LoginMode = !state.LoginMode),
+  setLoginMode: (state, bool) => (state.LoginMode = bool),
   setToken: (state, token) => {
     state.token = token;
     sessionStorage.setItem("jwt", token);

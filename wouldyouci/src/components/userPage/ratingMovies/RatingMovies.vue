@@ -26,14 +26,8 @@
               @click="goDetail(movie.movie.id)"
             >
               <v-list-item>
-                <v-avatar
-                  class="ma-3"
-                  size="auto"
-                  tile
-                >
-                  <v-img :src="movie.movie.poster">
-                  </v-img>
-                </v-avatar>
+                <v-img width="25vw" height="20vh" :src="movie.movie.poster">
+                </v-img>
                 <div>
                   <v-card-subtitle>
                     {{ movie.movie.name }}
