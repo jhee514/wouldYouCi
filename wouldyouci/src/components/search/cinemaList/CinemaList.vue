@@ -24,7 +24,7 @@
             width="45vw"
           >
           </v-img>
-          <v-card-text>{{ cinema.name }}</v-card-text>
+          <v-card-text>{{ getMovieName(cinema.name) }}</v-card-text>
         </v-card>
       </v-slide-item>
     </v-slide-group>
@@ -39,6 +39,13 @@ export default {
   methods: {
     goDetail(movieId) {
       router.push(`/movie/${movieId}`);
+    },
+    getMovieName(name) {
+      if (name.length > 8) {
+        return `${name.slice(0, 8)}...`;
+      } else {
+        return name;
+      }
     }
   }
 }

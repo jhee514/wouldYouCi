@@ -13,8 +13,9 @@
         :key="idx"
       >
         <v-card
+          dark
           class="ma-4"
-          height="20vh"
+          height="auto"
           width="50vw"
           style="margin-right:2vh"
           @click="goDetail(theater.id)"
@@ -25,7 +26,7 @@
             width="50vw"
           >
           </v-img>
-          <v-card-text><h4>{{ theater.name }}</h4></v-card-text>
+          <v-card-text><h4>{{ getTheaterName(theater.name) }}</h4></v-card-text>
         </v-card>
       </v-slide-item>
     </v-slide-group>
@@ -60,6 +61,13 @@ export default {
   methods: {
     goDetail(id) {
       router.push(`/cinema/${id}`)
+    },
+    getTheaterName(name) {
+      if (name.length > 10) {
+        return `${name.slice(0, 10)}...`;
+      } else {
+        return name;
+      }
     }
   }
 }

@@ -2,6 +2,7 @@
   <div>
     <v-slide-group
       dark
+      class="pa-4"
       active-class="success"
       v-if="CinemaList && CinemaList.length"
     >
@@ -10,9 +11,9 @@
         :key="idx"
       >
         <v-card
-          class="ma-4"
           height="auto"
           width="40vw"
+          style="margin-right:2vh"
           @click="goDetail(cinema.id)"
         >
           <v-img 
@@ -21,7 +22,7 @@
             width="40vw"
           >
           </v-img>
-          <v-card-text>{{ cinema.name }}</v-card-text>
+          <v-card-text>{{ getMovieName(cinema.name) }}</v-card-text>
         </v-card>
       </v-slide-item>
     </v-slide-group>
@@ -48,6 +49,13 @@ export default {
   methods: {
     goDetail(movieId) {
       router.push(`/movie/${movieId}`);
+    },
+    getMovieName(name) {
+      if (name.length > 8) {
+        return `${name.slice(0, 8)}...`;
+      } else {
+        return name;
+      }
     }
   }
 }

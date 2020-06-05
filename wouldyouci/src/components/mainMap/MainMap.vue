@@ -73,21 +73,25 @@ export default {
       timeSelector: false,
       theaterMovieList: [],
       markers: [],
+      cgvMarkers: [],
+      megaMarkers: [],
+      lotMarkers: [],
       theaterId: null,
       theaterName: null,
       isChangeLocation: false,
       myMarker: null,
-      infowindows:[]
+      infowindows:[],
+      HOST:process.env.VUE_APP_SERVER_HOST
     }
   },
   computed: {
     ...mapGetters(['getTheaterMovies', 'getMovies', 'getLoading'])
   },
   methods: {
-    ...mapMutations(['setLoading']),
+    ...mapMutations(['setLoading', 'setLoginMode']),
     ...mapActions(['init', 'bringHereCinema', 'bringMovies']),
     marking(value) {
-      const HOST = process.env.VUE_APP_SERVER_HOST;
+      // const HOST = process.env.VUE_APP_SERVER_HOST;
       if (value.type === 'user') {
         const marker = new this.google.maps.Marker({position: value.position, map: this.map, icon: value.icon})
         this.myMarker = marker;
@@ -103,29 +107,38 @@ export default {
         }.bind(this))
       } else {
         if (value.position.length) {
+          const zoomLevel = this.map.getZoom();
           for (const v of value.position) {
             let theaterIcon = {
-              url: `${HOST}/media/wouldyouci/wouldyouci.png`,
-              scaledSize: new this.google.maps.Size(40, 40)
+              url: `${this.HOST}/media/wouldyouci/wouldyouci.png`,
+              scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
             }
             if (v.type === 'CGV') {
               theaterIcon = {
-                url: `${HOST}/media/wouldyouci/cgv.png`,
-                scaledSize: new this.google.maps.Size(40, 40)
+                url: `${this.HOST}/media/wouldyouci/cgv.png`,
+                scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
               }
             } else if (v.type === '메가박스') {
               theaterIcon = {
-                url: `${HOST}/media/wouldyouci/megabox.png`,
-                scaledSize: new this.google.maps.Size(40, 40)
+                url: `${this.HOST}/media/wouldyouci/megabox.png`,
+                scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
               }
             } else if (v.type === '롯데시네마') {
               theaterIcon = {
-                url: `${HOST}/media/wouldyouci/lotte.png`,
-                scaledSize: new this.google.maps.Size(40, 40)
+                url: `${this.HOST}/media/wouldyouci/lotte.png`,
+                scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
               }
             }
             const marker = new this.google.maps.Marker({position: {lat: Number(v.y), lng: Number(v.x)}, map: this.map, icon: theaterIcon, animation: this.google.maps.Animation.DROP})
-            this.markers.push(marker);
+            if (v.type === 'CGV') {
+              this.cgvMarkers.push(marker);
+            } else if (v.type === '메가박스') {
+              this.megaMarkers.push(marker);
+            } else if (v.type === '롯데시네마') {
+              this.lotMarkers.push(marker);
+            } else {
+              this.markers.push(marker);
+            }
             this.google.maps.event.addListener(marker, 'click', async function() {
               this.theaterId = v.id;
               this.theaterName = v.name;
@@ -231,6 +244,15 @@ export default {
       for (const marker of this.markers) {
         marker.setMap(null);
       }
+      for (const marker of this.cgvMarkers) {
+        marker.setMap(null);
+      }
+      for (const marker of this.megaMarkers) {
+        marker.setMap(null);
+      }
+      for (const marker of this.lotMarkers) {
+        marker.setMap(null);
+      }
       for (const infowindow of this.infowindows) {
         infowindow.close();
       }
@@ -274,6 +296,7 @@ export default {
     }
   },
   async mounted() {
+    this.setLoginMode(true);
     this.setLoading(true);
     try {
       this.google = await this.init();
@@ -292,6 +315,39 @@ export default {
       }.bind(this))
       this.map.addListener('zoom_changed', function() {
         this.isChangeLocation = true;
+        const zoomLevel = this.map.getZoom();
+        for (const marker of this.markers) {
+          marker.setIcon(
+            {
+              url: `${this.HOST}/media/wouldyouci/wouldyouci.png`,
+              scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
+            }
+          );
+        }
+        for (const marker of this.cgvMarkers) {
+          marker.setIcon(
+            {
+              url: `${this.HOST}/media/wouldyouci/cgv.png`,
+              scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
+            }
+          );
+        }
+        for (const marker of this.megaMarkers) {
+          marker.setIcon(
+            {
+              url: `${this.HOST}/media/wouldyouci/megabox.png`,
+              scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
+            }
+          );
+        }
+        for (const marker of this.lotMarkers) {
+          marker.setIcon(
+            {
+              url: `${this.HOST}/media/wouldyouci/lotte.png`,
+              scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
+            }
+          );
+        }
       }.bind(this))
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async function(position) {
@@ -310,14 +366,18 @@ export default {
           }
           this.marking({type: 'user', position: pos, icon: hereIcon});
           this.marking({type: 'theater', position: this.theaterMovieList});
+          this.setLoading(false);
         }.bind(this), function() {
           this.handleLocationError(true, this.map.getCenter());
+          this.setLoading(false);
         }.bind(this))
+      } else {
+        this.setLoading(false);
       }
     } catch (error) {
       this.handleLocationError(false, this.map.getCenter());
+      this.setLoading(false);
     }
-    this.setLoading(false);
   }
 }
 </script>
