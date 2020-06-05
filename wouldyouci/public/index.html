@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://www.google.com"> -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="description" content="A sample cinema app">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
-    <link rel="manifest" href = "manifest.json">
+    <link rel="manifest" href = "/manifest.json">
   </head>
   <body>
     <noscript>
@@ -23,12 +23,13 @@
       if('serviceWorker' in navigator){
         navigator.serviceWorker.register('sw.js')//serviceWorker등록 
         .then(function(success){
-            console.log('Service Worker 등록 완료', success);
+          success;
         })
         .catch(function(error){
-            console.log('Service Worker 등록 실패', error);
+          error;
         })
       }
     </script>
+    <script src="/scripts/install.js"></script>
   </body>
 </html>

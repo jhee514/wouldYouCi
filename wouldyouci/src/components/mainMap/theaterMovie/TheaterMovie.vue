@@ -1,7 +1,7 @@
 <template>
   <div>
+    <h3>{{ theaterName }}</h3>
     <v-slide-group
-      class="pa-4"
       active-class="success"
       v-if="theaterMovieList && theaterMovieList.length"
     >
@@ -42,10 +42,9 @@
       </v-slide-item>
     </v-slide-group>
   <v-card
-    class="ma-4 noItem"
+    class="noItem"
     height="30vh"
     width="95vw"
-    style="margin-right:2vh"
     v-else
   >
     <div class="noMovie">
@@ -58,7 +57,7 @@
 <script>
 export default {
   name: 'TheaterMovie',
-  props: ['theaterMovieList'],
+  props: ['theaterMovieList', 'theaterName'],
   methods: {
     goSite(url) {
       window.open(url, "예매창", "fullscreen=yes");

@@ -1,12 +1,9 @@
 <template>
   <div>
-    <div>
-      {{ Label }}
-    </div>
     <v-slide-group
       class="pa-4 cinemaList"
       active-class="success"
-      v-if="pos && TheaterList.length"
+      v-if="TheaterList && TheaterList.length"
     >
       <v-slide-item
         v-for="(theater, idx) in TheaterList"
@@ -14,7 +11,6 @@
       >
         <v-card
           dark
-          class="ma-4"
           height="auto"
           width="50vw"
           style="margin-right:2vh"
@@ -31,23 +27,14 @@
       </v-slide-item>
     </v-slide-group>
     <v-card
-      v-else-if="pos"
-      class="noThea"
-      height="20vh"
-      width="90vw"
-    >
-      <div class="noTheaExp">
-        근처에 영화관이 없습니다.
-      </div>
-    </v-card>
-    <v-card
       v-else
-      class="noThea"
+      class="noContent"
       height="20vh"
       width="90vw"
+      style="margin-right:2vh"
     >
-      <div class="noTheaExp">
-        위치 정보를 허용해주세요.
+      <div class="noContentExp">
+        해당 콘텐츠가 없습니다.
       </div>
     </v-card>
   </div>
@@ -57,7 +44,7 @@
 import router from '../../../router';
 export default {
   name: 'TheaterMovie',
-  props: ['TheaterList', 'Label', 'pos'],
+  props: ['TheaterList', 'Label'],
   methods: {
     goDetail(id) {
       router.push(`/cinema/${id}`)
@@ -73,4 +60,4 @@ export default {
 }
 </script>
 
-<style src="./CinemaList.css" scoped></style>
+<style src="./MovieList.css" scoped></style>

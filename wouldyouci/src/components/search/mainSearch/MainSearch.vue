@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content">
-      <TheaterList v-bind:Label="'근처 영화관'" v-bind:TheaterList="TheaterList" />
+      <TheaterList v-bind:Label="'근처 영화관'" v-bind:pos="pos" v-bind:TheaterList="TheaterList" />
     </div>
     <div class="current">
       <CinemaList v-bind:Label="'현재 상영작 순위'" v-bind:CinemaList="Populars" />
@@ -22,7 +22,7 @@ export default {
      CinemaList,
      TheaterList
    },
-   props:['Commings', 'Populars', 'TheaterList']
+   props:['Commings', 'Populars', 'TheaterList', 'pos']
 
 
 }

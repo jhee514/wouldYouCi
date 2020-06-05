@@ -6,7 +6,7 @@
           <v-rating
             v-model="editedRating.score"
             color="amber"
-            background-color="orange lighten-3"
+            background-color="amber lighten-3"
             half-increments
             hover
             size="18">
@@ -24,7 +24,7 @@
             rows="1"
             auto-grow
             hide-details="auto"
-            color="orange darken-3"
+            color="amber darken-3"
             dense
           ></v-textarea>
         </div>
@@ -43,7 +43,7 @@
 
 export default {
   name: "RatingEditForm",
-  props:["rating"],
+  props:["rating", "index"],
   data() {
     return {
       rules: [
@@ -56,6 +56,7 @@ export default {
         score: this.rating.score,
         comment: this.rating.comment,
         user: this.rating.user,
+        index: this.index,
       },
     }
   },

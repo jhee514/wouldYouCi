@@ -147,18 +147,15 @@ export default {
       router.push('/');
     },
     async loadMore() {
-      console.log('rebring')
       this.Flag = true;
       this.setLoading(true);
       const res = await this.bringRatingMovies(this.next);
       this.Flag = false;
       this.setLoading(false);
       this.next += 1;
-      console.log(res);
       this.cards = this.cards.concat(res.results);
     },
     submitRating() {
-      console.log('submit');
       this.submitRatings(this.ratedId);
     },
     goTop() {
@@ -175,7 +172,6 @@ export default {
   },
   async mounted() {
     const res = await this.checkRating('notLogin');
-    console.log(res);
     this.beforeCnt = res;
   }
 }

@@ -1,11 +1,11 @@
 <template>
-  <v-app>
+  <div>
     <Title />
     <div class="body">
       <p>Not Found</p>
       <button v-on:click="goBack">돌아가기</button>
     </div>
-  </v-app>
+  </div>
 </template>
 
 <script>

@@ -16,7 +16,7 @@
     </v-dialog>
     <div id="map" ref="map">
     </div>
-    <v-overlay :value="cardLoading">
+    <v-overlay :value="getLoading">
       <v-progress-circular
         :size="70"
         :width="7"
@@ -38,7 +38,7 @@
       </v-btn>
     </div>
     <div class="movieCard" v-if="showMovieCard">
-      <TheaterMovie v-bind:theaterMovieList="getMovies"/>
+      <TheaterMovie v-bind:theaterName="theaterName" v-bind:theaterMovieList="getMovies"/>
     </div>
     <Nav />
   </div>
@@ -49,7 +49,7 @@ import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import TimeSelector from './timeSelector/TimeSelector.vue';
 import TheaterMovie from './theaterMovie/TheaterMovie.vue';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 export default {
   name: 'MainMap',
@@ -73,19 +73,25 @@ export default {
       timeSelector: false,
       theaterMovieList: [],
       markers: [],
+      cgvMarkers: [],
+      megaMarkers: [],
+      lotMarkers: [],
       theaterId: null,
-      cardLoading: false,
+      theaterName: null,
       isChangeLocation: false,
-      myMarker: null
+      myMarker: null,
+      infowindows:[],
+      HOST:process.env.VUE_APP_SERVER_HOST
     }
   },
   computed: {
-    ...mapGetters(['getTheaterMovies', 'getMovies'])
+    ...mapGetters(['getTheaterMovies', 'getMovies', 'getLoading'])
   },
   methods: {
+    ...mapMutations(['setLoading', 'setLoginMode']),
     ...mapActions(['init', 'bringHereCinema', 'bringMovies']),
     marking(value) {
-      console.log(value)
+      // const HOST = process.env.VUE_APP_SERVER_HOST;
       if (value.type === 'user') {
         const marker = new this.google.maps.Marker({position: value.position, map: this.map, icon: value.icon})
         this.myMarker = marker;
@@ -97,23 +103,52 @@ export default {
           infoWindow.setPosition({lat: value.position.lat, lng: value.position.lng});
           infoWindow.setContent('현재 위치입니다. 실제 위치와 500m 정도 차이가 날 수 있습니다.');
           infoWindow.open(this.map);
+          this.infowindows.push(infoWindow);
         }.bind(this))
       } else {
         if (value.position.length) {
+          const zoomLevel = this.map.getZoom();
           for (const v of value.position) {
-            const marker = new this.google.maps.Marker({position: {lat: Number(v.y), lng: Number(v.x)}, map: this.map, icon: value.icon, label:v.name, animation: this.google.maps.Animation.DROP})
-            this.markers.push(marker);
+            let theaterIcon = {
+              url: `${this.HOST}/media/wouldyouci/wouldyouci.png`,
+              scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
+            }
+            if (v.type === 'CGV') {
+              theaterIcon = {
+                url: `${this.HOST}/media/wouldyouci/cgv.png`,
+                scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
+              }
+            } else if (v.type === '메가박스') {
+              theaterIcon = {
+                url: `${this.HOST}/media/wouldyouci/megabox.png`,
+                scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
+              }
+            } else if (v.type === '롯데시네마') {
+              theaterIcon = {
+                url: `${this.HOST}/media/wouldyouci/lotte.png`,
+                scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
+              }
+            }
+            const marker = new this.google.maps.Marker({position: {lat: Number(v.y), lng: Number(v.x)}, map: this.map, icon: theaterIcon, animation: this.google.maps.Animation.DROP})
+            if (v.type === 'CGV') {
+              this.cgvMarkers.push(marker);
+            } else if (v.type === '메가박스') {
+              this.megaMarkers.push(marker);
+            } else if (v.type === '롯데시네마') {
+              this.lotMarkers.push(marker);
+            } else {
+              this.markers.push(marker);
+            }
             this.google.maps.event.addListener(marker, 'click', async function() {
-              console.log(v)
               this.theaterId = v.id;
-              this.cardLoading = true;
-              console.log(this.theaterId)
+              this.theaterName = v.name;
+              this.setLoading(true);
               if (this.isTimeChange) {
                 await this.bringMovies({theaterID: v.id, time: this.time});
               } else {
                 await this.bringMovies({theaterID: v.id, time: null});
               }
-              this.cardLoading = false;
+              this.setLoading(false);
               if (this.cardInfo && this.cardInfo !== marker) {
                 this.showMovieCard = false;
                 this.toggleBounce(this.cardInfo);
@@ -141,7 +176,13 @@ export default {
       infoWindow.setContent(browserHasGeolocation?
                               '오류: 지리적 위치 서비스가 실패했습니다. 위치 제공을 허용해주세요':
                               '오류: 브라우저가 지리적 위치를 지원하지 않습니다.');
-      infoWindow.open(this.map)
+      infoWindow.open(this.map);
+      this.infowindows.push(infoWindow);
+      if (browserHasGeolocation) {
+        alert('위치 정보 제공에 동의해주세요.')
+      } else {
+        alert('브라우저가 지리적 위치를 지원하지 않습니다.')
+      }
     },
     toggleBounce(marker) {
       if (marker.getAnimation() !== null) {
@@ -160,7 +201,6 @@ export default {
       this.clearMarker();
       const mapBound = this.map.getBounds();
       this.mapBound = mapBound;
-      console.log(mapBound)
       const bound = {
         x1: mapBound.Ua.i,
         y1: mapBound.Ya.i,
@@ -169,11 +209,7 @@ export default {
       }
       await this.bringHereCinema(bound);
       this.theaterMovieList = this.getTheaterMovies;
-      const theaterIcon = {
-        url: "https://image.flaticon.com/icons/svg/2892/2892617.svg",
-        scaledSize: new this.google.maps.Size(40, 40)
-      }
-      this.marking({type: 'theater', position: this.theaterMovieList, icon: theaterIcon});
+      this.marking({type: 'theater', position: this.theaterMovieList});
       this.isChangeLocation = false;
       this.loading = false;
     },
@@ -189,9 +225,9 @@ export default {
           setTimeout(function() {
             this.showMovieCard = true;
           }.bind(this), 1);
-          this.cardLoading = true;
+          this.setLoading(true);
           await this.bringMovies({theaterID: this.theaterId, time: this.time});
-          this.cardLoading = false;
+          this.setLoading(false);
         }
       }
     },
@@ -199,20 +235,34 @@ export default {
       this.time = new Date().toLocaleTimeString();
       this.isTimeChange = false;
       if (this.showMovieCard) {
-        this.cardLoading = true;
+        this.setLoading(true);
         await this.bringMovies({theaterID: this.theaterId, time: null});
-        this.cardLoading = false;
+        this.setLoading(false);
       }
     },
     clearMarker() {
       for (const marker of this.markers) {
         marker.setMap(null);
       }
+      for (const marker of this.cgvMarkers) {
+        marker.setMap(null);
+      }
+      for (const marker of this.megaMarkers) {
+        marker.setMap(null);
+      }
+      for (const marker of this.lotMarkers) {
+        marker.setMap(null);
+      }
+      for (const infowindow of this.infowindows) {
+        infowindow.close();
+      }
     },
     findMyPos() {
       this.isChangeLocation = false;
       this.clearMarker();
-      this.myMarker.setMap(null);
+      if (this.myMarker) {
+        this.myMarker.setMap(null);
+      }
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async function(position) {
           const pos = {
@@ -222,7 +272,6 @@ export default {
           this.map.setCenter(pos);
           const mapBound = this.map.getBounds();
           this.mapBound = mapBound;
-          console.log(mapBound)
           const bound = {
             x1: mapBound.Ua.i,
             y1: mapBound.Ya.i,
@@ -236,25 +285,21 @@ export default {
             url : "https://image.flaticon.com/icons/svg/684/684908.svg",
             scaledSize: new this.google.maps.Size(40, 40)
           }
-          const theaterIcon = {
-            url: "https://image.flaticon.com/icons/svg/2892/2892617.svg",
-            scaledSize: new this.google.maps.Size(40, 40)
-          }
           this.marking({type: 'user', position: pos, icon: hereIcon});
-          this.marking({type: 'theater', position: this.theaterMovieList, icon: theaterIcon});
+          this.marking({type: 'theater', position: this.theaterMovieList});
         }.bind(this), function() {
           this.handleLocationError(true, this.map.getCenter());
         }.bind(this))
       } else {
-        alert('위치 정보 제공 동의를 해주세요');
+        this.handleLocationError(false, this.map.getCenter());
       }
     }
   },
   async mounted() {
+    this.setLoginMode(true);
+    this.setLoading(true);
     try {
-      console.log(this)
       this.google = await this.init();
-      console.log(this.google)
       this.map = new this.google.maps.Map(this.$refs.map, {
         center: { lat: 37.501401, lng: 127.039686 },
         zoom: 14,
@@ -265,6 +310,45 @@ export default {
           this.closeMovieCard();
         }
       }.bind(this))
+      this.map.addListener('dragend', function() {
+        this.isChangeLocation = true;
+      }.bind(this))
+      this.map.addListener('zoom_changed', function() {
+        this.isChangeLocation = true;
+        const zoomLevel = this.map.getZoom();
+        for (const marker of this.markers) {
+          marker.setIcon(
+            {
+              url: `${this.HOST}/media/wouldyouci/wouldyouci.png`,
+              scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
+            }
+          );
+        }
+        for (const marker of this.cgvMarkers) {
+          marker.setIcon(
+            {
+              url: `${this.HOST}/media/wouldyouci/cgv.png`,
+              scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
+            }
+          );
+        }
+        for (const marker of this.megaMarkers) {
+          marker.setIcon(
+            {
+              url: `${this.HOST}/media/wouldyouci/megabox.png`,
+              scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
+            }
+          );
+        }
+        for (const marker of this.lotMarkers) {
+          marker.setIcon(
+            {
+              url: `${this.HOST}/media/wouldyouci/lotte.png`,
+              scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
+            }
+          );
+        }
+      }.bind(this))
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async function(position) {
           const pos = {
@@ -272,33 +356,27 @@ export default {
             lng: position.coords.longitude
           };
           this.map.setCenter(pos);
-          this.map.addListener('dragend', function() {
-            this.isChangeLocation = true;
-          }.bind(this))
-          this.map.addListener('zoom_changed', function() {
-            this.isChangeLocation = true;
-          }.bind(this))
           const bound = {x1: pos.lng - 0.01544952392, y1: pos.lat - 0.01721547104, x2: pos.lng + 0.01544952392, y2: pos.lat + 0.01721150239};
           await this.bringHereCinema(bound);
           this.theaterMovieList = this.getTheaterMovies;
-          console.log(this.theaterMovieList);
           this.nowHere = pos;
           const hereIcon = {
             url : "https://image.flaticon.com/icons/svg/684/684908.svg",
             scaledSize: new this.google.maps.Size(40, 40)
           }
-          const theaterIcon = {
-            url: "https://image.flaticon.com/icons/svg/2892/2892617.svg",
-            scaledSize: new this.google.maps.Size(40, 40)
-          }
           this.marking({type: 'user', position: pos, icon: hereIcon});
-          this.marking({type: 'theater', position: this.theaterMovieList, icon: theaterIcon});
+          this.marking({type: 'theater', position: this.theaterMovieList});
+          this.setLoading(false);
         }.bind(this), function() {
           this.handleLocationError(true, this.map.getCenter());
+          this.setLoading(false);
         }.bind(this))
+      } else {
+        this.setLoading(false);
       }
     } catch (error) {
-      console.log(error);
+      this.handleLocationError(false, this.map.getCenter());
+      this.setLoading(false);
     }
   }
 }

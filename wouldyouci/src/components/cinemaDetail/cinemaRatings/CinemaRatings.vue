@@ -1,14 +1,29 @@
 <template>
   <div 
     class="ratings"
+    v-infinite-scroll="loadMore"
+    infinite-scroll-disabled="busy"
+    infinite-scroll-distance="10"
     >
-    <RatingForm :id="details.id" @submitRating="addRating"/>
+    <div class="cinemaScore">
+      <span>{{ Number(this.details.score.toFixed(2)) }} </span>
+      <v-rating
+        class="score"
+        :value="details.score"
+        background-color="amber lighten-3"
+        color="amber"
+        dense
+        half-increments
+        readonly
+        size=20
+        ></v-rating>
+    </div>
 
+    <RatingForm v-if="!scored" @submitRating="addRating"/>
+    <div v-else>리뷰를 작성한 영화입니다.</div>
+    
     <v-list 
       v-if="isRatings"
-      v-infinite-scroll="loadMore"
-      infinite-scroll-disabled="busy"
-      infinite-scroll-distance="250"
       >
       <template v-for="(rating, index) in ratings" track-by="$index">
         <v-list-item :key="index">
@@ -21,13 +36,22 @@
                 {{ rating.user.username }} | {{ formatDate(rating.updated_at) }}
               </div>
               <div class="score">
-                <Score :score="rating.score" />
+                <v-rating
+                  class="score"
+                  :value="rating.score"
+                  background-color="amber lighten-3"
+                  color="amber"
+                  dense
+                  half-increments
+                  readonly
+                  size=14
+                  ></v-rating>
               </div>
             </div>
             <div class="content">
               <p class="comment">{{ rating.comment}}</p>
               
-              <div v-if="rating.user.username == user.username" class="button">
+              <div v-if="rating.user.username == currentUser.username" class="button">
                 <v-dialog v-model="dialog">
                     <template v-slot:activator="{ on }">
                       <v-btn
@@ -47,8 +71,7 @@
                   <i class="fas fa-times fa-xs"></i>
                 </v-btn>
               </div>
-
-              </div>
+            </div>
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -61,26 +84,24 @@
         right
         fab
         @click="goTop"
-      ><v-icon>mdi-arrow-up</v-icon></v-btn>
+        ><v-icon>mdi-arrow-up</v-icon></v-btn>
     </v-list>
 
     <p v-else>
-      리뷰를 남겨주세요 :)
+      첫번째 리뷰를 남겨주세요 :)
     </p>
   </div>
 </template>
 
 <script>
-import Score from '../../ratingForm/Score';
 import RatingForm from '../../ratingForm/RatingForm';
 import RatingEditForm from '../../ratingForm/RatingEditForm';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'CinemaRatings',
-  props:["details", "user", ],
+  props:["details"],
   components: {
-    Score,
     RatingForm,
     RatingEditForm,
   },
@@ -90,17 +111,27 @@ export default {
       busy: false,
       page: 1,
       dialog: false,
-      isRatings: this.details.cinema_ratings.length,
+      isRatings: false,
       ratings: [],
+      currentUser: '',
+      scored: false,
     }
   },
+
+  created() {
+    var jwt = require('jsonwebtoken');
+    const token = sessionStorage.getItem('jwt');
+    var decoded = jwt.decode(token, {complete: true});
+    this.currentUser = decoded.payload
+    if (this.details.has_score) {
+      this.scored = true
+    }
+  },
+  
   computed: {
     ...mapGetters(['getCinemaRatings']),
-
   },
   methods: {
-    
-    //delCinemaRating patchCinemaRating
     ...mapActions(['fetchRatings', 'postRating', 'delRating', 'patchRating' ]),
 
     async loadMore() {
@@ -110,16 +141,20 @@ export default {
         cinema: this.details.id, 
         page: this.page++,
         };
-      const res = await this.fetchRatings({item, params})
+      const resData = await this.fetchRatings({item, params})
       this.busy = false;
-      for ( const rating of res) {
-        this.ratings.push(rating);
+      console.log(resData)
+      if ( resData.count > 0 ) {
+        this.isRatings = true;
+        for ( const rating of resData.results) {
+          this.ratings.push(rating);
+        }
       }
     },
 
     formatDate(date) {
-      var moment = require('moment');
-      return moment(date).format('YYYY.MM.DD')
+      var dayjs = require('dayjs')
+      return dayjs(date).format('YYYY.MM.DD')
     },
     
     closeModal() {
@@ -136,6 +171,7 @@ export default {
           this.isRatings = false
         }
       }
+      this.scored = false
     },
     
     async addRating(rating){
@@ -149,19 +185,17 @@ export default {
         this.isRatings = true
         this.ratings.push(res.data)
       }
+      this.scored = true
     },
     
     async editRating(editedRating) {
       this.dialog = false;
       const item = 'cinema';
       editedRating[item] = this.details.id;
-      const res = await this.patchRating({item, editedRating});
-
-      res.data["user"] = this.user;
-      const formerIndex = this.ratings.indexOf(this.ratings.find(el => {
-        el.id === editedRating.id 
-        }))
-      this.ratings.splice(formerIndex, 1, res.data)
+      await this.patchRating({item, editedRating});
+      this.ratings = [];
+      this.page = 1;
+      this.loadMore();
     },
 
     goTop() {

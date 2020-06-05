@@ -1,10 +1,5 @@
 <template>
-  <v-sheet
-    class="mx-auto"
-    elevation="8"
-    max-width="90vw"
-    style="margin-top:2vh; margin-bottom: 2vh;"
-  >
+  <div>
     <v-slide-group
       dark
       class="pa-4"
@@ -12,38 +7,37 @@
       v-if="CinemaList && CinemaList.length"
     >
       <v-slide-item
-        v-for="(title, idx) in CinemaList"
+        v-for="(cinema, idx) in CinemaList"
         :key="idx"
       >
         <v-card
-          class="ma-4"
           height="auto"
-          width="38vw"
+          width="40vw"
           style="margin-right:2vh"
-          @click="goDetail"
+          @click="goDetail(cinema.id)"
         >
           <v-img 
-            src="https://movie-phinf.pstatic.net/20161123_188/1479862185516tYkKO_JPEG/movie_image.jpg"
-            height="25vh"
-            width="38vw"
+            :src="cinema.poster"
+            height="30vh"
+            width="40vw"
           >
           </v-img>
-          <v-card-text>{{ title }}</v-card-text>
+          <v-card-text>{{ getMovieName(cinema.name) }}</v-card-text>
         </v-card>
       </v-slide-item>
     </v-slide-group>
     <v-card
       v-else
-      class="ma-4"
+      class="noContent"
       height="20vh"
       width="90vw"
       style="margin-right:2vh"
     >
-      <div>
+      <div class="noContentExp">
         해당 콘텐츠가 없습니다.
       </div>
     </v-card>
-  </v-sheet>
+  </div>
 </template>
 
 <script>
@@ -53,8 +47,15 @@ export default {
   name: 'MovieList',
   props: ["CinemaList"],
   methods: {
-    goDetail() {
-      router.push('/movieDetail')
+    goDetail(movieId) {
+      router.push(`/movie/${movieId}`);
+    },
+    getMovieName(name) {
+      if (name.length > 8) {
+        return `${name.slice(0, 8)}...`;
+      } else {
+        return name;
+      }
     }
   }
 }

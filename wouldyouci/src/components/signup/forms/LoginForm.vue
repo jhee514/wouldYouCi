@@ -29,7 +29,7 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn text @click="setLoginMode">Signup</v-btn>
+      <v-btn text @click="setLoginMode(false)">Signup</v-btn>
       <v-btn text @click.prevent="login(userInfo)">Submit</v-btn>
     </v-card-actions>
   </v-card>
