@@ -1,26 +1,29 @@
 <template>
 <v-bottom-navigation
-    v-model="bottomNav"
-    height="7vh"
-    app
-    fixed
-    grow
-    shift
-    align="center"
+  v-model="bottomNav"
+  color="amber"
+  horizontal
+  height="5vh"
+  app
+  fixed
+  grow
+  hide-on-scroll
+  shift
+  align="center"
   >
-    <v-btn small @click="goMap">
+    <v-btn @click="goMap">
+      <v-icon small>mdi-map-marker-outline</v-icon>
       <span>Nearby</span>
-      <v-icon>mdi-map-marker-outline</v-icon>
     </v-btn>
 
-    <v-btn small @click="goSearch">
+    <v-btn @click="goSearch">
+      <v-icon small>mdi-magnify</v-icon>
       <span>Search</span>
-      <v-icon>mdi-magnify</v-icon>
     </v-btn>
 
-    <v-btn small @click="goUserPage">
+    <v-btn @click="goUserPage">
+      <v-icon small>mdi-account-outline</v-icon>
       <span>My Page</span>
-      <v-icon>mdi-account-outline</v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>
@@ -32,11 +35,12 @@ import { mapGetters, mapMutations } from 'vuex';
 export default {
   name: 'Nav',
   computed: {
-    ...mapGetters(['getSearchMode', 'isLoggedIn'])
+    ...mapGetters(['getSearchMode', 'isLoggedIn']),
   },
   methods: {
     ...mapMutations(['setSearchMode']),
     goMap() {
+      this.bottomNav = 0
       const link = document.location.href.split("/");
       if (link[link.length - 1]) {
         router.push('/');
@@ -88,4 +92,18 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+  v-btn {
+    padding: 0;
+  }
+
+  v-icon {
+    size: x-small;
+  }
+
+  span {
+    font-size: 1.5vh;
+    bottom: 0;
+    top: 0.5vh;
+  }
+</style>

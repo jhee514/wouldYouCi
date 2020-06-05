@@ -112,12 +112,10 @@
         indeterminate
       ></v-progress-circular>
     </div>
-    <Nav />
   </div>
 </template>
 
 <script>
-import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import router from '../../router';
 import { mapGetters, mapMutations, mapActions } from 'vuex';
@@ -125,7 +123,6 @@ import { mapGetters, mapMutations, mapActions } from 'vuex';
 export default {
   name: 'UserPage',
   components: {
-    Nav,
     Title
   },
   data() {

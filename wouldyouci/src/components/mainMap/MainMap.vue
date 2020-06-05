@@ -40,12 +40,10 @@
     <div class="movieCard" v-if="showMovieCard">
       <TheaterMovie v-bind:theaterName="theaterName" v-bind:theaterMovieList="getMovies"/>
     </div>
-    <Nav />
   </div>
 </template>
 
 <script>
-import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import TimeSelector from './timeSelector/TimeSelector.vue';
 import TheaterMovie from './theaterMovie/TheaterMovie.vue';
@@ -54,7 +52,6 @@ import { mapGetters, mapMutations, mapActions } from 'vuex';
 export default {
   name: 'MainMap',
   components: {
-    Nav,
     Title,
     TimeSelector,
     TheaterMovie
