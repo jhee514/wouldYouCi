@@ -9,16 +9,17 @@
     >
       <v-card class="explanation">
         <v-card-text>
-          아래의 영화 중 본 영화에 대해 1~5점 사이의 평점을 남겨주시면
+          아래의 영화 중 본 영화에 대해 평점을 남겨주시면
           당신의 취향에 맞는 영화를 추천해드립니다.
-          <h4>단, 최소 10개 이상의 영화를 평가해주셔서 추천이 가능합니다.</h4>
+          <h4>단, 최소 10개 이상의 영화를 평가해주셔야 추천이 가능합니다.</h4>
         </v-card-text>
       </v-card>
       <v-container fluid>
         <div class="chip">
           <v-chip
-            color="#998DE8"
+            color="rgba(173, 139, 232, 0.8)"
             text-color="#FFFFFF"
+            class="chip"
           >
             <v-avatar tile>
               <v-icon>
@@ -30,7 +31,7 @@
         </div>
         <v-row justify="end">
           <v-spacer></v-spacer>
-          <v-btn @click="submitRating" text>제출</v-btn>
+          <!-- <v-btn @click="submitRating" text>제출</v-btn> -->
           <v-btn class="next" text @click="goMap">
             다음에 하기<v-icon small>fas fa-arrow-right</v-icon>
           </v-btn>
@@ -40,22 +41,22 @@
             v-for="card in cards"
             :key="card.name"
             cols="6"
-            sm="4"
-            md="2"
-            lg="2"
+            xs="6"
+
           >
 
 
           <v-hover v-slot:default="{ hover }">
             
-            <v-card 
+            <v-card
               class="movieCard"
             >
 
               <v-img
                 :src="card.poster"
                 class="white--text align-end"
-                height="50vh"
+                height="35vmin 40vmax"
+                width="35vmin 40vmax"
                 contain
               >
               </v-img>
@@ -66,7 +67,7 @@
                   class="d-flex transition-fast-in-fast-out v-card--reveal display-3 white--text"
 
                 >
-                      <h4>{{card.name}}  </h4>
+                      <h5>{{card.name}}  </h5>
 
                       <v-rating
                     @input="addRating({'id': card.id, 'rating': card.rating})"
@@ -74,7 +75,7 @@
                     color="#FDD835"
                     background-color="#757575"
                     half-increments
-                    medium
+                    small
                     hover
                   ></v-rating>
                 </div>
@@ -85,7 +86,7 @@
             </v-hover>
           </v-col>
         </v-row>
-        <v-avatar class="cntA" size="6vh" color="#AD8BE8">
+        <v-avatar class="cntA" size="6vh" @click="submitRating">
           <span>{{ cnt }}</span>
         </v-avatar>
         <v-btn
