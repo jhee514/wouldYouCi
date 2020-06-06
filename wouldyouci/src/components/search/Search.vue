@@ -123,7 +123,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['setSearchMode', 'setLoading']),
+    ...mapMutations(['setSearchMode', 'setLoading', 'setLoginMode']),
     ...mapActions(['bringInitSearchInfo', 'searchMovies', 'bringAddress', 'searchTheater']),
     async changeSearchMode(info) {
       if (info) {
@@ -168,6 +168,7 @@ export default {
     }
   },
   mounted() {
+    this.setLoginMode(null);
     this.setLoading(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {

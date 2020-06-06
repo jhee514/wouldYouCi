@@ -296,7 +296,7 @@ export default {
     }
   },
   async mounted() {
-    this.setLoginMode(true);
+    this.setLoginMode(null);
     this.setLoading(true);
     try {
       this.google = await this.init();
