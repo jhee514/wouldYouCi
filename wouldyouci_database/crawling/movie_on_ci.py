@@ -496,6 +496,7 @@ def getScreenInfo():
     for cinema in cinemas:
         base_url = cinema['fields']['url']
         company = cinema['fields']['type']
+        new_on_screen = []
 
         if company == 'CGV':
             base_url_info = urllib.parse.urlsplit(base_url).query
