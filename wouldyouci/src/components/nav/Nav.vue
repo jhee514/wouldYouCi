@@ -1,9 +1,8 @@
 <template>
 <v-bottom-navigation
-  v-model="bottomNav"
   color="amber"
   horizontal
-  height="5vh"
+  height="7vh"
   app
   fixed
   grow
