@@ -38,7 +38,7 @@ export default {
     ...mapGetters(['getSearchMode', 'isLoggedIn']),
   },
   methods: {
-    ...mapMutations(['setSearchMode']),
+    ...mapMutations(['setSearchMode', 'setLoginMode']),
     goMap() {
       this.bottomNav = 0
       const link = document.location.href.split("/");
@@ -52,22 +52,16 @@ export default {
         const link = document.location.href.split("/");
         if (link[link.length - 1] !== "search") {
           router.push('/search');
+        } else {
+          location.reload();
         }
         if (this.getSearchMode === 'after') {
           this.setSearchMode('before');
         }
       } else {
+        this.setLoginMode('login');
         router.push('/signup');
       }
-
-      //개발 중 코드
-      // const link = document.location.href.split("/");
-      // if (link[link.length - 1] !== "search") {
-      //   router.push('/search');
-      // }
-      // if (this.getSearchMode === 'after') {
-      //   this.setSearchMode('before');
-      // }
     },
     goUserPage() {
       // 실제 출시용 코드
@@ -79,14 +73,9 @@ export default {
           location.reload();
         }
       } else {
-        router.push('signup');
+        this.setLoginMode('login');
+        router.push('/signup');
       }
-
-      // 개발용 코드
-      // const link = document.location.href.split("/");
-      // if (link[link.length - 1] !== "userPage") {
-      //   router.push('/userPage');
-      // }
     }
   }
 }

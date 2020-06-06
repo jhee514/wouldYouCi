@@ -116,7 +116,7 @@ export default {
     ...mapGetters(['getUserInfo', 'getLoading'])
   },
   methods: {
-    ...mapMutations(['setLoading']),
+    ...mapMutations(['setLoading', 'setLoginMode']),
     ...mapActions(['bringUserInfo', 'bringRatedMovies']),
     closeDialog(type) {
       if (type === "image") {
@@ -155,6 +155,7 @@ export default {
     }
   },
   async mounted() {
+    this.setLoginMode(null);
     this.setLoading(true);
     await this.bringUserInfo();
     const HOST = process.env.VUE_APP_SERVER_HOST;
