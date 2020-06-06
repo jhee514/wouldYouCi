@@ -59,7 +59,6 @@
       <v-tabs
         v-model="tab"
         background-color="white"
-        color="amber dark-3"
         centered
         fixed-tabs
         >
@@ -90,7 +89,6 @@
 </template>
 
 <script>
-import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import MovieTrailer from './movieTrailer/MovieTrailer';
 import ShowingCinemas from './movieInfo/ShowingCinemas';
@@ -103,7 +101,6 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'MovieDetail',
   components: {
-    Nav,
     Title,
     MovieTrailer,
     ShowingCinemas,
