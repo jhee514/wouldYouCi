@@ -111,6 +111,33 @@
     },
     {
         "model": "movies.movie",
+        "pk": 185380,
+        "fields": {
+            "name": "프랑스 여자",
+            "name_eng": "A French Woman",
+            "watch_grade": "15세 관람가",
+            "running_time": "89분 ",
+            "summary": "“그 순간이 기억나,\n그 때가 제일 행복했던 것 같아”\n한때 배우를 꿈꿨지만 파리 유학 후 그곳에서 프랑스인 남편과 정착한 ‘미라’.\n이별의 아픔을 겪고 오랜만에 한국에 돌아온 그녀는 20년 전 공연예술아카데미에서\n함께 공부했던 옛 친구들, 영화 감독 ‘영은’과 연극 연출가 ‘성우’와 재회한다.\n2년 전 세상을 떠난 후배 배우 ‘해란’에 대한 기억을 떠올리려 애쓰지만\n어느 것도 선명하지 않은 기억 속에서 ‘미라’는 한 순간에 그때 그 시절 과거로 돌아가 \n꿈과 현실이 교차하고 과거와 현재를 넘나드는 아주 특별한 여행을 하게 되는데…\n",
+            "open_date": "2020-06-04",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20200515_262/1589519519892tStin_JPEG/movie_image.jpg",
+            "directors": [
+                3922
+            ],
+            "genres": [
+                1
+            ],
+            "actors": [
+                3533,
+                2633,
+                3093,
+                155120
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
         "pk": 34431,
         "fields": {
             "name": "영웅-천하의시작",
@@ -222,137 +249,6 @@
     },
     {
         "model": "movies.movie",
-        "pk": 185380,
-        "fields": {
-            "name": "프랑스 여자",
-            "name_eng": "A French Woman",
-            "watch_grade": "15세 관람가",
-            "running_time": "89분 ",
-            "summary": "“그 순간이 기억나,\n그 때가 제일 행복했던 것 같아”\n한때 배우를 꿈꿨지만 파리 유학 후 그곳에서 프랑스인 남편과 정착한 ‘미라’.\n이별의 아픔을 겪고 오랜만에 한국에 돌아온 그녀는 20년 전 공연예술아카데미에서\n함께 공부했던 옛 친구들, 영화 감독 ‘영은’과 연극 연출가 ‘성우’와 재회한다.\n2년 전 세상을 떠난 후배 배우 ‘해란’에 대한 기억을 떠올리려 애쓰지만\n어느 것도 선명하지 않은 기억 속에서 ‘미라’는 한 순간에 그때 그 시절 과거로 돌아가 \n꿈과 현실이 교차하고 과거와 현재를 넘나드는 아주 특별한 여행을 하게 되는데…\n",
-            "open_date": "2020-06-04",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20200515_262/1589519519892tStin_JPEG/movie_image.jpg",
-            "directors": [
-                3922
-            ],
-            "genres": [
-                1
-            ],
-            "actors": [
-                3533,
-                2633,
-                3093,
-                155120
-            ],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
-        "pk": 180378,
-        "fields": {
-            "name": "결백",
-            "name_eng": "",
-            "watch_grade": "15세 관람가",
-            "running_time": "110분 ",
-            "summary": "“대천의 장례식장에서 농약 막걸리 살인사건 발생. 용의자 긴급 체포“\n유명 로펌의 에이스 변호사 ‘정인(신혜선)’은 아빠의 장례식장에서 농약 막걸리 살인사건이 일어났음을 알게 된다.\n치매에 걸린 엄마 ‘화자(배종옥)’가 용의자로 지목되고,\n그녀의 결백을 주장하기 위해 고향으로 내려가 직접 변호를 맡는다.\n사건을 추적하던 중 시장 ‘추인회(허준호)’를 중심으로 한 마을 사람들의\n조직적 은폐와 거짓 진술 등 수상한 정황을 포착한 ‘정인’.\n그날의 기억을 모두 잃은 ‘화자’의 결백을 입증하기 위해 모든 사람들과 맞서기 시작하는데…!\n\n파헤칠수록 커지는 의혹,\n과연 진실은 무엇인가?",
-            "open_date": "2020-06-10",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20200604_53/1591234487234WxFxA_JPEG/movie_image.jpg",
-            "directors": [
-                9711
-            ],
-            "genres": [
-                1
-            ],
-            "actors": [
-                332730,
-                1809,
-                4275
-            ],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
-        "pk": 186347,
-        "fields": {
-            "name": "환상의 마로나",
-            "name_eng": "Marona's Fantastic Tale",
-            "watch_grade": "전체 관람가",
-            "running_time": "92분 ",
-            "summary": "“안녕, 내 이름은 마로나\n지금부터 내 이야기를 들려 줄게”\n9남매 중 막내로 태어난 마로나.\n형제들을 떠나 인간 주인을 만나면서 견생의 제2막이 오른다.\n\n곡예사 마놀부터 건설업자 이스트반, 귀여운 소녀 솔랑주까지.\n새로운 주인을 만날 때마다 마로나 역시 새로운 삶을 살게 되는데…\n\n함께할 수 있는 인간이 있어 행복한 강아지 마로나\n꿈보다 몽환적이고 동화보다 아름다운 이야기가 펼쳐진다!",
-            "open_date": "2020-06-11",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20200515_186/1589518000010dEfG3_JPEG/movie_image.jpg",
-            "directors": [
-                154073
-            ],
-            "genres": [
-                15,
-                1,
-                12
-            ],
-            "actors": [
-                132065,
-                69309,
-                78203,
-                17450,
-                438963
-            ],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
-        "pk": 174363,
-        "fields": {
-            "name": "사랑의 묘약",
-            "name_eng": "L'Elisir d'Amore",
-            "watch_grade": "전체 관람가",
-            "running_time": "158분 ",
-            "summary": "엉터리 약장사가 파는 사랑의 묘약으로 사랑을 얻고자 하는 남자의 희망을 그린 오페라 영상\n",
-            "open_date": "2018",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20180731_258/1533000964525w3Mis_JPEG/movie_image.jpg",
-            "directors": [
-                371644
-            ],
-            "genres": [
-                29
-            ],
-            "actors": [],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
-        "pk": 167658,
-        "fields": {
-            "name": "에어로너츠",
-            "name_eng": "The Aeronauts",
-            "watch_grade": "12세 관람가",
-            "running_time": "100분 ",
-            "summary": "모든 놀라운 일들은 하늘에서 시작된다.\n19세기 런던, 예측불허의 하늘을 이해하고 싶은 기상학자 '제임스'와 가장 높은 하늘을 만나고 싶은 열기구 조종사 '어밀리아'.\n날씨를 최초로 예측하고 하늘의 최고 높이에 다다르기 위해 팀을 이룬 그들은 열기구 '매머드'를 타고 일생일대의 모험을 시작하게 되는데....",
-            "open_date": "2020-06-10",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20200604_124/1591231286791ok55n_JPEG/movie_image.jpg",
-            "directors": [
-                171400
-            ],
-            "genres": [
-                1,
-                6
-            ],
-            "actors": [
-                130312,
-                115832
-            ],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
         "pk": 191436,
         "fields": {
             "name": "슈퍼스타 뚜루",
@@ -379,26 +275,53 @@
     },
     {
         "model": "movies.movie",
-        "pk": 150179,
+        "pk": 178520,
         "fields": {
-            "name": "시간을 달리는 소녀",
-            "name_eng": "時をかける少女",
-            "watch_grade": "",
-            "running_time": "",
-            "summary": "의식을 잃고 난 후, 시간을 자유롭게 넘나드는 타임리프 능력이 생긴 소녀의 아름답고 애틋한 청춘의 사랑 이야기를 그린 드라마\n",
-            "open_date": "2016",
+            "name": "안녕, 미누",
+            "name_eng": "Free Minu",
+            "watch_grade": "12세 관람가",
+            "running_time": "89분 ",
+            "summary": "고향집 뒷산 히말라야는 몰라도 ‘목포의 눈물’이 애창곡인 네팔사람 ‘미누’. 스무 살에 한국에 와 식당일부터 봉제공장 재단사, 밴드 보컬까지 18년.한국을 누구보다 사랑하며 청춘을 바쳤지만 11년 전 강제 추방당했다.네팔로 돌아가 어엿한 사업가로 성장하고도 한국이 사무치게 그립다.그런 미누를 위해 옛 밴드 멤버들이 네팔에 날아와 함께 무대에 선다.눈에는 눈물이 맺히고, 마이크를 잡은 목장갑 손이 한없이 떨리는 미누.꿈만 같던 공연이 끝나고 미누는 “나 이제 죽어도 좋아”라며 환히 웃는데…",
+            "open_date": "2020-05-27",
             "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20160512_276/1463044630770oCgjR_JPEG/movie_image.jpg",
+            "poster": "https://movie-phinf.pstatic.net/20200506_94/1588740251673aLpfF_JPEG/movie_image.jpg",
             "directors": [
-                120695
+                393135
             ],
-            "genres": [],
+            "genres": [
+                10
+            ],
             "actors": [
-                349930,
-                341781,
-                306572,
-                349900,
-                127016
+                135692,
+                438143,
+                438142,
+                438141
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 190711,
+        "fields": {
+            "name": "루팡 3세-더 퍼스트",
+            "name_eng": "Lupin III: The First",
+            "watch_grade": "전체 관람가",
+            "running_time": "92분 ",
+            "summary": "세상의 운명을 바꿀 비밀이 담겨 있는 브레송 다이어리.\n어느 날, 다이어리가 전시된 브레송 회고전에 ‘루팡 3세’의 예고장이 날아들고, 다이어리를 노리는 비밀 조직 역시 고고학도 ‘레티시아’를 이용해 이를 가로채려고 하는데…\n\n과연, ‘루팡 3세’는 브레송 다이어리를 손에 넣고 그 안에 숨겨진 비밀을 풀 수 있을까?",
+            "open_date": "2020-05-21",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20200521_160/1590039921269Nsa94_JPEG/movie_image.jpg",
+            "directors": [
+                7834
+            ],
+            "genres": [
+                15
+            ],
+            "actors": [
+                215022,
+                349997,
+                2592
             ],
             "score": 0
         }
@@ -433,6 +356,32 @@
     },
     {
         "model": "movies.movie",
+        "pk": 167658,
+        "fields": {
+            "name": "에어로너츠",
+            "name_eng": "The Aeronauts",
+            "watch_grade": "12세 관람가",
+            "running_time": "100분 ",
+            "summary": "모든 놀라운 일들은 하늘에서 시작된다.\n19세기 런던, 예측불허의 하늘을 이해하고 싶은 기상학자 '제임스'와 가장 높은 하늘을 만나고 싶은 열기구 조종사 '어밀리아'.\n날씨를 최초로 예측하고 하늘의 최고 높이에 다다르기 위해 팀을 이룬 그들은 열기구 '매머드'를 타고 일생일대의 모험을 시작하게 되는데....",
+            "open_date": "2020-06-10",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20200604_124/1591231286791ok55n_JPEG/movie_image.jpg",
+            "directors": [
+                171400
+            ],
+            "genres": [
+                1,
+                6
+            ],
+            "actors": [
+                130312,
+                115832
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
         "pk": 193992,
         "fields": {
             "name": "런 보이 런",
@@ -458,208 +407,26 @@
     },
     {
         "model": "movies.movie",
-        "pk": 143462,
+        "pk": 150179,
         "fields": {
-            "name": "초능력소년사건",
-            "name_eng": "The Lapse",
-            "watch_grade": "12세 관람가",
-            "running_time": "82분 ",
-            "summary": "소년의 기억은 미제로 남았다\n우연한 사고로 초능력을 갖게 된 소심한 대학생 ‘청밍’단, 능력을 쓸 때마다 기억도 조금씩 사라진다.사고 당시 같이 있었던 짝사랑 상대 ‘린’과 절친한 형 ‘훼이’세 사람은 청밍의 능력과 일상을 스마트폰으로 찍으며 함께 어울린다.초능력이 생겼지만 여전히 팍팍한 현실에 지쳐가는 청밍그는 훼이의 부추김에 떠밀려 현금 수송차를 털기로 하는데……\n",
-            "open_date": "2020-05-28",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20200515_292/1589529350688e3Okh_JPEG/movie_image.jpg",
-            "directors": [
-                154110
-            ],
-            "genres": [
-                1,
-                18,
-                2,
-                19,
-                7
-            ],
-            "actors": [
-                438524,
-                438601,
-                438523
-            ],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
-        "pk": 178566,
-        "fields": {
-            "name": "괴물의 아이",
-            "name_eng": "FREAK CHILD",
+            "name": "시간을 달리는 소녀",
+            "name_eng": "時をかける少女",
             "watch_grade": "",
-            "running_time": "5분 ",
-            "summary": "교육열이 높은 엄마에 의해 괴물로 변해가는 아이. \n\n[제14회 인디애니페스트]",
-            "open_date": "2018",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20180817_172/1534493737141XrH9g_JPEG/movie_image.jpg",
-            "directors": [
-                392214
-            ],
-            "genres": [
-                15
-            ],
-            "actors": [],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
-        "pk": 178520,
-        "fields": {
-            "name": "안녕, 미누",
-            "name_eng": "Free Minu",
-            "watch_grade": "12세 관람가",
-            "running_time": "89분 ",
-            "summary": "고향집 뒷산 히말라야는 몰라도 ‘목포의 눈물’이 애창곡인 네팔사람 ‘미누’. 스무 살에 한국에 와 식당일부터 봉제공장 재단사, 밴드 보컬까지 18년.한국을 누구보다 사랑하며 청춘을 바쳤지만 11년 전 강제 추방당했다.네팔로 돌아가 어엿한 사업가로 성장하고도 한국이 사무치게 그립다.그런 미누를 위해 옛 밴드 멤버들이 네팔에 날아와 함께 무대에 선다.눈에는 눈물이 맺히고, 마이크를 잡은 목장갑 손이 한없이 떨리는 미누.꿈만 같던 공연이 끝나고 미누는 “나 이제 죽어도 좋아”라며 환히 웃는데…",
-            "open_date": "2020-05-27",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20200506_94/1588740251673aLpfF_JPEG/movie_image.jpg",
-            "directors": [
-                393135
-            ],
-            "genres": [
-                10
-            ],
-            "actors": [
-                135692,
-                438143,
-                438142,
-                438141
-            ],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
-        "pk": 156883,
-        "fields": {
-            "name": "멜랑콜리아",
-            "name_eng": "Melancholia",
-            "watch_grade": "",
-            "running_time": "22분 ",
-            "summary": "",
+            "running_time": "",
+            "summary": "의식을 잃고 난 후, 시간을 자유롭게 넘나드는 타임리프 능력이 생긴 소녀의 아름답고 애틋한 청춘의 사랑 이야기를 그린 드라마\n",
             "open_date": "2016",
             "trailer": "",
-            "poster": "",
+            "poster": "https://movie-phinf.pstatic.net/20160512_276/1463044630770oCgjR_JPEG/movie_image.jpg",
             "directors": [
-                376882
+                120695
             ],
             "genres": [],
-            "actors": [],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
-        "pk": 193990,
-        "fields": {
-            "name": "아홉 스님",
-            "name_eng": "",
-            "watch_grade": "전체 관람가",
-            "running_time": "72분 ",
-            "summary": "“가장 낮은 곳에서 새롭게 시작하라”\n아홉 스님들의 위대한 수행 도전기 드디어 공개!\n한국 불교 역사상 최초, 천막 동안거를 통해 정진하게 된 아홉 스님들.살을 에는 한겨울, 난방 기구 하나 없이 폐쇄된 천막에서7개의 엄격한 규칙과 함께 참선의 90일이 시작되고,단 한 벌의 옷과 하루 한 끼의 극한 수행을 버티면서도신음 소리 한 번 내지 않던 스님들에게 위기가 찾아오는데….",
-            "open_date": "2020-05-27",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20200520_72/1589955100593Ndd9T_JPEG/movie_image.jpg",
-            "directors": [
-                438600
-            ],
-            "genres": [
-                1
-            ],
             "actors": [
-                438610,
-                438615,
-                438614,
-                438616,
-                438613
-            ],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
-        "pk": 180350,
-        "fields": {
-            "name": "레미: 집 없는 아이",
-            "name_eng": "Remi: Nobody’s Boy",
-            "watch_grade": "전체 관람가",
-            "running_time": "108분 ",
-            "summary": "인생 멘토와 함께 꿈과 가족을 찾아 떠난 \n소년의 아주 특별한 여행!\n자신이 버려진 아이란 걸 알게 된 소년 레미는\n어느 날 거리의 음악가 비탈리스를 만나게 된다.\n소년이 가진 아름다운 목소리와 노래의 재능을 알아본 비탈리스는\n레미에게 따뜻한 스승이자 인생 멘토가 되어주고,\n두 사람은 동물 친구들과 함께 프랑스 전역을 여행하며 공연을 이어간다.\n\n거듭되는 시련들 속에서도 희망을 잃지 않고 꿈을 노래하던 레미는\n어느 날 자신의 출생에 숨겨진 비밀을 풀어줄 단서를 알게 되는데...\n과연, 레미는 자신의 진짜 가족을 찾을 수 있을까?",
-            "open_date": "2020-05-28",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20200520_187/1589940155568BsYic_JPEG/movie_image.jpg",
-            "directors": [
-                274063
-            ],
-            "genres": [
-                1,
-                12,
-                6
-            ],
-            "actors": [
-                3343,
-                437881
-            ],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
-        "pk": 193101,
-        "fields": {
-            "name": "신세계",
-            "name_eng": "Bungo 1",
-            "watch_grade": "12세 관람가",
-            "running_time": "69분 ",
-            "summary": "사랑에 대한 두 편의 단편영화를 모은 옴니버스 영화\n",
-            "open_date": "2020",
-            "trailer": "",
-            "poster": "",
-            "directors": [
-                9571
-            ],
-            "genres": [
-                5
-            ],
-            "actors": [
-                127023,
-                305298,
-                61223,
-                317628,
-                176637
-            ],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
-        "pk": 190711,
-        "fields": {
-            "name": "루팡 3세-더 퍼스트",
-            "name_eng": "Lupin III: The First",
-            "watch_grade": "전체 관람가",
-            "running_time": "92분 ",
-            "summary": "세상의 운명을 바꿀 비밀이 담겨 있는 브레송 다이어리.\n어느 날, 다이어리가 전시된 브레송 회고전에 ‘루팡 3세’의 예고장이 날아들고, 다이어리를 노리는 비밀 조직 역시 고고학도 ‘레티시아’를 이용해 이를 가로채려고 하는데…\n\n과연, ‘루팡 3세’는 브레송 다이어리를 손에 넣고 그 안에 숨겨진 비밀을 풀 수 있을까?",
-            "open_date": "2020-05-21",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20200521_160/1590039921269Nsa94_JPEG/movie_image.jpg",
-            "directors": [
-                7834
-            ],
-            "genres": [
-                15
-            ],
-            "actors": [
-                215022,
-                349997,
-                2592
+                349930,
+                341781,
+                306572,
+                349900,
+                127016
             ],
             "score": 0
         }
@@ -770,6 +537,58 @@
     },
     {
         "model": "movies.movie",
+        "pk": 143462,
+        "fields": {
+            "name": "초능력소년사건",
+            "name_eng": "The Lapse",
+            "watch_grade": "12세 관람가",
+            "running_time": "82분 ",
+            "summary": "소년의 기억은 미제로 남았다\n우연한 사고로 초능력을 갖게 된 소심한 대학생 ‘청밍’단, 능력을 쓸 때마다 기억도 조금씩 사라진다.사고 당시 같이 있었던 짝사랑 상대 ‘린’과 절친한 형 ‘훼이’세 사람은 청밍의 능력과 일상을 스마트폰으로 찍으며 함께 어울린다.초능력이 생겼지만 여전히 팍팍한 현실에 지쳐가는 청밍그는 훼이의 부추김에 떠밀려 현금 수송차를 털기로 하는데……\n",
+            "open_date": "2020-05-28",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20200515_292/1589529350688e3Okh_JPEG/movie_image.jpg",
+            "directors": [
+                154110
+            ],
+            "genres": [
+                1,
+                18,
+                2,
+                19,
+                7
+            ],
+            "actors": [
+                438524,
+                438601,
+                438523
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 178566,
+        "fields": {
+            "name": "괴물의 아이",
+            "name_eng": "FREAK CHILD",
+            "watch_grade": "",
+            "running_time": "5분 ",
+            "summary": "교육열이 높은 엄마에 의해 괴물로 변해가는 아이. \n\n[제14회 인디애니페스트]",
+            "open_date": "2018",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20180817_172/1534493737141XrH9g_JPEG/movie_image.jpg",
+            "directors": [
+                392214
+            ],
+            "genres": [
+                15
+            ],
+            "actors": [],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
         "pk": 153221,
         "fields": {
             "name": "천국보다 낯선",
@@ -786,6 +605,26 @@
             "genres": [
                 10
             ],
+            "actors": [],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 156883,
+        "fields": {
+            "name": "멜랑콜리아",
+            "name_eng": "Melancholia",
+            "watch_grade": "",
+            "running_time": "22분 ",
+            "summary": "",
+            "open_date": "2016",
+            "trailer": "",
+            "poster": "",
+            "directors": [
+                376882
+            ],
+            "genres": [],
             "actors": [],
             "score": 0
         }
@@ -813,6 +652,61 @@
             "actors": [
                 44848,
                 51175
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 193990,
+        "fields": {
+            "name": "아홉 스님",
+            "name_eng": "",
+            "watch_grade": "전체 관람가",
+            "running_time": "72분 ",
+            "summary": "“가장 낮은 곳에서 새롭게 시작하라”\n아홉 스님들의 위대한 수행 도전기 드디어 공개!\n한국 불교 역사상 최초, 천막 동안거를 통해 정진하게 된 아홉 스님들.살을 에는 한겨울, 난방 기구 하나 없이 폐쇄된 천막에서7개의 엄격한 규칙과 함께 참선의 90일이 시작되고,단 한 벌의 옷과 하루 한 끼의 극한 수행을 버티면서도신음 소리 한 번 내지 않던 스님들에게 위기가 찾아오는데….",
+            "open_date": "2020-05-27",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20200520_72/1589955100593Ndd9T_JPEG/movie_image.jpg",
+            "directors": [
+                438600
+            ],
+            "genres": [
+                1
+            ],
+            "actors": [
+                438610,
+                438615,
+                438614,
+                438616,
+                438613
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 180350,
+        "fields": {
+            "name": "레미: 집 없는 아이",
+            "name_eng": "Remi: Nobody’s Boy",
+            "watch_grade": "전체 관람가",
+            "running_time": "108분 ",
+            "summary": "인생 멘토와 함께 꿈과 가족을 찾아 떠난 \n소년의 아주 특별한 여행!\n자신이 버려진 아이란 걸 알게 된 소년 레미는\n어느 날 거리의 음악가 비탈리스를 만나게 된다.\n소년이 가진 아름다운 목소리와 노래의 재능을 알아본 비탈리스는\n레미에게 따뜻한 스승이자 인생 멘토가 되어주고,\n두 사람은 동물 친구들과 함께 프랑스 전역을 여행하며 공연을 이어간다.\n\n거듭되는 시련들 속에서도 희망을 잃지 않고 꿈을 노래하던 레미는\n어느 날 자신의 출생에 숨겨진 비밀을 풀어줄 단서를 알게 되는데...\n과연, 레미는 자신의 진짜 가족을 찾을 수 있을까?",
+            "open_date": "2020-05-28",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20200520_187/1589940155568BsYic_JPEG/movie_image.jpg",
+            "directors": [
+                274063
+            ],
+            "genres": [
+                1,
+                12,
+                6
+            ],
+            "actors": [
+                3343,
+                437881
             ],
             "score": 0
         }
@@ -857,6 +751,147 @@
             ],
             "actors": [
                 338646
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 193101,
+        "fields": {
+            "name": "신세계",
+            "name_eng": "Bungo 1",
+            "watch_grade": "12세 관람가",
+            "running_time": "69분 ",
+            "summary": "사랑에 대한 두 편의 단편영화를 모은 옴니버스 영화\n",
+            "open_date": "2020",
+            "trailer": "",
+            "poster": "",
+            "directors": [
+                9571
+            ],
+            "genres": [
+                5
+            ],
+            "actors": [
+                127023,
+                305298,
+                61223,
+                317628,
+                176637
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 186347,
+        "fields": {
+            "name": "환상의 마로나",
+            "name_eng": "Marona's Fantastic Tale",
+            "watch_grade": "전체 관람가",
+            "running_time": "92분 ",
+            "summary": "“안녕, 내 이름은 마로나\n지금부터 내 이야기를 들려 줄게”\n9남매 중 막내로 태어난 마로나.\n형제들을 떠나 인간 주인을 만나면서 견생의 제2막이 오른다.\n\n곡예사 마놀부터 건설업자 이스트반, 귀여운 소녀 솔랑주까지.\n새로운 주인을 만날 때마다 마로나 역시 새로운 삶을 살게 되는데…\n\n함께할 수 있는 인간이 있어 행복한 강아지 마로나\n꿈보다 몽환적이고 동화보다 아름다운 이야기가 펼쳐진다!",
+            "open_date": "2020-06-11",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20200515_186/1589518000010dEfG3_JPEG/movie_image.jpg",
+            "directors": [
+                154073
+            ],
+            "genres": [
+                15,
+                1,
+                12
+            ],
+            "actors": [
+                132065,
+                69309,
+                78203,
+                17450,
+                438963
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 193080,
+        "fields": {
+            "name": "피델리오",
+            "name_eng": "Fidelio",
+            "watch_grade": "전체 관람가",
+            "running_time": "142분 ",
+            "summary": "플로레스탄은 부패한 교도소장 피차로에 의해 수년간 부당하게 세비야의 감옥의 지하 감방에 갇혀 있다. 플로레스탄의 아내 레오노레는 '피델리오'라는 가명을 쓰고 남장을 한 채 간수장 로코의 보조 간수로 일하며 남편을 구할 기회를 엿본다. 그러던 중 법무대신이 교도소 시찰을 나와 수감자 일부를 풀어준다고 하자, 교도소장은 플로레스탄을 살해하려 하고, '피델리오'는 기회를 틈타 남편의 구출 계획을 실행에 옮긴다.",
+            "open_date": "2020-05-31",
+            "trailer": "",
+            "poster": "",
+            "directors": [
+                437935
+            ],
+            "genres": [
+                29,
+                7,
+                1
+            ],
+            "actors": [
+                439026,
+                324937,
+                352432,
+                439025,
+                439024
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 182465,
+        "fields": {
+            "name": "카르멘",
+            "name_eng": "Bring Me the Head of Carmen M.",
+            "watch_grade": "",
+            "running_time": "61분 ",
+            "summary": "",
+            "open_date": "2019",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20190122_78/1548124293339SrqVW_JPEG/movie_image.jpg",
+            "directors": [
+                285923
+            ],
+            "genres": [
+                1
+            ],
+            "actors": [
+                162932
+            ],
+            "score": 0
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 193325,
+        "fields": {
+            "name": "싸커 퀸즈",
+            "name_eng": "Queens of the Field",
+            "watch_grade": "12세 관람가",
+            "running_time": "95분 ",
+            "summary": "우리 클럽이 사라진다고?\n이제부터 이 팀은 우리가 책임진다!\n축구의 도시 클루리에,\n오래된 전통을 가진 챔피언 축구 클럽 SPAC은\n결승전을 앞두고 해체 위기에 놓이게 된다.\n\n코치 ‘마르코’는 클럽을 살리기 위해\n정예 여자 선수단을 모집하고,\n필드 근처에도 가보지 못한 초보 선수들과\n웃픈 상황 속 특급 훈련을 시작하는데…\n\n과연, 그들은 마지막 경기에서 우승할 수 있을까?",
+            "open_date": "2020-05-27",
+            "trailer": "",
+            "poster": "https://movie-phinf.pstatic.net/20200511_107/15891731183916iCmB_JPEG/movie_image.jpg",
+            "directors": [
+                338315
+            ],
+            "genres": [
+                11,
+                1
+            ],
+            "actors": [
+                67179,
+                417753,
+                284048,
+                77146,
+                303682
             ],
             "score": 0
         }

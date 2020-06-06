@@ -61,7 +61,6 @@ def getNaverInfo(movie_name, director_name):
         "X-Naver-Client-Id":NAVER_CLIENT_ID,
         "X-Naver-Client-secret":NAVER_CLIENT_SECRET,
     }
-    print(movie_name)
     req = requests.get(NAVER_REQUEST_URL+"query="+movie_name+"&display=100", headers = header).json()
     req_items = req['items']
     if req_items:
@@ -89,6 +88,44 @@ def naverLogin():
     driver.find_element_by_xpath('//*[@value="로그인"]').click()
     time.sleep(1)
 
+def getTrailer(title, s_opt):
+    res = ''
+    YOUTUBE_KEY = os.getenv('YOUTUBE_KEY6')
+    REQUEST_URL = 'https://www.googleapis.com/youtube/v3/search?'
+    YOUTUBE_SEARCH = 'https://www.youtube.com/results?'
+    options = {
+        'key': YOUTUBE_KEY,
+        'part': 'id',
+        'q': title + ' ' + s_opt,
+        'maxResults': 1,
+        'type': 'video',
+        'videoDuration': 'short'
+    }
+    search_option = {
+        'search_query': title + ' ' + s_opt,
+    }
+    # TITLE_TO_URL = urllib.parse.urlencode(search_option)
+    # SEARCH_URL = YOUTUBE_SEARCH + TITLE_TO_URL
+    # y_html = urllib.request.urlopen(SEARCH_URL)
+    # y_soup = BeautifulSoup(y_html, 'lxml')
+    # atags = y_soup.find_all('a')
+    # if atags:
+    #     for atag in atags:
+    #         href_url = atag.get('href')
+    #         break
+    url_option = urllib.parse.urlencode(options)
+    SEARCH_URL = REQUEST_URL+url_option
+    SEARCH_RESULT = json.loads(urllib.request.urlopen(SEARCH_URL).read())
+    ITEM_LIST = SEARCH_RESULT['items']
+    if ITEM_LIST:
+        YOUTUBE_VIDEO_URL = 'https://www.youtube.com/embed/'
+        for ITEM in ITEM_LIST:
+            if ITEM['id'].get('videoId'):
+                youtube_code = ITEM['id']['videoId']
+                break
+        res = YOUTUBE_VIDEO_URL + youtube_code
+    return res
+        
 def getMovieDetail(movie_code, movie_info, movie_name):
     NAVER_MOVIE_BASE = 'https://movie.naver.com/movie/bi/mi/basic.nhn?code='
     NAVER_IMAGE_URL = 'https://movie.naver.com/movie/bi/mi/photoViewPopup.nhn?movieCode='
@@ -163,6 +200,8 @@ def getMovieDetail(movie_code, movie_info, movie_name):
     if description:
         new_fields['summary'] = getSummary(description.text)
     
+    new_info['trailer'] = getTrailer(movie_name, '예고편')
+
     new_info['fields'] = new_fields
     return new_info
                 
