@@ -53,12 +53,10 @@
         ></v-progress-circular>
       </v-overlay>
     </div>
-    <Nav />
   </div>
 </template>
 
 <script>
-import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import MainSearch from './mainSearch/MainSearch.vue';
 import AfterSearch from './afterSearch/AfterSearch.vue';
@@ -67,7 +65,6 @@ import { mapGetters, mapMutations, mapActions } from 'vuex';
 export default {
   name: 'Search',
   components:{
-    Nav,
     Title,
     MainSearch,
     AfterSearch

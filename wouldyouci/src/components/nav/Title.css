@@ -2,10 +2,15 @@
   text-align: center;
   margin-top: 2vh;
   height: 5vh;
-  font-size: 4vh;
+  position: relative;
+}
+
+.name {
+  font-size: 1.75vh;
+  vertical-align: top;
 }
 
 .popcorn {
-  width: 5vh;
-  height: 5vh;
+  width: 4.5vh;
+  height: 4.5vh;
 }

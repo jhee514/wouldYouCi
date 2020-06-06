@@ -1,5 +1,8 @@
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+
 .firstRating{
   margin-bottom: 7vh;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 .explanation{
@@ -9,7 +12,7 @@
 }
 
 .next{
-  margin-right: 3vw;
+  margin-left: 3vw;
 }
 
 #app > div > div.firstRating > div.container.container--fluid > div:nth-child(1) > button > span > i{
@@ -23,19 +26,50 @@
 
 .upBtn {
   position: fixed;
-  bottom: 9vh;
+  bottom: 7vh;
   right: 0vw;
-  color: #9462EA;
+  color: rgb(173, 139, 232);
 }
 
 .cntA {
   position: fixed;
-  bottom: 18vh;
+  bottom: 16vh;
   right: 6.7vw;
+  background-color: rgba(173, 139, 232, 0.8);
+  color: #FFFFFF;
 }
 
 .progress{
   position: absolute;
   top: 44vh;
   right: 44vw;
+}
+
+
+
+.v-card--reveal {
+  align-items: center;
+  text-align: center;
+  bottom: 0;
+  padding-bottom: 2vh;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 35%; 
+  background:rgba(0, 0, 0, 0.5);
+  color:white;
+  font-size: small;
+}
+.movieCard{
+  background:black
+}
+.chip{
+  z-index: 1;
+  left: 20vw;
+  bottom: 9.3vh;
+  position: fixed;
+  color:#FFFFFF
+}
+.rating{
+   color:white;
 }

@@ -11,7 +11,6 @@
         class="score"
         :value="details.score"
         background-color="amber lighten-3"
-        color="amber"
         dense
         half-increments
         readonly
@@ -78,9 +77,8 @@
         </v-list-item>
       </template>
       <v-btn
-        v-if="ratings.length > 5"
+
         class="upbutton"
-        color="amber"
         small
         dark
         bottom

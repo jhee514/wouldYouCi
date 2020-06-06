@@ -69,12 +69,10 @@
           indeterminate
         ></v-progress-circular>
       </v-overlay>
-    <Nav />
   </div>
 </template>
 
 <script>
-import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import UserInfo from './userInfo/UserInfo.vue';
 import MovieList from './movieList/MovieList.vue';
@@ -89,7 +87,6 @@ import { mapGetters, mapMutations, mapActions } from 'vuex';
 export default {
   name: 'UserPage',
   components: {
-    Nav,
     Title,
     UserInfo,
     MovieList,

@@ -96,7 +96,6 @@
 </template>
 
 <script>
-import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import CinemaInfo from './cinemaInfo/CinemaInfo';
 import CinemaRatings from './cinemaRatings/CinemaRatings';
@@ -108,7 +107,6 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'CinemaDetail',
   components: {
-    Nav,
     Title,
     CinemaInfo,
     CinemaRatings,
