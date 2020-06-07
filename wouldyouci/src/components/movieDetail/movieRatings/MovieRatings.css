@@ -1,13 +1,13 @@
 .rating-form {
-  padding: 5vw 5vh ;
+  padding: 5vh 5vw ;
 }
 
 .notification {
   text-align: center;
 }
 
-.avatar {
-  background-color: rgb(223, 21, 35)
+.rating {
+  padding: 0;
 }
 
 .infos{
@@ -22,7 +22,7 @@
   display: inline-block;
   text-align: left;
   vertical-align: middle;
-  padding-top: 1vh;
+  padding-top: 0.5vh;
 }
 
 .movie-score {

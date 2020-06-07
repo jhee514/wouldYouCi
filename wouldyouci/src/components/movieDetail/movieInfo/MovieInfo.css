@@ -1,17 +1,12 @@
+.body {
+  padding: 0 16px;
+}
+
+.container {
+  display: inline;
+}
+
 .item {
-  display: inline-block;
   color: grey;
-  top: 0;
-  width: 9vw;
-  height: auto;
-}
-
-.contents {
-  display: inline-block;
-  width: 80%;
-  margin: 0 2vw;
-}
-
-.content {
-  color: black;
+  vertical-align: middle;
 }

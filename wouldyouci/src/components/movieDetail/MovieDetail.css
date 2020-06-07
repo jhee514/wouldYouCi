@@ -11,26 +11,23 @@
   margin: 3vh 5vw;
 }
 
-.relative  {
-  position: relative;
-  padding: 1vh 5vw;
+.container {
+  padding-left: 16px;
+  font-size: 2.5vh;
+  display: inline-flex;
 }
 
-.inline {
+.left {
+  padding-top: 16px;
   display: inline-block;
-}
-.absolute {
-  display: inline-block;
-  position: absolute;
-  margin: 0;
-  right: 3vh;
+  vertical-align: middle;
 }
 
-.button {
-  margin: 0 1vw;
+.right {
+  align-self: flex-end;
+  float: right;
 }
 
 .tab-item {
-  margin: 0 3vw;
-
+  padding: 0 20px;
 }

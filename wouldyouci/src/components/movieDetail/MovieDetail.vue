@@ -5,6 +5,7 @@
       <MovieTrailer :details="details" />
     </div>
 
+
     <div class="details">
       <v-list-item two-line>
         <v-list-item-content>
@@ -15,15 +16,14 @@
       </v-list-item>
 
 
-      <div class="relative ">
-        <div class="inline">
+      <div class="container">
+        <div class="left">
           {{ details.predicted_score }} % 일치  
         </div>
-        <div class="absolute">
-          <v-btn
-            class="button"
-            v-if="!isPicked"
-            icon
+
+        <div class="right">
+
+          <v-btn v-show="!isPicked"
             color='grey'
             text
             @click.prevent="togglePickMovie">
@@ -31,34 +31,27 @@
             <v-icon>mdi-plus</v-icon>
           </v-btn>
 
-          <v-btn
-            class="button"
-            v-else-if="toBeReleased"
-            icon 
-            color='pink'
+          <v-btn v-show="toBeReleased && isPicked"
+            color='secondary'
+            icon
             @click.prevent="togglePickMovie">
             <v-icon>mdi-bell</v-icon>
           </v-btn>
 
-          <v-btn
-            class="button"
-            v-else-if="isPicked"
-            icon 
-            color='pink'
+          <v-btn v-show="!toBeReleased && isPicked"
+            color='secondary'
+            icon
             @click.prevent="togglePickMovie">
             <v-icon>mdi-heart</v-icon>
           </v-btn>
-
-
-          
-          <!-- 상영중인 영화관 모달 -->
-          <v-dialog v-if="details.is_showing" v-model="dialog">
+      
+          <v-dialog 
+            v-if="details.is_showing"
+            v-model="dialog">
             <template v-slot:activator="{ on }">
               <v-btn
                 v-on="on"
-                class="button"
-                color="secondary"
-                icon
+                color="accent"
                 text
                 >
                 <span>예매</span>
@@ -69,10 +62,10 @@
           </v-dialog>
         </div>
       </div>
-
     </div>
 
-    <div clas="tabcard">
+
+    <div class="tab-card">
       <v-tabs
         v-model="tab"
         background-color="transparent"
@@ -136,7 +129,6 @@ export default {
     if ( dayjs().isBefore(dayjs(this.details.open_date))) {
       this.toBeReleased = true
     }
-
   },
 
   data() {
@@ -150,10 +142,6 @@ export default {
       isPicked: false,
       dialog: false,
       toBeReleased: false,
-
-// 지난영화 상영중 / 상영 예정작
-// 좋아요안좋아요 / 개봉알람
-
     }
   },
 

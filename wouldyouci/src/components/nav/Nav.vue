@@ -34,6 +34,11 @@ import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'Nav',
+  data() {
+    return {
+      bottomNav: 0,
+    }
+  },
   computed: {
     ...mapGetters(['getSearchMode', 'isLoggedIn']),
   },

@@ -1,57 +1,53 @@
 <template>
   <div >
-    <div v-if="details.trailer">
-      <div class="image-container"
-        >
-        <v-img
-          v-if="details.poster"
-          @click.stop="dialog = true"
-          class="media"
-          :src="details.poster" />
-        <v-img 
-          v-else
-          class="media"
-          @click.stop="dialog = true"
-          src="./defaultImg.jpg" />
-      </div>
-      <v-dialog
-        v-model="dialog"
-        min-width="290"
-      >
-        <v-card>
-          <div class="trailer-container">
-            <iframe 
-              class="iframe"
-              type="text/html" 
-              frameborder=0
-              allowfullscreen
-              :src="details.trailer"
-              ></iframe>
-          </div>
-          <v-card-actions>
-
-            <v-btn
-              class="align-center"
-              color="green darken-1"
-              text
-              @click="dialog = false"
-              >
-              close
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </div>
+    <v-img v-if="!details.poster"
+      class="poster"
+      src="./defaultImg.jpg" />
 
     <div v-else>
-      <v-img
-        v-if="details.poster"
-        class="media"
-        :src="details.poster" />
-      <v-img 
-        v-else
-        class="media"
-        src="./defaultImg.jpg" />
+      <div class="poster-container"
+        >
+        <v-img
+          @click.stop="dialog = true"
+          class="poster"
+          :src="details.poster">
+          <v-icon
+            v-show="details.trailer"
+            class="play-button"
+            color="primary"
+            x-large 
+            >
+            mdi-play-circle-outline
+          </v-icon>
+        </v-img>
+      </div>
+      <v-dialog v-if="details.trailer"
+        v-model="dialog"
+        min-width="290"
+        >
+        <v-card class="trailer-container">
+
+
+
+          <iframe 
+            class="trailer"
+            :src="details.trailer"
+            allowfullscreen
+            frameborder="0"
+            ></iframe>
+
+
+
+
+          <v-btn
+            color="primary"
+            icon
+            @click="dialog = false"
+            >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card>
+      </v-dialog>
     </div>
   </div>
 </template>
@@ -64,7 +60,11 @@ export default {
   data() {
     return {
       dialog: false,
+      trailerLoaded: false,
     }
+  },
+
+  methods: {
   },
 
 }
