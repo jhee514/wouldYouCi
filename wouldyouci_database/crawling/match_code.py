@@ -3,7 +3,7 @@ import urllib.request
 from dotenv import load_dotenv
 import json
 import requests
-import pyperclip  # 인증시 아이디 비번 복붙
+import pyperclip 
 import time
 import datetime
 
@@ -104,15 +104,6 @@ def getTrailer(title, s_opt):
     search_option = {
         'search_query': title + ' ' + s_opt,
     }
-    # TITLE_TO_URL = urllib.parse.urlencode(search_option)
-    # SEARCH_URL = YOUTUBE_SEARCH + TITLE_TO_URL
-    # y_html = urllib.request.urlopen(SEARCH_URL)
-    # y_soup = BeautifulSoup(y_html, 'lxml')
-    # atags = y_soup.find_all('a')
-    # if atags:
-    #     for atag in atags:
-    #         href_url = atag.get('href')
-    #         break
     url_option = urllib.parse.urlencode(options)
     SEARCH_URL = REQUEST_URL+url_option
     SEARCH_RESULT = json.loads(urllib.request.urlopen(SEARCH_URL).read())
@@ -200,7 +191,7 @@ def getMovieDetail(movie_code, movie_info, movie_name):
     if description:
         new_fields['summary'] = getSummary(description.text)
     
-    # new_info['trailer'] = getTrailer(movie_name, '예고편')
+    new_info['trailer'] = getTrailer(movie_name, '예고편')
 
     new_info['fields'] = new_fields
     return new_info
@@ -350,6 +341,7 @@ def getCompanyDetail(tg_dict):
                 people_job = people.find('p', {'class': 'job'})
                 if people_job and people_job.text == '감독':
                     director_name = people.find('p', {'class': 'name dot_st'}).text
+                    break
         if director_name:
             break
     return director_name
@@ -460,8 +452,8 @@ def matchingMovieCode():
     with open('08_movie_match.json', 'w', encoding='UTF-8') as fp:
         json.dump(movie_dict, fp, ensure_ascii=False, indent=4)
 
-    # with open('06_complete.json', 'w', encoding='UTF-8') as fp:
-    #     json.dump(complete_list, fp, ensure_ascii=False, indent=4)
+    with open('06_complete.json', 'w', encoding='UTF-8') as fp:
+        json.dump(complete_list, fp, ensure_ascii=False, indent=4)
 
-    # with open('04_peoples_save.json', 'w', encoding='UTF-8') as fp:
-    #     json.dump(people_check, fp, ensure_ascii=False, indent=4)
+    with open('04_peoples_save.json', 'w', encoding='UTF-8') as fp:
+        json.dump(people_check, fp, ensure_ascii=False, indent=4)

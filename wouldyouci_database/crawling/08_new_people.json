@@ -365,20 +365,6 @@
     },
     {
         "model": "movies.people",
-        "pk": 90096,
-        "fields": {
-            "name": "이완수"
-        }
-    },
-    {
-        "model": "movies.people",
-        "pk": 44848,
-        "fields": {
-            "name": "장용철"
-        }
-    },
-    {
-        "model": "movies.people",
         "pk": 438600,
         "fields": {
             "name": "윤성준"

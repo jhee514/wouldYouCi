@@ -2,6 +2,7 @@
     {
         "model": "movies.movie",
         "pk": 182835,
+        "trailer": "https://www.youtube.com/embed/1K6uSMB_3DM",
         "fields": {
             "name": "침입자",
             "name_eng": "intruder",
@@ -28,6 +29,7 @@
     {
         "model": "movies.movie",
         "pk": 160437,
+        "trailer": "https://www.youtube.com/embed/MX-umcjUb9g",
         "fields": {
             "name": "언더워터",
             "name_eng": "Underwater",
@@ -56,6 +58,7 @@
     {
         "model": "movies.movie",
         "pk": 185285,
+        "trailer": "https://www.youtube.com/embed/HRf5kRhfKrM",
         "fields": {
             "name": "카페 벨에포크",
             "name_eng": "La belle epoque",
@@ -84,6 +87,7 @@
     {
         "model": "movies.movie",
         "pk": 192623,
+        "trailer": "https://www.youtube.com/embed/En9esmhycxI",
         "fields": {
             "name": "미스비헤이비어",
             "name_eng": "Misbehaviour",
@@ -112,6 +116,7 @@
     {
         "model": "movies.movie",
         "pk": 191436,
+        "trailer": "https://www.youtube.com/embed/iacn6r8poC8",
         "fields": {
             "name": "슈퍼스타 뚜루",
             "name_eng": "Turu: the wacky hen",
@@ -138,6 +143,7 @@
     {
         "model": "movies.movie",
         "pk": 185380,
+        "trailer": "https://www.youtube.com/embed/YJdHZtybBQ0",
         "fields": {
             "name": "프랑스 여자",
             "name_eng": "A French Woman",
@@ -165,6 +171,7 @@
     {
         "model": "movies.movie",
         "pk": 189119,
+        "trailer": "https://www.youtube.com/embed/-IDCk30ig9w",
         "fields": {
             "name": "초미의 관심사",
             "name_eng": "Jazzy Misfits",
@@ -190,6 +197,7 @@
     {
         "model": "movies.movie",
         "pk": 34431,
+        "trailer": "https://www.youtube.com/embed/ai-eBsQ_wp4",
         "fields": {
             "name": "영웅-천하의시작",
             "name_eng": "Hero",
@@ -219,6 +227,7 @@
     {
         "model": "movies.movie",
         "pk": 179394,
+        "trailer": "https://www.youtube.com/embed/phXABzuGj-c",
         "fields": {
             "name": "나는보리",
             "name_eng": "Bori",
@@ -247,6 +256,7 @@
     {
         "model": "movies.movie",
         "pk": 193837,
+        "trailer": "https://www.youtube.com/embed/8YXw0e5DIzo",
         "fields": {
             "name": "그집",
             "name_eng": "32 Malasana Street",
@@ -276,6 +286,7 @@
     {
         "model": "movies.movie",
         "pk": 186347,
+        "trailer": "https://www.youtube.com/embed/AFfgQZBBdL0",
         "fields": {
             "name": "환상의 마로나",
             "name_eng": "Marona's Fantastic Tale",
@@ -306,6 +317,7 @@
     {
         "model": "movies.movie",
         "pk": 178520,
+        "trailer": "https://www.youtube.com/embed/c17mHZMmNyY",
         "fields": {
             "name": "안녕, 미누",
             "name_eng": "Free Minu",
@@ -333,6 +345,7 @@
     {
         "model": "movies.movie",
         "pk": 190711,
+        "trailer": "https://www.youtube.com/embed/p5q5-jy_Bew",
         "fields": {
             "name": "루팡 3세-더 퍼스트",
             "name_eng": "Lupin III: The First",
@@ -359,6 +372,7 @@
     {
         "model": "movies.movie",
         "pk": 183427,
+        "trailer": "https://www.youtube.com/embed/fpulOH5VEnI",
         "fields": {
             "name": "조금씩, 천천히 안녕",
             "name_eng": "A Long GoodBye",
@@ -387,6 +401,7 @@
     {
         "model": "movies.movie",
         "pk": 167658,
+        "trailer": "https://www.youtube.com/embed/03PLrkwOQ7M",
         "fields": {
             "name": "에어로너츠",
             "name_eng": "The Aeronauts",
@@ -413,6 +428,7 @@
     {
         "model": "movies.movie",
         "pk": 193992,
+        "trailer": "https://www.youtube.com/embed/qq4djNAH8kc",
         "fields": {
             "name": "런 보이 런",
             "name_eng": "RUN BOY RUN",
@@ -438,6 +454,7 @@
     {
         "model": "movies.movie",
         "pk": 178566,
+        "trailer": "https://www.youtube.com/embed/r8MczQC1L_A",
         "fields": {
             "name": "괴물의 아이",
             "name_eng": "FREAK CHILD",
@@ -460,6 +477,7 @@
     {
         "model": "movies.movie",
         "pk": 180350,
+        "trailer": "https://www.youtube.com/embed/dkeS318Nimk",
         "fields": {
             "name": "레미: 집 없는 아이",
             "name_eng": "Remi: Nobody’s Boy",
@@ -487,6 +505,7 @@
     {
         "model": "movies.movie",
         "pk": 150179,
+        "trailer": "https://www.youtube.com/embed/pPjLfq2bs8w",
         "fields": {
             "name": "시간을 달리는 소녀",
             "name_eng": "時をかける少女",
@@ -513,6 +532,7 @@
     {
         "model": "movies.movie",
         "pk": 193806,
+        "trailer": "https://www.youtube.com/embed/s0K5mlv5x4U",
         "fields": {
             "name": "킬러의 보디가드 무삭제 특별판",
             "name_eng": "The Hitman's Bodyguard",
@@ -539,6 +559,7 @@
     {
         "model": "movies.movie",
         "pk": 147033,
+        "trailer": "https://www.youtube.com/embed/H7jmoEmTNW4",
         "fields": {
             "name": "비홀드 마이 하트",
             "name_eng": "Behold My Heart",
@@ -565,6 +586,7 @@
     {
         "model": "movies.movie",
         "pk": 193080,
+        "trailer": "https://www.youtube.com/embed/SEuQlOBR18A",
         "fields": {
             "name": "피델리오",
             "name_eng": "Fidelio",
@@ -595,6 +617,7 @@
     {
         "model": "movies.movie",
         "pk": 164920,
+        "trailer": "https://www.youtube.com/embed/J8gr6KaUppQ",
         "fields": {
             "name": "라스트 풀 메저",
             "name_eng": "The Last Full Measure",
@@ -623,6 +646,7 @@
     {
         "model": "movies.movie",
         "pk": 156883,
+        "trailer": "https://www.youtube.com/embed/RHMy6abqq04",
         "fields": {
             "name": "멜랑콜리아",
             "name_eng": "Melancholia",
@@ -642,34 +666,8 @@
     },
     {
         "model": "movies.movie",
-        "pk": 54605,
-        "fields": {
-            "name": "아비정전",
-            "name_eng": "Father At The Front",
-            "watch_grade": "12세 관람가",
-            "running_time": "21분 ",
-            "summary": "뜻대로 되는 것이라곤 TV 리모컨뿐인 아버지. 12살 소년은 건설현장에서 일하는 아버지로부터 뜻밖의 선언을 듣게 된다. 오늘부터 나는 일을 하지 않기로 했다. 중학교도 고등학교도 대학도...어쩌면 유학도 가야하지만, 무엇보다 일을 하지 않고도 굶어죽지 않아야 한다. 뜨거운 여름, 그 방법을 찾아 길을 나선 아버지와 아들의 이상한(?) 동행. (Watching TV with a remote control is the only thing that he can do. One day, A 12-year-old boy was pronounced by his father, who worked at a construction site. “No more I’ll work for the money.” The son had to enter into the middle school, high school, college, maybe go abroad for study, but most of all, they had to feed themselves. Hot summer day, the father and son his son left to find the way.)연출의도 Director's Statement. 아비정전(挺戰). 자식을 둔 아들을 일컬어 ‘아비’라고 한다. 낮추어 부르는 말이며, 아버지의 옛말이다. 정전(挺戰)은 ‘스스로 앞장서서 싸우다’라는 의미로 해석된다. 아버지, 스스로 앞장서서 싸우다. 무기력한 아버지의 모습을 역설적으로 표현하고 싶었다. 또한 아버지가 잊고 살아가는 꿈 혹은 판타지. 아버지와 아들의 짧은 여행을 그려보고 싶다. 허탈감에 빠진 아버지가 일탈을 통해 작은 여유를 찾고 잊었던 꿈을 생각하며 아련한 시간이 되도록 만들고 싶다. (아비-정전(ABI-JOENGJUN). ‘Abi’ means a son who has children. It is piece of slang, and old expression of ‘Father’. ‘Jeongjung’ means ‘Go straight forward to fight’. \"Father at the front\" I want to express a weak father’s figure paradoxically. Also, I want to express a dream or fantasy that our father’s had forgotten. I want to describe a father and son’s short travel. The father deviates from the reality, and he memorizes his dream.)\n",
-            "open_date": "2008",
-            "trailer": "",
-            "poster": "https://movie-phinf.pstatic.net/20111223_52/1324629205817Ythz6_JPEG/movie_image.jpg",
-            "directors": [
-                90096
-            ],
-            "genres": [
-                1,
-                2,
-                12
-            ],
-            "actors": [
-                44848,
-                51175
-            ],
-            "score": 0
-        }
-    },
-    {
-        "model": "movies.movie",
         "pk": 193990,
+        "trailer": "https://www.youtube.com/embed/jXC-niY6NWs",
         "fields": {
             "name": "아홉 스님",
             "name_eng": "",
@@ -698,6 +696,7 @@
     {
         "model": "movies.movie",
         "pk": 182465,
+        "trailer": "https://www.youtube.com/embed/SBZ1H5PKRGw",
         "fields": {
             "name": "카르멘",
             "name_eng": "Bring Me the Head of Carmen M.",
@@ -722,6 +721,7 @@
     {
         "model": "movies.movie",
         "pk": 194289,
+        "trailer": "https://www.youtube.com/embed/nxyV_Trg06U",
         "fields": {
             "name": "국도극장",
             "name_eng": "Somewhere in Between",
@@ -746,6 +746,7 @@
     {
         "model": "movies.movie",
         "pk": 193101,
+        "trailer": "https://www.youtube.com/embed/rvLMVcRkRfY",
         "fields": {
             "name": "신세계",
             "name_eng": "Bungo 1",
@@ -774,6 +775,7 @@
     {
         "model": "movies.movie",
         "pk": 193325,
+        "trailer": "https://www.youtube.com/embed/J8K4fstiPAg",
         "fields": {
             "name": "싸커 퀸즈",
             "name_eng": "Queens of the Field",
@@ -803,6 +805,7 @@
     {
         "model": "movies.movie",
         "pk": 143462,
+        "trailer": "https://www.youtube.com/embed/0dXBPEfB7nQ",
         "fields": {
             "name": "초능력소년사건",
             "name_eng": "The Lapse",
@@ -833,6 +836,7 @@
     {
         "model": "movies.movie",
         "pk": 192141,
+        "trailer": "https://www.youtube.com/embed/dARjwcodsio",
         "fields": {
             "name": "블러드샷",
             "name_eng": "Bloodshot",
@@ -864,6 +868,7 @@
     {
         "model": "movies.movie",
         "pk": 151242,
+        "trailer": "https://www.youtube.com/embed/_Av9zZPcQ-k",
         "fields": {
             "name": "사랑에 관한 짧은 필름",
             "name_eng": "lovefilm",
@@ -884,6 +889,7 @@
     {
         "model": "movies.movie",
         "pk": 109274,
+        "trailer": "https://www.youtube.com/embed/2pxBCW4Mgbo",
         "fields": {
             "name": "퍼니 게임",
             "name_eng": "Funny Games Ghost",
@@ -904,6 +910,7 @@
     {
         "model": "movies.movie",
         "pk": 52983,
+        "trailer": "https://www.youtube.com/embed/xhyuMbk4F54",
         "fields": {
             "name": "하얀 리본",
             "name_eng": "The White Ribbon",
@@ -930,6 +937,7 @@
     {
         "model": "movies.movie",
         "pk": 192101,
+        "trailer": "https://www.youtube.com/embed/JUp3QIayG_A",
         "fields": {
             "name": "히든",
             "name_eng": "Hidden Away",
@@ -954,6 +962,7 @@
     {
         "model": "movies.movie",
         "pk": 107403,
+        "trailer": "https://www.youtube.com/embed/DjXqSbQOAp0",
         "fields": {
             "name": "전망 좋은 방",
             "name_eng": "",
@@ -980,6 +989,7 @@
     {
         "model": "movies.movie",
         "pk": 141880,
+        "trailer": "https://www.youtube.com/embed/2UB_Byd_aFQ",
         "fields": {
             "name": "배짱이들",
             "name_eng": "For your youth",
@@ -1008,6 +1018,7 @@
     {
         "model": "movies.movie",
         "pk": 190342,
+        "trailer": "https://www.youtube.com/embed/QDiE77POoPo",
         "fields": {
             "name": "연인",
             "name_eng": "",
@@ -1033,6 +1044,7 @@
     {
         "model": "movies.movie",
         "pk": 180378,
+        "trailer": "https://www.youtube.com/embed/YZKFefHl-3Y",
         "fields": {
             "name": "결백",
             "name_eng": "Innocence",
@@ -1059,6 +1071,7 @@
     {
         "model": "movies.movie",
         "pk": 164133,
+        "trailer": "https://www.youtube.com/embed/gaMp4L6if-U",
         "fields": {
             "name": "토네이도 걸",
             "name_eng": "A Boy Who Wished to be Okuda Tamio And A Girl Who Drove All Men Crazy ",
