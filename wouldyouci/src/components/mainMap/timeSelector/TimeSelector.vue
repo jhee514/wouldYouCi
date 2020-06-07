@@ -1,24 +1,18 @@
 <template>
   <v-card class="timeCard">
-    <v-container fluid>
-      <div class="explanation">
-        원하는 시간을 설정해주세요
-      </div>
+    <v-container fluid class="mb-0 pb-0">
+      <v-card-subtitle class="mysubtitle">
+        설정한 시간 이후의 영화를 조회합니다.
+      </v-card-subtitle>
       <v-row>
-        <v-col cols="12" sm="4">
-          <v-select v-model="targetType" :items="type" outlined label="오전/오후"></v-select>
-        </v-col>
-        <v-col cols="12" sm="4">
-          <v-select v-model="targetHours" :items="hours" outlined label="시간"></v-select>
-        </v-col>
-        <v-col cols="12" sm="4">
-          <v-select v-model="targetMins" :items="mins" outlined label="분"></v-select>
-        </v-col>
+          <v-select class="mt-3 ml-4 mr-4" dense v-model="targetType" :items="type" outlined label="오전/오후"/>
+          <v-select class="ml-4 mr-4" dense v-model="targetHours" :items="hours" outlined label="시간"/>
+          <v-select class="ml-4 mr-4" dense v-model="targetMins" :items="mins" outlined label="분"/>
       </v-row>
     </v-container>
     <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn @click="closeTimeSelector(`${targetType} ${targetHours}:${targetMins}:00`)" text>설정</v-btn>
+      <v-spacer/>
+      <v-btn class="pt-0 pb-4 pr-4" text color="deep-purple accent-4" @click="closeTimeSelector(`${targetType} ${targetHours}:${targetMins}:00`)">SUBMIT</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -65,10 +59,10 @@ export default {
   methods: {
     closeTimeSelector(targetTime) {
       this.$emit('targetTime', targetTime);
-      this.targetType = null,
-      this.targetHours = null,
-      this.targetMins = null
-    }
+      this.targetType = null;
+      this.targetHours = null;
+      this.targetMins = null;
+    },
   }
 }
 </script>

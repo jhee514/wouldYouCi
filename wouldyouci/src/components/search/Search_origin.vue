@@ -1,59 +1,59 @@
 <template>
-  <div>
-    <Title />
-    <div class='search'>
-      <v-container>
-        <v-radio-group dense v-model="searchType" row>
-          <v-radio label="영화" value="movies"></v-radio>
-          <v-radio label="영화관" value="theater"></v-radio>
-        </v-radio-group>
-        <div class="auto">
-          <v-autocomplete
-                  v-if="searchType === 'movies'"
-                  :search-input.sync="keyword"
-                  label="영화 제목을 검색해보세요!"
-                  prepend-icon="fas fa-search"
-                  :loading="isloading"
-                  :items="items"
-                  :rules="rules"
-                  @input="changeSearchMode"
-                  v-on:keyup.enter="changeSearchMode(keyword)"
-          >
-          </v-autocomplete>
-          <v-autocomplete
-                  v-else
-                  :search-input.sync="keyword"
-                  label="지역명을 검색해보세요!"
-                  prepend-icon="fas fa-search"
-                  :loading="isloading"
-                  :items="items"
-                  :rules="rules"
-                  @input="changeSearchMode"
-                  v-on:keyup.enter="changeSearchMode(keyword)"
-          >
-          </v-autocomplete>
+    <div>
+        <Title />
+        <div class='search'>
+            <v-container>
+                <v-radio-group dense v-model="searchType" row>
+                    <v-radio label="영화" value="movies"></v-radio>
+                    <v-radio label="영화관" value="theater"></v-radio>
+                </v-radio-group>
+                <div class="auto">
+                    <v-autocomplete
+                            v-if="searchType === 'movies'"
+                            :search-input.sync="keyword"
+                            label="영화 제목을 검색해보세요!"
+                            prepend-icon="fas fa-search"
+                            :loading="isloading"
+                            :items="items"
+                            :rules="rules"
+                            @input="changeSearchMode"
+                            v-on:keyup.enter="changeSearchMode(keyword)"
+                    >
+                    </v-autocomplete>
+                    <v-autocomplete
+                            v-else
+                            :search-input.sync="keyword"
+                            label="지역명을 검색해보세요!"
+                            prepend-icon="fas fa-search"
+                            :loading="isloading"
+                            :items="items"
+                            :rules="rules"
+                            @input="changeSearchMode"
+                            v-on:keyup.enter="changeSearchMode(keyword)"
+                    >
+                    </v-autocomplete>
+                </div>
+            </v-container>
+            <div class="now" v-if="getInitSearchInfo">
+                <v-btn small text @click="reBringMyPos">
+                    <v-icon small>fas fa-crosshairs</v-icon>
+                    {{ nowAddress }}
+                </v-btn>
+            </div>
+            <div v-if="getSearchMode">
+                <MainSearch v-if="getSearchMode==='before'" v-bind:pos="pos" v-bind:Commings="commings" v-bind:Populars="populars" v-bind:TheaterList="nearTheater"/>
+                <AfterSearch v-else v-bind:KeyWords="keywordProps" v-bind:Type="searchTypeProps" v-bind:ResultList="cards" v-bind:Similar="similar"/>
+            </div>
+            <v-overlay :value="getLoading">
+                <v-progress-circular
+                        :size="70"
+                        :width="7"
+                        color="#4520EA"
+                        indeterminate
+                ></v-progress-circular>
+            </v-overlay>
         </div>
-      </v-container>
-      <div class="now" v-if="getInitSearchInfo">
-        <v-btn small text @click="reBringMyPos">
-          <v-icon small>fas fa-crosshairs</v-icon>
-          {{ nowAddress }}
-        </v-btn>
-      </div>
-      <div v-if="getSearchMode">
-        <MainSearch v-if="getSearchMode==='before'" v-bind:pos="pos" v-bind:Commings="commings" v-bind:Populars="populars" v-bind:TheaterList="nearTheater"/>
-        <AfterSearch v-else v-bind:KeyWords="keywordProps" v-bind:Type="searchTypeProps" v-bind:ResultList="cards" v-bind:Similar="similar"/>
-      </div>
-      <v-overlay :value="getLoading">
-        <v-progress-circular
-                :size="70"
-                :width="7"
-                color="#4520EA"
-                indeterminate
-        ></v-progress-circular>
-      </v-overlay>
     </div>
-  </div>
 </template>
 
 <script>
@@ -104,18 +104,18 @@
         this.isloading = true;
         if (this.searchType === 'movies') {
           axios.get(`${HOST}/search/movie/`, params)
-                  .then(res => {
-                    this.items = res.data;
-                    this.isloading = false;
-                  })
-                  .catch(err => err)
+            .then(res => {
+              this.items = res.data;
+              this.isloading = false;
+            })
+            .catch(err => err)
         } else {
           axios.get(`${HOST}/search/cinema/`, params)
-                  .then(res => {
-                    this.items = res.data;
-                    this.isloading = false;
-                  })
-                  .catch(err => err)
+            .then(res => {
+              this.items = res.data;
+              this.isloading = false;
+            })
+            .catch(err => err)
         }
       }
     },
