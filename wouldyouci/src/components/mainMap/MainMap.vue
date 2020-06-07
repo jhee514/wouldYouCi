@@ -1,6 +1,7 @@
 <template>
   <div>
     <Title />
+
     <div class="time">
       <v-btn text small @click="setNowTime">
         <v-icon small>fas fa-history</v-icon>
@@ -16,6 +17,7 @@
     </v-dialog>
     <div id="map" ref="map">
     </div>
+    
     <v-overlay :value="getLoading">
       <v-progress-circular
         :size="70"

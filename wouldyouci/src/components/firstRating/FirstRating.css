@@ -45,8 +45,6 @@
   right: 44vw;
 }
 
-
-
 .v-card--reveal {
   align-items: center;
   text-align: center;
@@ -60,9 +58,11 @@
   color:white;
   font-size: small;
 }
+
 .movieCard{
   background:black
 }
+
 .chip{
   z-index: 1;
   left: 20vw;
@@ -70,6 +70,7 @@
   position: fixed;
   color:#FFFFFF
 }
+
 .rating{
    color:white;
 }

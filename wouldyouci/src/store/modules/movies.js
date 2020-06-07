@@ -381,7 +381,7 @@ const actions = {
           resolve(res.data)
         })
         .catch(err => {
-          err;
+          console.log(err);
           reject(Error('error'))
         })
     })

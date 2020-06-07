@@ -1,9 +1,9 @@
 <template>
-  <v-container class="grey lighten-5">
+  <v-container class="white lighten-5">
     <v-tabs
       v-model="tab"
-      background-color="pink lighten-2"
-      color="white"
+      background-color="transparent"
+      color="pink"
       light
       right
       >
@@ -22,8 +22,8 @@
         :key="idx"
         >
         <v-timeline
-          align-top
           dense
+          clipped
           >
           <v-timeline-item
             v-for="(movie, idx) in item.content"

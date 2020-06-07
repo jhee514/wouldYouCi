@@ -1,12 +1,17 @@
-.v-divider{
-  margin-top: 1vh;
-  margin-bottom: 1vh;
-}
-
-.item{
+.item {
+  display: inline-block;
   color: grey;
+  top: 0;
+  width: 9vw;
+  height: auto;
 }
 
-.content{
+.contents {
+  display: inline-block;
+  width: 80%;
+  margin: 0 2vw;
+}
+
+.content {
   color: black;
 }

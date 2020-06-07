@@ -1,30 +1,36 @@
-.body{
-  min-height: 82vh;
-  /* height: auto; */
-  margin-top: 3vh;
-  margin-bottom: 10vh;
-  margin-left: 5vw;
-  margin-right: 5vw;
+.body {
+  margin: 0;
+  padding: 0;
 }
 
-.links {
-  padding: 16px;
+.trailer {
+  width: 100%;
 }
 
-.summary {
-  font-size: 3.5vw;
-  height: auto;
-  padding: 0px;
-  margin: 16px;
-  }
-
-.tabCard {
-  border-radius: 25px;
-  border: 2px solid #73AD21;
-  margin-left: 5vw;
-  margin-right: 5vw;
+.details{
+  margin: 3vh 5vw;
 }
+
+.relative  {
+  position: relative;
+  padding: 1vh 5vw;
+}
+
+.inline {
+  display: inline-block;
+}
+.absolute {
+  display: inline-block;
+  position: absolute;
+  margin: 0;
+  right: 3vh;
+}
+
 .button {
-  padding: 0px;
-  margin: 0px;
+  margin: 0 1vw;
+}
+
+.tab-item {
+  margin: 0 3vw;
+
 }

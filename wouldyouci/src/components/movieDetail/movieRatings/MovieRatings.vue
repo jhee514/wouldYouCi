@@ -3,32 +3,45 @@
     class="ratings"      
     v-infinite-scroll="loadMore"
     infinite-scroll-disabled="busy"
-    infinite-scroll-distance="10"
+    infinite-scroll-distance="100%"
     >
-    <div class="movieScore">
-      <span>{{ Number(this.details.score.toFixed(2)) }} </span>
+    
+    
+    <RatingForm class="rating-form" v-if="!scored" @submitRating="addRating"/>
+    <div v-else>
+      <div class="notification">
+      리뷰를 작성한 영화입니다.
+      </div>
+    </div>
+
+    <div class="movie-score">
+      <p>{{ Number(this.details.score.toFixed(2)) }} </p>
       <v-rating
         class="score"
         :value="details.score"
         background-color="amber lighten-3"
-        dense
         half-increments
         readonly
         size=20
         ></v-rating>
     </div>
-    
-    <RatingForm v-if="!scored" @submitRating="addRating"/>
-    <div v-else>리뷰를 작성한 영화입니다.</div>
 
     <v-list 
       v-if="isRatings"
       >
       <template v-for="(rating, index) in ratings">
         <v-list-item :key="index">
-          <v-list-item-avatar class="avatar" small>
-            <span class="white--text headline">{{ rating.user.username[0] }}</span>          
+
+
+          <v-list-item-avatar class="avatar" color="primary" x-small>
+            <img v-if="rating.user.file.length"
+              :src="getUserProfile(rating.user)"
+              alt="rating.user.username"
+              />
+            <span v-else class="white--text headline">{{ rating.user.username[0] }}</span>          
           </v-list-item-avatar>
+
+
           <v-list-item-content>
               <div class="infos">
                 <div class="user">
@@ -48,8 +61,7 @@
                 </div>
               </div>
               <div class="content">
-                <p class="comment">{{ rating.comment}}</p>
-                
+                <span class="comment">{{ rating.comment}}</span>
                 <div v-if="rating.user.username == currentUser.username" class="button">
                   <v-dialog v-model="dialog">
                     <template v-slot:activator="{ on }">
@@ -71,9 +83,10 @@
                     <i class="fas fa-times fa-xs"></i>
                   </v-btn>
                 </div>
-
               </div>
           </v-list-item-content>
+
+
         </v-list-item>
       </template>
       <v-btn
@@ -135,6 +148,7 @@ export default {
     ...mapGetters(['getMovieRatings']),
  
   },
+
   methods: {
     ...mapActions(['fetchRatings', 'postRating', 'delRating', 'patchRating' ]),
 
@@ -162,6 +176,12 @@ export default {
     
     closeModal() {
       this.dialog = false;
+    },
+
+    getUserProfile(user) {
+      const HOST = process.env.VUE_APP_SERVER_HOST;
+      const         profileURL = `${HOST}/${user.file[0]}`;
+      return profileURL
     },
 
     deleteRating(index, rating) {
