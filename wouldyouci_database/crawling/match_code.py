@@ -90,7 +90,7 @@ def naverLogin():
 
 def getTrailer(title, s_opt):
     res = ''
-    YOUTUBE_KEY = os.getenv('YOUTUBE_KEY6')
+    YOUTUBE_KEY = os.getenv('YOUTUBE_KEY')
     REQUEST_URL = 'https://www.googleapis.com/youtube/v3/search?'
     YOUTUBE_SEARCH = 'https://www.youtube.com/results?'
     options = {
@@ -200,7 +200,7 @@ def getMovieDetail(movie_code, movie_info, movie_name):
     if description:
         new_fields['summary'] = getSummary(description.text)
     
-    new_info['trailer'] = getTrailer(movie_name, '예고편')
+    # new_info['trailer'] = getTrailer(movie_name, '예고편')
 
     new_info['fields'] = new_fields
     return new_info
@@ -301,12 +301,14 @@ def getCompanyDetail(tg_dict):
     BASE_DICT = {
         'CGV': 'http://www.cgv.co.kr/movies/detail-view/?midx=',
         'MEGABOX': 'https://www.megabox.co.kr/movie-detail?rpstMovieNo=',
-        'LOTTE':'https://www.lottecinema.co.kr/NLCHS/Movie/MovieDetailView?movie='
+        'LOTTE':'https://www.lottecinema.co.kr/NLCHS/Movie/MovieDetailView?movie=',
+        'YES': 'https://movie.yes24.com/MovieInfo/Index?mId=M'
     }
     director_name = ''
     for company, code in tg_dict.items():
-        if company == 'DAEHAN':
+        if company == 'CINEQ':
             return ''
+
         base_url = BASE_DICT[company]
         detail_url = base_url + code
         detail_html = urllib.request.urlopen(detail_url)
@@ -338,6 +340,16 @@ def getCompanyDetail(tg_dict):
             if ul_box and ul_box.find('em').text == '감독':
                 director_name = ul_box.find('a').text
         
+        elif company == 'YES':
+            driver.get(detail_url)
+            time.sleep(2)
+            detail_source = driver.page_source
+            detail_soup = BeautifulSoup(detail_source, 'html.parser')
+            people_list = detail_soup.find_all('div', {'class': 'act_info'})
+            for people in people_list:
+                people_job = people.find('p', {'class': 'job'})
+                if people_job and people_job.text == '감독':
+                    director_name = people.find('p', {'class': 'name dot_st'}).text
         if director_name:
             break
     return director_name
