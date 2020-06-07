@@ -194,6 +194,9 @@ def updateMEGABOX(tg_url, tg_date, cinema_pk):
                     'seats': '',
                     'url': tg_url
                 }
+                if movie_time.get('play-de') != deleteSlash(tg_date):
+                    return []
+
                 if movie_time.get('class') == 'end-time':
                     new_field['start_time'] = movie_time.find('p', {'class': 'time'}).text
                     new_field['seats'] = '매진'
@@ -377,89 +380,223 @@ def strBeforeSpace(tg_str):
 def updateETC(tg_url, tg_date, cinema_pk):
     global onscreen_pk
     global onscreen_movie
-    # 대한극장
-    if cinema_pk == 74:
-        book_url = 'https://daehancinema.maxmovie.com/Reserve/Movie/M'
-        daehan_url = tg_url + '?pdate=' + makeCGVDate(tg_date)
-        table_xpath = '/html/body/table[1]/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr/td[2]/table/tbody/tr[3]/td/table[1]/tbody/tr/td[2]/div/table[2]/tbody/tr[2]/td/table'
-        driver.get(daehan_url)
+
+    if cinema_pk == 75 or cinema_pk == 84:
+        driver.get(tg_url)
+        time.sleep(3)
+
+        # 내일 찾기
+        tommorow_btn = driver.find_element_by_xpath('//*[@id="content"]/div[2]/div/div[1]/ul/li[3]/a')
+        tommorow_btn.click()
         time.sleep(1)
+
         source = driver.page_source          
         soup = BeautifulSoup(source, 'html.parser')
-        timetable = soup.select('body > table:nth-child(2) > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(2) > td > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(3) > td > table:nth-child(1) > tbody > tr > td:nth-child(2) > div > table:nth-child(4) > tbody > tr:nth-child(2) > td > table > tbody')
-        timetable_detail = timetable[0].find_all('tr')
-        hall_name = ''
-        DAEHAN_ONSCREEN = []
-        for idx in range(1, len(timetable_detail)):
-            timetable_info = timetable_detail[idx]
-            td_list = timetable_info.find_all('td')
-            if len(td_list) == 4:
-                hall_name = td_list[0].text
-                td_list = td_list[1:]
-            movie_name = getDaehanMovieName(td_list[0].text)
-            movie_time_list = td_list[2].find_all('a')
-            for movie_time in movie_time_list:
-                movie_href = movie_time.get('href')
-                reserve_option = getDaehanReserverInfo(movie_href)
-                movie_code = reserve_option[1][1:]
-
-                if onscreen_movie.get(movie_name):
-                    onscreen_movie[movie_name]['DAEHAN'] = str(int(movie_code))
-                else:
-                    onscreen_movie[movie_name] = {
-                        'DAEHAN': str(int(movie_code))
+        time_box = soup.find('div', {'class': 'theater-movie'})
+        movie_list = time_box.find_all('div', {'class': 'each-movie-time'})
+        CINEQ_ONSCREEN = []
+        for movie_div in movie_list:
+            movie_title = movie_div.find('div', {'class': 'title'})
+            movie_grade = movie_title.find('span').get('class')
+            movie_name = getMovieName(movie_title.text, movie_grade[0])
+            hall_list = movie_div.find_all('div', {'class': 'screen'})
+            for hall in hall_list:
+                hall_name = hall.find('div', {'class': 'screen-name'})
+                hall_info = hall_name.text
+                time_div = hall.find('div', {'class': 'time-block'})
+                time_list = time_div.find_all('div', {'class': 'time'})
+                for time_info in time_list:
+                    movie_code = time_info.get('data-moviecode')
+                    if not movie_code:
+                        continue
+                    else:
+                        if onscreen_movie.get(movie_name):
+                            onscreen_movie[movie_name]['CINEQ'] = str(int(movie_code))
+                        else:
+                            onscreen_movie[movie_name] = {
+                                'CINEQ': str(int(movie_code))
+                            }
+                    end_time = time_info.find('span', {'class': 'to'}).text[3:]
+                    seat_info = time_info.find('span', {'class': 'seats-status'}).text
+                    seat_left, seat_total = getSeatInfo(seat_info)
+                    start_text = time_info.find('a').text
+                    start_time = getCineqTime(start_text)
+                    new_onscreen_info = {
+                        'pk': onscreen_pk,
+                        'model': 'movies.onscreen',
+                        'fields': {
+                            'cinema': cinema_pk,
+                            'movie': int(movie_code),
+                            'date': tg_date,
+                            'info': hall_info,
+                            'start_time': start_time,
+                            'end_time': end_time,
+                            'total_seats': seat_total,
+                            'seats': seat_left,
+                            'url': tg_url,
+                            'cm_code': int(movie_code)
+                        }
                     }
+                    onscreen_pk += 1
+                    CINEQ_ONSCREEN.append(new_onscreen_info)
+        return CINEQ_ONSCREEN                
+
+    else:
+        def getHallInfo(tg_str):
+            res1 = ''
+            res2 = ''
+            for i in range(len(tg_str)):
+                if tg_str[i] == '관' and res1 == '':
+                    res1 = tg_str[:i+1]
+                elif tg_str[i] == ' ' and res2 == '':
+                    res2 = tg_str[i+1:]
+                    return res1, res2
 
 
-                hall_code = reserve_option[2]
-                hall_time = reserve_option[3]
-                reserve_url = book_url + movie_code + '?date=' + reserve_option[0] + '&S_ID=' + hall_code + '&no=' + hall_time
-                new_onscreen_info = {
-                    'pk': onscreen_pk,
-                    'model': 'movies.onscreen',
-                    'fields': {
-                        'cinema': cinema_pk,
-                        'movie': int(movie_code),
-                        'date': tg_date,
-                        'info': hall_name,
-                        'start_time': movie_time.text,
-                        'end_time': '',
-                        'total_seats': '',
-                        'seats': '',
-                        'url': reserve_url,
-                        'cm_code': int(movie_code)
-                    }
-                }
-                DAEHAN_ONSCREEN.append(new_onscreen_info)
-                onscreen_pk += 1
-        return DAEHAN_ONSCREEN
-                
 
-def getDaehanReserverInfo(tg_str):
-    st_idx = tg_str.index('(')
-    temp_res = tg_str[st_idx+1:-2]
-    option_list = temp_res.split(",")
-    for idx in range(len(option_list)):
-        option_list[idx] = option_list[idx][1:-1]
-    return option_list
-    
+        def getEndTime(tg_str):
+            res = ''
+            for i in range(len(tg_str)):
+                if tg_str[i] == '~':
+                    res = tg_str[i+2:]
+                    break
+            return res
 
-def getDaehanMovieName(tg_str):
-    res = tg_str
-    if tg_str[0] == '[':
-        ck_idx = tg_str.index(']')
-        res = res[ck_idx+2:]
-    if res[len(res)-1] == ')' or res[len(res) -2] == ')':
-        ck_idx = 0
-        for i in range(len(res)-1, -1, -1):
-            if res[i] == '(':
-                ck_idx = i
+        def renameYesTitle(tg_str):
+            res = tg_str
+            if res[len(tg_str)-1] == ')':
+                idx = res.index('(')
+                res = res[:idx-1]
+            if res[0] == '[':
+                idx = res.index(']')
+                res = res[idx+2:]
+            return res
+
+        TICKET_BASE = 'https://movie.yes24.com/Movie/Ticket?gId=&'
+        YES_ONSCREEN = []
+        driver.get(tg_url)
+        until_time = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME,"time_sel_cont")))
+        time.sleep(2)
+        source = driver.page_source          
+        soup = BeautifulSoup(source, 'html.parser')
+        if not soup.find('div', {'class': 'show_time_slide'}):
+            return []
+        # 다음날 버튼 클릭
+        ck = True
+        tg_day = str(int(tg_date[-2:]))
+        day_list = driver.find_elements_by_class_name('show_time_slide')
+        for day in day_list:
+            span_text = day.find_element_by_tag_name('span').text
+            if span_text == tg_day:
+                ck = False
+                day.click()
+                time.sleep(1)
+                source = driver.page_source          
+                soup = BeautifulSoup(source, 'html.parser')
                 break
-        res = res[:ck_idx-1]
-    if res[0] == ' ':
-        res = res[1:]
-    if res[len(res)-1] == ' ':
-        res = res[:-1]
+        if ck:
+            return []
+
+        time_container = soup.find('div', {'class': 'time_sel_cont'})
+        title_list = time_container.find_all('div', {'class': 'tit'})
+        time_list = time_container.find_all('ul', {'class': 'time_sel_list'})
+        if len(title_list) == 0:
+            return []
+        for idx in range(len(title_list)):
+            title = title_list[idx]
+            title_text = title.text
+            hall_info, movie_title = getHallInfo(title_text)
+            movie_name = renameYesTitle(movie_title)
+            timetable = time_list[idx]
+            li_list = timetable.find_all('li')
+            for li in li_list:
+                atag = li.find('a', {'class': 'time_info_box'})
+                pdate = atag.get('playdate')
+                if pdate == tg_date:
+                    reserve_option = {
+                        "mId" : atag.get('mid'),
+                        "tId" : atag.get('tid'),
+                        "playDate": deleteSlash(tg_date),
+                        "pno": atag.get('ptid'),
+                    }
+                    movie_code = reserve_option['mId'][1:]
+                    if onscreen_movie.get(movie_name):
+                        onscreen_movie[movie_name]['YES'] = movie_code
+                    else:
+                        onscreen_movie[movie_name] = {
+                            'YES': movie_code
+                        }
+                    book_option = urllib.parse.urlencode(reserve_option)
+                    movie_url = TICKET_BASE + book_option
+                    time_info = atag.find('div', {'class': 'time_info'})
+                    start_time = time_info.find('div', {'class': 'time_start'}).text
+                    playing_time = time_info.find('div', {'class': 'running_time'}).text
+                    end_time = getEndTime(playing_time)
+                    new_onscreen_info = {
+                        'pk': onscreen_pk,
+                        'model': 'movies.onscreen',
+                        'fields': {
+                            'cinema': cinema_pk,
+                            'movie': int(movie_code),
+                            'date': tg_date,
+                            'info': hall_info,
+                            'start_time': start_time,
+                            'end_time': end_time,
+                            'total_seats': '',
+                            'seats': '',
+                            'url': movie_url,
+                            'cm_code': int(movie_code)
+                        }
+                    }
+                    onscreen_pk += 1
+                    YES_ONSCREEN.append(new_onscreen_info)
+        return YES_ONSCREEN
+
+def getCineqTime(tg_str):
+    res = ''
+    ck = False
+    for i in range(len(tg_str)):
+        if tg_str[i] == ' ':
+            continue
+        elif tg_str[i] == '\n':
+            continue
+        elif tg_str[i] == ':':
+            ck = True
+            res += tg_str[i]
+        else:
+            if not ck:
+                res += tg_str[i]
+            else:
+                res += tg_str[i: i+2]
+                break
+    if len(res) < 5:
+        res = '0' + res
+    return res
+                
+def getSeatInfo(tg_str):
+    for i in range(len(tg_str)):
+        if tg_str[i] == '/':
+            return tg_str[:i-1], tg_str[i+2:]
+    return '', ''
+
+
+def getMovieName(tg_title, tg_grade):
+    start_idx = 2
+    if tg_grade == 'rate-all':
+        start_idx = 1
+    res = tg_title[start_idx:-1]
+    if res[len(res)-1] == ')':
+        end_idx = res.index('(') -1
+        res = res[:end_idx]
+    return res
+
+def deleteSlash(tg_str):
+    res = ''
+    for i in range(len(tg_str)):
+        if tg_str[i] == '-':
+            continue
+        else:
+            res += tg_str[i]
     return res
 
 today = datetime.date.today()
@@ -501,7 +638,6 @@ def getScreenInfo():
         if company == 'CGV':
             base_url_info = urllib.parse.urlsplit(base_url).query
             new_on_screen = updateCGV(base_url_info, tommorow, cinema['pk'])
-            
 
         elif company == '메가박스':
             new_on_screen = updateMEGABOX(base_url, tommorow, cinema['pk'])
