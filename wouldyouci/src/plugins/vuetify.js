@@ -20,6 +20,7 @@ export default new Vuetify({
         lightpink:'#F692C1',
         mypink: '#F25CA2',
         blackpink: '#cd4e80',
+        greypink: '#cfa8c4',
         clearBlue: '#0433BF',
         blue: '#032CA6',
         darkBlue:'#021859',

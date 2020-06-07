@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div id="app" data-app>
+    <div id="app" class="app" data-app>
       <router-view />
     </div>
     <Nav v-if="getLoginMode === null"/>
@@ -25,4 +25,7 @@ export default {
 </script>
 
 <style>
+  .app {
+    font-family: 'NanumBarunGothicOTF', monospace, 'Nanum Myeongjo', 'Noto Serif KR', 'Noto Sans KR', serif;
+  }
 </style>

@@ -28,11 +28,15 @@
           />
 
           <v-btn icon>
-              <v-icon @click="setNowTime">mdi-history</v-icon>
+              <v-icon
+                      color="lightpink"
+                      @click="setNowTime">mdi-history</v-icon>
           </v-btn>
 
             <v-btn icon>
-                <v-icon  @click="findMyPos">mdi-account-circle</v-icon>
+                <v-icon
+                        color="lightpink"
+                        @click="findMyPos">mdi-account-circle</v-icon>
             </v-btn>
       </v-toolbar>
 
@@ -46,7 +50,7 @@
     </div>
 
     <div class="movieCard" v-if="showMovieCard">
-      <TheaterMovie v-bind:theaterName="theaterName" v-bind:theaterMovieList="getMovies"/>
+      <TheaterMovie v-bind:theaterType="theaterType" v-bind:theaterName="theaterName" v-bind:theaterMovieList="getMovies"/>
     </div>
       <div v-else>
           <v-btn class="reload" @click="findMyPos" fab height="30" width="30">
@@ -90,6 +94,7 @@ export default {
       lotMarkers: [],
       theaterId: null,
       theaterName: null,
+      theaterType: null,
       isChangeLocation: false,
       myMarker: null,
       infowindows:[],
@@ -168,6 +173,7 @@ export default {
             this.google.maps.event.addListener(marker, 'click', async function() {
               this.theaterId = v.id;
               this.theaterName = v.name;
+              this.theaterType = v.type;
               this.setLoading(true);
               if (this.isTimeChange) {
                 await this.bringMovies({theaterID: v.id, time: this.time});

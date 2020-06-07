@@ -31,47 +31,49 @@
               </v-img>
             </v-col>
             <v-col class="pl-1 ml-1">
-              <v-list-item two-line>
-                <v-list-item-content>
-                  <v-list-item-title>{{ movie.movie.name }}</v-list-item-title>
-                  <v-list-item-subtitle>{{ movie.movie.name_eng }}</v-list-item-subtitle>
+              <v-list-item>
+                <v-list-item-content class="pt-3 pb-4">
+                  <v-list-item-title class="mytitle">{{ movie.movie.name }}</v-list-item-title>
+                  <v-list-item-subtitle v-if="movie.movie.name_eng" class="mysubtitle">{{ movie.movie.name_eng }}</v-list-item-subtitle>
+                  <v-list-item-content v-else class="mysubtitle2">.</v-list-item-content>
                 </v-list-item-content>
               </v-list-item>
-<!--              <v-list-item two-line>-->
-<!--                <v-list-item-content>-->
-<!--                  <v-list-item-subtitle>{{ movie.info }}</v-list-item-subtitle>-->
-<!--                  <v-list-item-subtitle>{{ movie.start_time }} ~ {{ movie.end_time }}</v-list-item-subtitle>-->
-<!--                </v-list-item-content>-->
-<!--              </v-list-item>-->
-              <v-card-text class="mb-1">
-                <div class="divfont mb-0">
+
+              <v-card-text>
+
+                <div class="divseat ma-0">
+                  <span class="spanstrong">{{ movie.start_time }}</span>
+                  <span class="spanlight"> ~ {{ movie.end_time }}</span>
+                </div>
+
+                <div class="divfont dehighlight ma-0">
                   {{ movie.info }}
                 </div>
-                <div class="divfont mb-0">
-                  {{ movie.start_time }} ~ {{ movie.end_time }}
-                </div>
-                <div class="divseat">
-                  {{ movie.seats }}/{{ movie.total_seats }} 석
-                </div>
 
-<!--                <v-list-item-subtitle>{{ movie.start_time }} ~ {{ movie.end_time }}</v-list-item-subtitle>-->
+                <div class="divseat ma-0" v-if="theaterType==='기타'">
+                  <span class="spanlight">예매가능</span>
+                </div>
+                <div class="divseat ma-0" v-else>
+                  <span class="spancolor">{{ movie.seats }}</span>
+                  <span class="spanstrong"> / {{ movie.total_seats }}석</span>
+                </div>
 
                 <v-chip x-small v-if="movie.movie.watch_grade==='15세 관람가'"
-                        label color="#FCB5C7"
+                        label color="#FCB5C7" class="mb-1"
                 >15+</v-chip>
                   <v-chip x-small v-else-if="movie.movie.watch_grade==='12세 관람가'"
-                         label color="#E9EA72"
+                         label color="#E9EA72" class="mb-1"
                   >12+</v-chip>
                   <v-chip x-small v-else-if="movie.movie.watch_grade==='전체 관람가'"
-                         label color="#C9EBF4"
+                         label color="#C9EBF4" class="mb-1"
                   >All</v-chip>
                   <v-chip x-small v-else-if="movie.movie.watch_grade==='청소년 관람불가'"
-                         label color="#BF3952" text-color="white"
+                         label color="#BF3952" text-color="white" class="mb-1"
                   >18+</v-chip>
                   <v-chip x-small v-else
                           label color="lightpink"
                   >{{ movie.movie.watch_grade }}</v-chip>
-                <v-chip label class="chipfortime" x-small color="#86D0EC">{{ movie.movie.running_time }}</v-chip>
+                <v-chip label class="chipfortime mb-1" x-small color="#86D0EC">{{ movie.movie.running_time }}</v-chip>
 
               </v-card-text>
             </v-col>
@@ -80,11 +82,11 @@
       </v-slide-item>
     </v-slide-group>
   <v-card
-    class="ml-2 mr-2 mb-3 moItem"
+    class="ml-2 mr-2 mb-3 noItem"
     v-else
   >
     <div class="noMovie">
-      <p class="mytitle text--primary">예매 가능한 영화가 없습니다.</p>
+      <p>예매 가능한 영화가 없습니다.</p>
     </div>
   </v-card>
 </div>
@@ -93,7 +95,7 @@
 <script>
 export default {
   name: 'TheaterMovie',
-  props: ['theaterMovieList', 'theaterName'],
+  props: ['theaterMovieList', 'theaterName', 'theaterType'],
   methods: {
     goSite(url) {
       window.open(url, "예매창", "fullscreen=yes");

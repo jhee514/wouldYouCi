@@ -3,7 +3,9 @@
   font-size: 0.8em;
   /*color: rgba(32, 28, 104, 0.6);*/
   /*opacity: 0.8;*/
-  color: rgba(103, 36, 123, 0.75);
+  /*margin-bottom: 0;*/
+  /*line-height: px;*/
+  color: rgba(136, 118, 206, 0.75);
   /*color: rgba(2, 21, 76, 0.63);*/
 }
 
@@ -41,7 +43,7 @@
   border-radius: 15px 15px;
   left: 30vw;
   /*color: #022280;*/
-  color: #67247b;
+  color: #8876ce;
 }
 
 .reload {

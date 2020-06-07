@@ -2,7 +2,6 @@
   padding-top: 0;
   padding-bottom: 0;
   padding-right: 0;
-  /*border-radius: 10px 0px 10px 0px;*/
 }
 
 .mychip >>> span{
@@ -13,7 +12,6 @@
 .mycard{
   height: 24vh;
   width: 74vw;
-  /*border-radius: %;*/
 }
 
 .card_image{
@@ -22,25 +20,23 @@
   height: 22vh;
   width: 28vw;
   border-radius: 8px 8px 8px 8px;
-  /*border-radius: 13px 0px 0px 13px;*/
 }
 
 #app > div > div.movieCard > div > div > div.v-slide-group__wrapper > div > div > div > div:nth-child(2) > div {
   padding: 0;
 }
 
+.noItem{
+  opacity: 0.98;
+}
+
 .noMovie{
   text-align: center;
   position: relative;
-  top: 9vh;
+  top: 10vh;
   height: 24vh;
-  opacity: 0.9;
-}
-
-.mytitle{
-  font-size: 20px;
-  font-weight: 700;
-  font-family: 'Nanum Myeongjo', serif;
+  color: #acacac;
+  font-weight: 400;
 }
 
 .chipfortime{
@@ -48,12 +44,52 @@
 }
 
 .divfont{
-  font-size: 11px;
-  color: #a4a4a4;
-  margin-bottom: 0;
+  font-size: 10px;
+  line-height: 15px;
 }
 
 .divseat{
   font-size: 12px;
-  color: #433158;
+  line-height: 17px;
+}
+
+.spanstrong{
+  font-size: 11px;
+  font-weight: bold;
+  color: #474747;
+}
+
+.spanlight{
+  font-size: 11px;
+  color: #9c9c9c;
+}
+
+.spancolor{
+  font-size: 11px;
+  font-weight: bold;
+  color: #4220a5;
+}
+
+.dehighlight{
+  font-size: 10px;
+  color: #9c9c9c;
+}
+
+.mytitle{
+  font-size: 17px;
+  color: #000000;
+  font-weight: bold;
+  line-height: 17px;
+}
+
+.mysubtitle{
+  font-size: 12px;
+  color: #aaaaaa;
+}
+
+.mysubtitle2{
+  font-size: 12px;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
 }
