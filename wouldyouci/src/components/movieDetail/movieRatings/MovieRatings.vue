@@ -13,11 +13,11 @@
       </div>
     </div>
 
-    <div class="movie-score">
-      <div>{{ this.movieScore }} </div>
+    <div class="avg-score">
+      <div>{{ getAvgScore }} </div>
       <v-rating
         class="score"
-        :value="movieScore"
+        :value="getAvgScore"
         background-color="primary"
         half-increments
         readonly
@@ -84,9 +84,12 @@
               </v-dialog>
 
               <v-btn 
-                icon 
-                @click.prevent="deleteRating(index, rating, details.id)">
-                <i class="fas fa-times fa-xs"></i>
+                icon
+                color="grey"
+                x-small
+                @click.prevent="deleteRating(index, rating, details.id)"
+                >
+                <v-icon>mdi-close</v-icon>
               </v-btn>
             </div>
           </div>
@@ -132,7 +135,6 @@ export default {
       busy: false,
       nextPage: 1,
       dialog: false,
-      movieScore: 0,
 
       scored: false,
       isRatings: false,
@@ -148,24 +150,15 @@ export default {
     if (this.details.has_score) {
       this.scored = true
     }
-    this.getMovieScore()
-
   },
 
   computed: {
-    ...mapGetters(['getMovieRatings']),
+    ...mapGetters(['getMovieRatings', 'getAvgScore']),
  
   },
 
   methods: {
     ...mapActions(['fetchScore', 'fetchRatings', 'postRating', 'delRating', 'patchRating' ]),
-
-    async getMovieScore() {
-      const item = 'movie';
-      const itemId = this.details.id
-      const resData = await this.fetchScore({item, itemId});
-      this.movieScore = resData["score"];
-    },
 
     async loadMore() {
       this.busy = true;
@@ -176,6 +169,9 @@ export default {
           page: this.nextPage++,
           };
         const resData = await this.fetchRatings({item, params})
+        
+        const itemId = this.details.id
+        await this.fetchScore({item, itemId});
         if ( resData.count > 0 ) {
           this.isRatings = true;
           for ( const rating of resData.results) {
@@ -186,7 +182,6 @@ export default {
           this.nextPage = 0
         }
       }
-
       this.busy = false;
     },
 
@@ -208,25 +203,32 @@ export default {
     async deleteRating(index, rating) {
       const item = 'movie'
       const ratingId = rating.id;
-      if(confirm('삭제하시겠습니까?')){
+      if (confirm('삭제하시겠습니까?')) {
         await this.delRating({item, ratingId});
+        const itemId = this.details.id
+        await this.fetchScore({item, itemId});
         this.$delete(this.ratings, index)
-        await this.getMovieScore()
-        this.scored = false
-        this.ratings = [];
-        this.nextPage = 1;
-        this.loadMore();
-      }
-    },
+        if ( index === 0 ) {
+          this.isRatings = false
+          }
+        }
+      this.scored = false
+      },
     
     async addRating(rating){
       const item = 'movie'
       rating[item] = this.details.id;
-      await this.postRating({item, rating});
-      this.scored = true;
-      this.ratings = [];
-      this.nextPage = 1;
-      this.loadMore();
+      const res = await this.postRating({item, rating});
+      res.data["user"] = this.currentUser;
+      if ( this.isRatings ) {
+        this.ratings.unshift(res.data)
+      } else {
+        this.isRatings = true
+        this.ratings.push(res.data)
+      }
+      const itemId = this.details.id
+      await this.fetchScore({item, itemId});
+      this.scored = true
     },
     
     async editRating(editedRating) {
@@ -234,18 +236,19 @@ export default {
       const item = 'movie';
       editedRating[item] = this.details.id;
       await this.patchRating({item, editedRating});
+      const itemId = this.details.id
+      await this.fetchScore({item, itemId});
       this.ratings = [];
       this.nextPage = 1;
       this.loadMore();
-
     },
 
     goTop() {
       window.scrollTo(0, 0);
     },
-
-  },
-}
+    
+    }
+  }
 </script>
 
 <style src="./MovieRatings.css" scoped></style>

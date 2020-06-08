@@ -1,3 +1,4 @@
+
 <template>
   <div class="body">
 
@@ -7,6 +8,7 @@
 
 
     <div class="details">
+
       <v-list-item two-line>
         <v-list-item-content>
           <v-list-item-title>{{ details.name }}</v-list-item-title>
@@ -84,15 +86,15 @@
           v-for="item in items"
           :key="item.tab"
           >
-          <v-card
-            flat>
+          <v-cardflat>
             <v-card-text>
-              <component class="tab-item"
+              <component 
+                class="tab-item"
                 v-bind:is="item.component" 
                 :details="details"
                 ></component>
             </v-card-text>
-          </v-card>
+          </v-cardflat>
         </v-tab-item>
       </v-tabs-items>
     </div>

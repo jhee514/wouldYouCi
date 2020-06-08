@@ -1,11 +1,14 @@
-.body{
-  min-height: 82vh;
-  height: auto;
-  margin-top: 3vh;
-  margin-bottom: 10vh;
-  margin-left: 5vw;
-  margin-right: 5vw;
+.body {
+  padding: 0 16px;
+}
 
+.container {
+  display: inline;
+}
+
+.item {
+  color: grey;
+  vertical-align: middle;
 }
 
 .tel{
@@ -23,4 +26,12 @@
   margin-bottom: 2vh;
   margin-left: 3vw;
   margin-right: 3vw;
+}
+
+.time {
+  vertical-align: middle;
+}
+
+.content {
+  margin: 0;
 }

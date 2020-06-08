@@ -1,95 +1,118 @@
 <template>
   <div 
-    class="ratings"
+    class="ratings"      
     v-infinite-scroll="loadMore"
     infinite-scroll-disabled="busy"
-    infinite-scroll-distance="10"
+    infinite-scroll-distance="2"
     >
-    <div class="cinemaScore">
-      <span>{{ Number(this.details.score.toFixed(2)) }} </span>
+
+    <RatingForm class="rating-form" v-if="!scored" @submitRating="addRating"/>
+    <div v-else>
+      <div class="notification">
+        리뷰를 작성한 영화관입니다.
+      </div>
+    </div>
+
+
+    <div class="avg-score">
+      <div>{{ getAvgScore }} </div>
       <v-rating
         class="score"
-        :value="details.score"
-        background-color="amber lighten-3"
-        color="amber"
-        dense
+        :value="getAvgScore"
+        background-color="primary"
         half-increments
         readonly
         size=20
         ></v-rating>
     </div>
 
-    <RatingForm v-if="!scored" @submitRating="addRating"/>
-    <div v-else>리뷰를 작성한 영화입니다.</div>
-    
     <v-list 
       v-if="isRatings"
       >
-      <template v-for="(rating, index) in ratings" track-by="$index">
-        <v-list-item :key="index">
-          <v-list-item-avatar class="avatar">
-            <span class="white--text headline">{{ rating.user.username[0] }}</span>          
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <div class="infos">
-              <div class="user">
-                {{ rating.user.username }} | {{ formatDate(rating.updated_at) }}
-              </div>
-              <div class="score">
-                <v-rating
-                  class="score"
-                  :value="rating.score"
-                  background-color="amber lighten-3"
-                  color="amber"
-                  dense
-                  half-increments
-                  readonly
-                  size=14
-                  ></v-rating>
-              </div>
+      <v-list-item
+        v-for="(rating, index) in ratings"
+        :key="index"
+        class="rating"
+        >
+        <v-list-item-avatar
+          color="primary" 
+          x-small
+          >
+          <img 
+            v-if="rating.user.file"
+            :src="getUserProfile(rating.user)"
+            />
+          <span 
+            v-else 
+            class="white--text headline">
+            {{ rating.user.username[0] }}
+          </span>
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <div class="infos">
+            <div class="user">
+              {{ rating.user.username }} | {{ formatDate(rating.updated_at) }}
             </div>
-            <div class="content">
-              <p class="comment">{{ rating.comment}}</p>
-              
-              <div v-if="rating.user.username == currentUser.username" class="button">
-                <v-dialog v-model="dialog">
-                    <template v-slot:activator="{ on }">
-                      <v-btn
-                        v-on="on"
-                        icon 
-                        color="grey"
-                        x-small
-                        >
-                        <v-icon>mdi-pencil</v-icon>
-                      </v-btn>
-                    </template>
-                    <RatingEditForm :rating="rating" @close="closeModal" @editRating="editRating"/>
-                  </v-dialog>
-                <v-btn 
-                  icon 
-                  @click.prevent="deleteRating(index, rating, details.id)">
-                  <i class="fas fa-times fa-xs"></i>
-                </v-btn>
-              </div>
+            <div class="score">
+              <v-rating
+                class="score"
+                :value="rating.score"
+                background-color="secondary"
+                color="primary"
+                dense
+                half-increments
+                readonly
+                size=14
+                ></v-rating>
             </div>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
+          </div>
+          <div class="content">
+            <div class="comment">{{ rating.comment}}</div>
+            <div v-if="rating.user.username == currentUser.username" class="button">
+              <v-dialog v-model="dialog">
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    v-on="on"
+                    icon 
+                    color="grey"
+                    x-small
+                    >
+                    <v-icon>mdi-pencil</v-icon>
+                  </v-btn>
+                </template>
+                <RatingEditForm :rating="rating" :index="index" @close="closeModal" @editRating="editRating"/>
+              </v-dialog>
+
+              <v-btn 
+                icon
+                color="grey"
+                x-small
+                @click.prevent="deleteRating(index, rating, details.id)"
+                >
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </div>
+          </div>
+        </v-list-item-content>
+      </v-list-item>
       <v-btn
-        color="amber"
+        v-show="isRatings"
+        class="upbutton"
+        color="primary"
         small
-        dark
         bottom
         fixed
         right
         fab
         @click="goTop"
-        ><v-icon>mdi-arrow-up</v-icon></v-btn>
+        ><v-icon dark>mdi-arrow-up</v-icon></v-btn>
     </v-list>
 
-    <p v-else>
-      첫번째 리뷰를 남겨주세요 :)
-    </p>
+    <div v-show="!isRatings">
+      <div class="notification">
+        첫번째 리뷰를 남겨주세요 :)
+      </div>
+    </div>
   </div>
 </template>
 
@@ -108,17 +131,18 @@ export default {
 
   data() {
     return {
+      currentUser: '',
       busy: false,
-      page: 1,
+      nextPage: 1,
       dialog: false,
+
+      scored: false,
       isRatings: false,
       ratings: [],
-      currentUser: '',
-      scored: false,
     }
   },
 
-  created() {
+  async created() {
     var jwt = require('jsonwebtoken');
     const token = sessionStorage.getItem('jwt');
     var decoded = jwt.decode(token, {complete: true});
@@ -129,27 +153,37 @@ export default {
   },
   
   computed: {
-    ...mapGetters(['getCinemaRatings']),
+    ...mapGetters(['getCinemaRatings',  'getAvgScore']),
   },
+
   methods: {
-    ...mapActions(['fetchRatings', 'postRating', 'delRating', 'patchRating' ]),
+    ...mapActions(['fetchScore', 'fetchRatings', 'postRating', 'delRating', 'patchRating' ]),
 
     async loadMore() {
       this.busy = true;
-      const item = 'cinema'
-      const params = { 
-        cinema: this.details.id, 
-        page: this.page++,
-        };
-      const resData = await this.fetchRatings({item, params})
-      this.busy = false;
-      if ( resData.count > 0 ) {
-        this.isRatings = true;
-        for ( const rating of resData.results) {
-          this.ratings.push(rating);
+      if ( this.nextPage > 0 ) {
+        const item = 'cinema'
+        const params = { 
+          cinema: this.details.id, 
+          page: this.nextPage++,
+          };
+        const resData = await this.fetchRatings({item, params})
+        
+        const itemId = this.details.id
+        await this.fetchScore({item, itemId});
+        if ( resData.count > 0 ) {
+          this.isRatings = true;
+          for ( const rating of resData.results) {
+            this.ratings.push(rating);
+          }
+        }
+        if ( resData.next == null ) {
+          this.nextPage = 0
         }
       }
+      this.busy = false;
     },
+
 
     formatDate(date) {
       var dayjs = require('dayjs')
@@ -159,31 +193,41 @@ export default {
     closeModal() {
       this.dialog = false;
     },
+    
+    getUserProfile(user) {
+      const HOST = process.env.VUE_APP_SERVER_HOST;
+      const profileURL = `${HOST}/${user.file[0]}`;
+      return profileURL
+    },
 
-    deleteRating(index, rating) {
+    async deleteRating(index, rating) {
       const item = 'cinema'
       const ratingId = rating.id;
       if (confirm('삭제하시겠습니까?')) {
-        this.delRating({item, ratingId});
+        await this.delRating({item, ratingId});
+        const itemId = this.details.id
+        await this.fetchScore({item, itemId});
         this.$delete(this.ratings, index)
         if ( index === 0 ) {
           this.isRatings = false
+          }
         }
-      }
       this.scored = false
-    },
+      },
     
     async addRating(rating){
       const item = 'cinema'
       rating[item] = this.details.id;
       const res = await this.postRating({item, rating});
-      res.data["user"] = this.user;
+      res.data["user"] = this.currentUser;
       if ( this.isRatings ) {
         this.ratings.unshift(res.data)
       } else {
         this.isRatings = true
         this.ratings.push(res.data)
       }
+      const itemId = this.details.id
+      await this.fetchScore({item, itemId});
       this.scored = true
     },
     
@@ -192,8 +236,10 @@ export default {
       const item = 'cinema';
       editedRating[item] = this.details.id;
       await this.patchRating({item, editedRating});
+      const itemId = this.details.id
+      await this.fetchScore({item, itemId});
       this.ratings = [];
-      this.page = 1;
+      this.nextPage = 1;
       this.loadMore();
     },
 
