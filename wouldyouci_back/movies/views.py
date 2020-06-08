@@ -94,7 +94,10 @@ def create_rating(request):
         movie.score = movie_rating
         movie.save()
 
-        return Response(serializer.data)
+        new_rating_serializer = SimpleRatingSerializer(new_rating)
+        print(new_rating_serializer.data)
+
+        return Response(new_rating_serializer.data)
     return Response(status=400, data=serializer.errors)
 
 
@@ -120,16 +123,19 @@ def patch_delete_rating(request, rating_id):
                 movie.score = movie_rating
                 movie.save()
 
-                return Response(serializer.data)
+                new_rating_serializer = SimpleRatingSerializer(update_rating)
+
+                return Response(new_rating_serializer.data)
             return Response(status=400, data=serializer.errors)
 
         elif request.method == 'DELETE':
             cache.delete(f'recommend_{user_id}')
             rating.delete()
 
-            movie_rating = 0
             if ratings_count - 1:
                 movie_rating = movie_rating / (ratings_count - 1)
+            else:
+                movie_rating = 0
 
             movie.score = movie_rating
             movie.save()
@@ -155,3 +161,12 @@ def get_onscreen_cinema(request, movie_id):
 
     return Response(status=200, data=dataset)
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_rating_avg(request, movie_id):
+    movie = get_object_or_404(Movie, id=movie_id)
+    score = movie.score
+    if not score:
+        score = 0
+    return Response(status=200, data={'score': score})

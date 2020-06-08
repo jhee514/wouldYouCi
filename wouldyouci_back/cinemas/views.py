@@ -117,7 +117,9 @@ def create_cinema_rating(request):
         cinema.score = cinema_rating
         cinema.save()
 
-        return Response(serializer.data)
+        new_rating_serializer = SimpleCinemaRatingSerializer(new_rating)
+
+        return Response(new_rating_serializer.data)
     return Response(status=400, data=serializer.errors)
 
 
@@ -140,7 +142,9 @@ def patch_delete_cinema_rating(request, rating_id):
                 cinema.score = cinema_rating
                 cinema.save()
 
-                return Response(serializer.data)
+                new_rating_serializer = SimpleCinemaRatingSerializer(update_rating)
+
+                return Response(new_rating_serializer.data)
             return Response(status=400, data=serializer.errors)
 
         elif request.method == 'DELETE':
@@ -177,3 +181,13 @@ class RatingViewSet(viewsets.ReadOnlyModelViewSet):
             cinema.cinema_ratings.all()
         )
         return queryset
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_cinema_rating_avg(request, cinema_id):
+    cinema = get_object_or_404(Cinema, id=cinema_id)
+    score = cinema.score
+    if not score:
+        score = 0
+    return Response(status=200, data={'score': score})
