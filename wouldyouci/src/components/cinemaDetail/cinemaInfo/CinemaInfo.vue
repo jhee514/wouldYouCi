@@ -26,11 +26,9 @@
       </v-col>
       <v-col cols="9">
         <p 
-          class="content" 
-          v-for="(sentence, i) in details.parking.split('#').join('/').split('※').join('/').split('/- ').join('/').split('/')"
-          :key="i"
+          class="content"
           >
-          {{ sentence }}
+          {{ details.parking }}
         </p>
       </v-col>
     </v-row>
@@ -41,12 +39,8 @@
         </span>
       </v-col>
       <v-col cols="9">
-        <p 
-          class="content" 
-          v-for="(sentence, i) in details.public.split('#')"
-          :key="i"
-          >
-          {{ sentence }}
+        <p class="content">
+          {{ details.public }}
         </p>
       </v-col>
     </v-row>

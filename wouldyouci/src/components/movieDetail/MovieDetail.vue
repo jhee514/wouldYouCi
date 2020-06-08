@@ -60,7 +60,7 @@
                 <v-icon>mdi-video-vintage</v-icon>
               </v-btn>
             </template>
-            <ShowingCinemas @close="closeModal" />
+            <MovieShowingCinemas @close="closeModal" />
           </v-dialog>
         </div>
       </div>
@@ -105,7 +105,7 @@
 <script>
 import Title from '../nav/Title.vue';
 import MovieTrailer from './movieTrailer/MovieTrailer';
-import ShowingCinemas from './movieInfo/ShowingCinemas';
+import MovieShowingCinemas from './movieInfo/MovieShowingCinemas';
 import MovieInfo from './movieInfo/MovieInfo';
 import MovieRatings from './movieRatings/MovieRatings';
 import Score from '../ratingForm/Score';
@@ -117,7 +117,7 @@ export default {
   components: {
     Title,
     MovieTrailer,
-    ShowingCinemas,
+    MovieShowingCinemas,
     MovieInfo,
     MovieRatings,
     Score,
