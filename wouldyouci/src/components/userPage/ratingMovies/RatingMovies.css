@@ -1,0 +1,15 @@
+.movieCard{
+  margin-bottom: 3vh;
+}
+
+.moviesContainer{
+  margin-bottom: 5vh;
+}
+
+.chip{
+  text-align: right;
+}
+
+.noReco{
+  text-align: center;
+}

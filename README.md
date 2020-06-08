@@ -122,4 +122,17 @@
 [front]: ./doc/front/front.md	"FrontEnd"
 
 
+- doc 폴더 문서
+  - 프로젝트 관리
+  - 와이어프레임
+  - [https 배포하기](.\doc\https_배포하기.md)
 
+  - [REST_API](.\doc\REST_API.md) - notion backup (05.27)
+
+
+
+- ERD
+
+  ![ERD](./doc/images/ERD.png)
+
+  

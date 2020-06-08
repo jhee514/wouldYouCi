@@ -1,0 +1,12 @@
+.score{
+  text-align: center;
+}
+
+.comment{
+  display: flex;
+  justify-content: space-between;
+}
+
+.button{
+  text-align: right;
+}

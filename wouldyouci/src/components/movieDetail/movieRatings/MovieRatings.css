@@ -1,0 +1,46 @@
+.avatar {
+  background-color: rgb(223, 21, 35)
+}
+
+.infos{
+  display: flex;
+  justify-content: space-between;
+  
+}
+
+.user{
+  font-size: 1.5vh;
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+
+}
+
+.score{
+  display: inline-block;
+  /* vertical-align: baseline; */
+  text-align: right;
+  vertical-align: middle;
+  
+}
+
+.content{
+  display: flex;
+  justify-content: space-between;
+}
+
+.comment{
+  display: inline-block;
+  text-align: left;
+
+}
+
+.button{
+  display: inline-block;
+  text-align: right;
+}
+
+i.fas,
+i.fab {
+  size: 2px,
+}
