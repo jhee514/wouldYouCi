@@ -50,8 +50,8 @@ self.addEventListener('fetch', (evt) => {
 
 // push 부분
 self.addEventListener('push', function(event) {
-  console.log('[Service Worker] Push Received.');
-  console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
+  // console.log('[Service Worker] Push Received.');
+  // console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
 
   const title = 'WouldYoCi';
   const options = {

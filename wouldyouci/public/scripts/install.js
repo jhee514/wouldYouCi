@@ -8,7 +8,8 @@ window.addEventListener('appinstalled', logAppInstalled);
  */
 function logAppInstalled(evt) {
   // CODELAB: Add code to log the event
-  console.log('Cinema App was installed.', evt);
+  evt;
+  // console.log('Cinema App was installed.', evt);
 }
 
 
@@ -20,15 +21,16 @@ let swRegistration = null;
 if('serviceWorker' in navigator && 'PushManager' in window){
   navigator.serviceWorker.register('/sw.js')//serviceWorker등록 
     .then(function(swReg){
-        console.log('Service Worker 등록 완료', swReg);
-        swRegistration = swReg;
-        subscribeUser();
+      // console.log('Service Worker 등록 완료', swReg);
+      swRegistration = swReg;
+      subscribeUser();
     })
     .catch(function(error){
-        console.log('Service Worker 등록 실패', error);
+      err;
+        // console.log('Service Worker 등록 실패', error);
     })
 } else {
-  console.log('pushmanager is not supported')
+  // console.log('pushmanager is not supported')
 }
 
 function subscribeUser() {
@@ -40,11 +42,11 @@ function subscribeUser() {
     .then(function(pushSubscription) {
       // console.log(pushSubscription);
       const jsonSub = JSON.stringify(pushSubscription);
-      console.log(jsonSub)
+      // pt!!!!
+      // console.log(jsonSub)
     })
     .catch(err => {
-      console.log(err);
-      console.log(Notification.permission)
+      err;
     })
 }
 
