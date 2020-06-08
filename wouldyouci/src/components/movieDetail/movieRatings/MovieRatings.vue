@@ -67,7 +67,7 @@
             </div>
           </div>
           <div class="content">
-            <span class="comment">{{ rating.comment}}</span>
+            <div class="comment">{{ rating.comment}}</div>
             <div v-if="rating.user.username == currentUser.username" class="button">
               <v-dialog v-model="dialog">
                 <template v-slot:activator="{ on }">
@@ -94,14 +94,14 @@
       </v-list-item>
       <v-btn
         class="upbutton"
+        color="primary"
         small
-        dark
         bottom
         fixed
         right
         fab
         @click="goTop"
-        ><v-icon>mdi-arrow-up</v-icon></v-btn>
+        ><v-icon dark>mdi-arrow-up</v-icon></v-btn>
     </v-list>
 
     <div v-else>

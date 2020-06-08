@@ -50,9 +50,7 @@
 }
 
 .comment{
-  display: inline-block;
-  text-align: left;
-
+  font-size: small;
 }
 
 .button{
@@ -61,7 +59,7 @@
 }
 
 .upbutton{
-  margin-bottom: 6vh;
+  margin-bottom: 6%;
 }
 
 i.fas,
