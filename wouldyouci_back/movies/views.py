@@ -95,7 +95,6 @@ def create_rating(request):
         movie.save()
 
         new_rating_serializer = SimpleRatingSerializer(new_rating)
-        print(new_rating_serializer.data)
 
         return Response(new_rating_serializer.data)
     return Response(status=400, data=serializer.errors)
@@ -167,6 +166,8 @@ def get_onscreen_cinema(request, movie_id):
 def get_rating_avg(request, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
     score = movie.score
-    if not score:
+    if score:
+        score = round(score, 2)
+    else:
         score = 0
     return Response(status=200, data={'score': score})
