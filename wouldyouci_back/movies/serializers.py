@@ -53,10 +53,26 @@ class SearchMovieSerializer(serializers.ModelSerializer):
         source='ratings.count',
         read_only=True
     )
+    genres = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='name'
+     )
+    actors = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='name'
+     )
+    directors = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='name'
+     )
+
 
     class Meta:
         model = Movie
-        fields = ('id', 'name', 'name_eng', 'poster', 'watch_grade', 'score', 'ratings_count')
+        fields = ('id', 'name', 'open_date', 'name_eng', 'poster', 'genres', 'running_time', 'watch_grade', 'score', 'ratings_count')
 
 
 class PremovieSerializer(serializers.ModelSerializer):
