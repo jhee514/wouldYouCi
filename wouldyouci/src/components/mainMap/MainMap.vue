@@ -6,7 +6,6 @@
     </v-dialog>
     <div id="map" ref="map">
     </div>
-    
     <v-overlay :value="getLoading">
         <v-progress-circular
                 :size="70"
@@ -15,12 +14,13 @@
                 indeterminate
         />
     </v-overlay>
-
       <v-toolbar
               dense
               floating
+              width="90vw"
               class="myToolbar"
       >
+        <div class="v-toolbar__content">
           <v-text-field @click="timeSelector=!timeSelector"
                         hide-details
                         single-line
@@ -34,24 +34,30 @@
                       @click="setNowTime">mdi-history</v-icon>
           </v-btn>
 
-            <v-btn icon>
-                <v-icon
-                        color="lightpink"
-                        @click="findMyPos">mdi-account-circle</v-icon>
-            </v-btn>
+          <v-btn icon>
+              <v-icon
+                v-if="isLoggedIn"
+                color="blackpink"
+                @click="goUserPage">mdi-account-circle</v-icon>
+              <v-icon
+                v-else
+                color="lightpink"
+                @click="goUserPage">mdi-account-circle</v-icon>
+          </v-btn>
+        </div>
       </v-toolbar>
 
     <div v-if="isChangeLocation">
       <v-btn small class="nowArea" v-if="loading" loading>
-        <v-icon small class="btnIcon" left="1">fas fa-undo-alt</v-icon> 주변 시네마 검색
+        <v-icon small class="btnIcon" left>fas fa-undo-alt</v-icon> 주변 시네마 검색
       </v-btn>
       <v-btn small class="nowArea" color="rgba(255, 255, 255, 0.8)" @click="changeLoading" v-else>
-        <v-icon small class="btnIcon" left="1">mdi-map-search-outline</v-icon> 여기 주변 시네마
+        <v-icon small class="btnIcon" left>mdi-map-search-outline</v-icon> 여기 주변 시네마
       </v-btn>
     </div>
 
     <div class="movieCard" v-if="showMovieCard">
-      <TheaterMovie v-bind:theaterType="theaterType" v-bind:theaterName="theaterName" v-bind:theaterMovieList="getMovies"/>
+      <TheaterMovie v-bind:theaterType="theaterType" v-bind:theaterId="theaterId" v-bind:theaterName="theaterName" v-bind:theaterMovieList="getMovies"/>
     </div>
       <div v-else>
           <v-btn class="reload" @click="findMyPos" fab height="30" width="30">
@@ -103,7 +109,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getTheaterMovies', 'getMovies', 'getLoading'])
+    ...mapGetters(['getTheaterMovies', 'getMovies', 'getLoading', 'isLoggedIn'])
 
   },
   methods: {

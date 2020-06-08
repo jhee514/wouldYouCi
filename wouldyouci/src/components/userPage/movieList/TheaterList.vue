@@ -50,8 +50,8 @@ export default {
       router.push(`/cinema/${id}`)
     },
     getTheaterName(name) {
-      if (name.length > 10) {
-        return `${name.slice(0, 10)}...`;
+      if (name.length > 8) {
+        return `${name.slice(0, 8)}...`;
       } else {
         return name;
       }
