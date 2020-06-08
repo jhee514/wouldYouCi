@@ -1,10 +1,7 @@
 <template>
   <div class='signup'>
-    <div class='logo'>
-      <img class='logo' src='../../assets/saturn-309071_640.png' />
-    </div>
-    <div class='title'>
-      <img class='title' src='../../assets/title.png' />
+    <div class='title mb-1'>
+      <img class='title' src='../../assets/signup.jpg' />
     </div>
     <LoginForm v-if="getLoginMode === 'login'" />
     <SignupForm v-else-if="getLoginMode === 'signup'" />
