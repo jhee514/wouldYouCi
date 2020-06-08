@@ -129,9 +129,6 @@ const actions = {
       axios.get(`${HOST}/cinema/map/${theaterID}/movie/`, params)
         .then(res => {
           commit('setMovies', res.data.documents);
-          console.log(res)
-          console.log(res.data)
-          console.log(res.data.documents)
           resolve('ok');
         })
         .catch(err => {
@@ -385,10 +382,8 @@ const actions = {
       axios.get(`${HOST}/${item}/rating/page/`, options)
         .then(res => {
           resolve(res.data)
-          console.log(res.data)
         })
         .catch(err => {
-          console.log(err);
           reject(Error('error'))
         })
     })

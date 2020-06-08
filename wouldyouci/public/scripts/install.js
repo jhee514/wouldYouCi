@@ -13,7 +13,7 @@ function logAppInstalled(evt) {
 
 // push 알람
 
-const applicationServerPublicKey = 'BKW2ouzP7qpBa_Gg_enNAq7rGCGAePEha4uaOl-0n5vyLLhRGcACDTrhARKm6ZGMBjRmDV90xC8tnzdvlqAygNQ';
+const applicationServerPublicKey = 'BKUW-rNsTO3LSkqpxeWWMpJuPu7i1E5U0YHTBdOlwjHBNHgtrViJ4c56ah37_Ki-15rwA2hcso6AsAI0NKtg7Ig';
 let swRegistration = null;
 
 if('serviceWorker' in navigator && 'PushManager' in window){
@@ -24,7 +24,7 @@ if('serviceWorker' in navigator && 'PushManager' in window){
       subscribeUser();
     })
     .catch(function(error){
-      err;
+      error;
         // console.log('Service Worker 등록 실패', error);
     })
 } else {
@@ -40,6 +40,7 @@ function subscribeUser() {
     .then(function(pushSubscription) {
       // console.log(pushSubscription);
       const jsonSub = JSON.stringify(pushSubscription);
+      jsonSub;
       // pt!!!!
       // console.log(jsonSub)
     })
