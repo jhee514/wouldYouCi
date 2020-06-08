@@ -137,7 +137,7 @@ export default {
     ...mapGetters(['getLoading'])
   },
   methods: {
-    ...mapMutations(['setLoading']),
+    ...mapMutations(['setLoading', 'setLoginMode']),
     ...mapActions(['bringRatingMovies', 'submitRatings', 'checkRating']),
     goMap() {
       router.push('/');
@@ -167,6 +167,7 @@ export default {
     }
   },
   async mounted() {
+    this.setLoginMode(null);
     const res = await this.checkRating('notLogin');
     this.beforeCnt = res;
   }

@@ -4,10 +4,10 @@
     <div class='search'>
       <v-container>
           
-        <!-- <v-radio-group dense v-model="searchType" row>
+        <v-radio-group dense v-model="searchType" row>
           <v-radio label="영화" value="movies"></v-radio>
           <v-radio label="영화관" value="theater"></v-radio>
-        </v-radio-group> -->
+        </v-radio-group>
         <div class="auto">
           
           <!-- v-if="searchType === 'movies'" -->
@@ -45,12 +45,12 @@
           {{ nowAddress }}
         </v-btn>
         <v-spacer></v-spacer>
-        <v-switch
+        <!-- <v-switch
             :label="label? '영화' : '극장'"
             v-model="label"
             color="lightpink"
             class="toggle"
-         ></v-switch>
+         ></v-switch> -->
         </v-row>
         
       </div>

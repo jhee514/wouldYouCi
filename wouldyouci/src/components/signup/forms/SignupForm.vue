@@ -48,7 +48,7 @@
     <v-card-actions class="mb-2 pa-0">
       <v-spacer></v-spacer>
       <v-btn text class="mr-0 ml-0" color="lightprimary" @click="setLoginMode('login')">Login</v-btn>
-      <v-btn text class="ml-1 mr-4" color="primary" @click.prevent="login(userInfo)">Submit</v-btn>
+      <v-btn text class="ml-1 mr-4" color="primary" @click.prevent="signup(userInfo)">Submit</v-btn>
     </v-card-actions>
   </v-card>
 </template>
