@@ -188,6 +188,8 @@ class RatingViewSet(viewsets.ReadOnlyModelViewSet):
 def get_cinema_rating_avg(request, cinema_id):
     cinema = get_object_or_404(Cinema, id=cinema_id)
     score = cinema.score
-    if not score:
+    if score:
+        score = round(score, 2)
+    else:
         score = 0
     return Response(status=200, data={'score': score})
