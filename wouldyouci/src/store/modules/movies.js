@@ -132,9 +132,6 @@ const actions = {
       axios.get(`${HOST}/cinema/map/${theaterID}/movie/`, params)
         .then(res => {
           commit('setMovies', res.data.documents);
-          console.log(res)
-          console.log(res.data)
-          console.log(res.data.documents)
           resolve('ok');
         })
         .catch(err => {
