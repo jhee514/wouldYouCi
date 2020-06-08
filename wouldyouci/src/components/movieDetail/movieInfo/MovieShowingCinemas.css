@@ -1,14 +1,13 @@
 #app > div > div.movieCard > div > div > div.v-slide-group__wrapper > div > div > div > div:nth-child(1) {
-	padding-top: 0;
-	padding-bottom: 0;
-	padding-right: 0;
+	padding: 0;
   }
-  
+
   .label{
 	margin-top: 2vh;
   }
   .ranklist{
 	padding-top: 0;
+	background-color: white;
   }
   .mychip >>> span{
 	font-size: 12px;
@@ -31,7 +30,7 @@
 	margin-left: 3vw;
 	margin-bottom: 1vh;
 	height: 20vh;
-	width: 25vw;
+	width: 30vw;
 	border-radius: 10px;
   }
 

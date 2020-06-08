@@ -3,8 +3,8 @@
     <div class="score">
       <v-rating
         v-model="rating.score"
-        color="pink lighten-1"
-        background-color="pink"
+        color="elsepink"
+        background-color="pink lighten-4"
         half-increments
         hover
         size="18">
@@ -15,16 +15,17 @@
         v-model="rating.comment"
         clearable
         clear-icon="fas fa-times xsmall"
+        elsepink
         label="관람평"
         rows="1"
         auto-grow
         hide-details="auto"
-        color="amber darken-3"
+        color="fontgrey"
         dense
       ></v-textarea>
       <v-btn 
         class="button"
-        color="pink" 
+        color="elsepink" 
         icon
         text 
         @click.prevent="submitForm(rating)"

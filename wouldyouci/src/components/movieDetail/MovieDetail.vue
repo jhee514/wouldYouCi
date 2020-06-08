@@ -34,14 +34,14 @@
           </v-btn>
 
           <v-btn v-show="toBeReleased && isPicked"
-            color="error"
+            color="elsepink"
             icon
             @click.prevent="togglePickMovie">
             <v-icon>mdi-bell</v-icon>
           </v-btn>
 
           <v-btn v-show="!toBeReleased && isPicked"
-            color="error"
+            color="elsepink"
             icon
             @click.prevent="togglePickMovie">
             <v-icon>mdi-heart</v-icon>
@@ -53,7 +53,7 @@
             <template v-slot:activator="{ on }">
               <v-btn
                 v-on="on"
-                color="accent"
+                color="titleblue"
                 text
                 >
                 <span>예매</span>

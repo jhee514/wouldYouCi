@@ -1,10 +1,15 @@
+.ratingFrom {
+  padding: 16px;
+}
+
 .score{
   text-align: center;
 }
 
 .comment{
   display: flex;
-  justify-content: space-between;
+  text-align: right;
+  /* justify-content: space-between; */
 }
 
 .button{

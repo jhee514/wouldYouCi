@@ -18,7 +18,8 @@
       <v-rating
         class="score"
         :value="getAvgScore"
-        background-color="primary"
+        background-color="amber lighten-2"
+        color="amber lighten-1"
         half-increments
         readonly
         size=20
@@ -34,7 +35,7 @@
         class="rating"
         >
         <v-list-item-avatar
-          color="primary" 
+          color="lightgrey" 
           x-small
           >
           <img 
@@ -57,8 +58,8 @@
               <v-rating
                 class="score"
                 :value="rating.score"
-                background-color="secondary"
-                color="primary"
+                background-color="amber lighten-4"
+                color="amber lighten-3"
                 dense
                 half-increments
                 readonly
@@ -74,7 +75,7 @@
                   <v-btn
                     v-on="on"
                     icon 
-                    color="grey"
+                    color="lightgrey"
                     x-small
                     >
                     <v-icon>mdi-pencil</v-icon>
@@ -85,7 +86,7 @@
 
               <v-btn 
                 icon
-                color="grey"
+                color="lightgrey"
                 x-small
                 @click.prevent="deleteRating(index, rating, details.id)"
                 >
@@ -98,14 +99,14 @@
       <v-btn
         v-show="isRatings"
         class="upbutton"
-        color="primary"
+        color="titleblue"
         small
         bottom
         fixed
         right
         fab
         @click="goTop"
-        ><v-icon dark>mdi-arrow-up</v-icon></v-btn>
+        ><v-icon color="white">mdi-arrow-up</v-icon></v-btn>
     </v-list>
 
     <div v-show="!isRatings">
