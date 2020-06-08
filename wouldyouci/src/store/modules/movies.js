@@ -261,18 +261,14 @@ const actions = {
         Authorization: `JWT ${token}`
       }
     }
-    if (data.length >= 10) {
-      axios.post(`${HOST}/user/rating/`, {data}, options)
-        .then(res => {
-          res;
-          router.push('/');
-        })
-        .catch(err => {
-          err;
-        })
-    } else {
-      alert(`현재까지 ${data.length}개의 영화를 평가하셨습니다.\n추천을 받기 위해선 최소 10개 이상의 영화를 평가해주셔야 합니다.`);
-    }
+    axios.post(`${HOST}/user/rating/`, {data}, options)
+      .then(res => {
+        res;
+        router.push('/');
+      })
+      .catch(err => {
+        err;
+      })
   },
   bringRatedMovies: ({ getters }) => {
     getters;
