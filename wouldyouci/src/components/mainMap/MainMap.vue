@@ -1,17 +1,6 @@
 <template>
   <div>
-    <Title />
-
-    <div class="time">
-      <v-btn text small @click="setNowTime">
-        <v-icon small>fas fa-history</v-icon>
-      </v-btn>
-      <v-btn outlined small color="#000000" @click="timeSelector=!timeSelector">
-        {{ time }}
-        <v-icon class="angleDown">fas fa-angle-down</v-icon>
-      </v-btn>
-      기준 영화 정보입니다.
-    </div>
+      <Title />
     <v-dialog v-model="timeSelector">
       <TimeSelector v-bind:nowTime="time" @targetTime="changeTime"/>
     </v-dialog>
@@ -19,33 +8,61 @@
     </div>
     
     <v-overlay :value="getLoading">
-      <v-progress-circular
-        :size="70"
-        :width="7"
-        color="#4520EA"
-        indeterminate
-      ></v-progress-circular>
+        <v-progress-circular
+                :size="70"
+                :width="7"
+                color="#4520EA"
+                indeterminate
+        />
     </v-overlay>
-    <div class="nowArea" v-if="isChangeLocation">
-      <v-btn v-if="loading" height="30" width="250" loading>
-        <v-icon small>fas fa-undo-alt</v-icon>
+
+      <v-toolbar
+              dense
+              floating
+              class="myToolbar"
+      >
+          <v-text-field @click="timeSelector=!timeSelector"
+                        hide-details
+                        single-line
+                        v-bind:label="timeForUser"
+                        prepend-icon="search"
+          />
+
+          <v-btn icon>
+              <v-icon
+                      color="lightpink"
+                      @click="setNowTime">mdi-history</v-icon>
+          </v-btn>
+
+            <v-btn icon>
+                <v-icon
+                        color="lightpink"
+                        @click="findMyPos">mdi-account-circle</v-icon>
+            </v-btn>
+      </v-toolbar>
+
+    <div v-if="isChangeLocation">
+      <v-btn small class="nowArea" v-if="loading" loading>
+        <v-icon small class="btnIcon" left="1">fas fa-undo-alt</v-icon> 주변 시네마 검색
       </v-btn>
-      <v-btn @click="changeLoading" v-else height="30" width="250">
-        <v-icon small>fas fa-undo-alt</v-icon> 현재 지역에서 재검색하기
+      <v-btn small class="nowArea" color="rgba(255, 255, 255, 0.8)" @click="changeLoading" v-else>
+        <v-icon small class="btnIcon" left="1">mdi-map-search-outline</v-icon> 여기 주변 시네마
       </v-btn>
     </div>
-    <div class="reload">
-      <v-btn @click="findMyPos" fab height="30" width="30">
-        <v-icon small>fas fa-crosshairs</v-icon>
-      </v-btn>
-    </div>
+
     <div class="movieCard" v-if="showMovieCard">
-      <TheaterMovie v-bind:theaterName="theaterName" v-bind:theaterMovieList="getMovies"/>
+      <TheaterMovie v-bind:theaterType="theaterType" v-bind:theaterName="theaterName" v-bind:theaterMovieList="getMovies"/>
     </div>
+      <div v-else>
+          <v-btn class="reload" @click="findMyPos" fab height="30" width="30">
+              <v-icon small color="lightprimary">fas fa-crosshairs</v-icon>
+          </v-btn>
+      </div>
   </div>
 </template>
 
 <script>
+  import router from "@/router";
 import Title from '../nav/Title.vue';
 import TimeSelector from './timeSelector/TimeSelector.vue';
 import TheaterMovie from './theaterMovie/TheaterMovie.vue';
@@ -63,7 +80,8 @@ export default {
       map: null,
       google: null,
       nowHere: null,
-      time: new Date().toLocaleTimeString(),
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      timeForUser: null,
       isTimeChange: false,
       cardInfo: null,
       showMovieCard: null,
@@ -77,6 +95,7 @@ export default {
       lotMarkers: [],
       theaterId: null,
       theaterName: null,
+      theaterType: null,
       isChangeLocation: false,
       myMarker: null,
       infowindows:[],
@@ -85,10 +104,24 @@ export default {
   },
   computed: {
     ...mapGetters(['getTheaterMovies', 'getMovies', 'getLoading'])
+
   },
   methods: {
     ...mapMutations(['setLoading', 'setLoginMode']),
     ...mapActions(['init', 'bringHereCinema', 'bringMovies']),
+    goUserPage() {
+      if (this.isLoggedIn) {
+        const link = document.location.href.split("/");
+        if (link[link.length - 1] !== "userPage") {
+          router.push('/userPage');
+        } else {
+          location.reload();
+        }
+      } else {
+        this.setLoginMode('login');
+        router.push('/signup');
+      }
+    },
     marking(value) {
       // const HOST = process.env.VUE_APP_SERVER_HOST;
       if (value.type === 'user') {
@@ -141,6 +174,7 @@ export default {
             this.google.maps.event.addListener(marker, 'click', async function() {
               this.theaterId = v.id;
               this.theaterName = v.name;
+              this.theaterType = v.type;
               this.setLoading(true);
               if (this.isTimeChange) {
                 await this.bringMovies({theaterID: v.id, time: this.time});
@@ -195,6 +229,11 @@ export default {
       this.showMovieCard = false;
       this.toggleBounce(this.cardInfo);
     },
+    getUserTime() {
+      const targetTimes = this.time.split(' ');
+      const times = targetTimes[1].split(':');
+      this.timeForUser = `${targetTimes[0]} ${times[0]}시 ${times[1]}분 기준 영화`;
+    },
     async changeLoading() {
       this.loading = true;
       this.clearMarker();
@@ -215,9 +254,10 @@ export default {
     async changeTime(targetTime) {
       this.timeSelector = false;
       const targetTimes = targetTime.split(' ');
-      const times = targetTime.split(' ')[1].split(':')
+      const times = targetTimes[1].split(':');
       if (targetTimes[0] !== 'null' && times[0] !== 'null' && times[1] !== 'null') {
         this.time = targetTime;
+        this.getUserTime();
         this.isTimeChange = true;
         if (this.showMovieCard) {
           this.showMovieCard = false;
@@ -231,7 +271,8 @@ export default {
       }
     },
     async setNowTime() {
-      this.time = new Date().toLocaleTimeString();
+      this.time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        this.getUserTime();
       this.isTimeChange = false;
       if (this.showMovieCard) {
         this.setLoading(true);
@@ -281,7 +322,7 @@ export default {
           this.theaterMovieList = this.getTheaterMovies;
           this.nowHere = pos;
           const hereIcon = {
-            url : "https://image.flaticon.com/icons/svg/684/684908.svg",
+            url : "https://k02a4061.p.ssafy.io/media/pin.svg",
             scaledSize: new this.google.maps.Size(40, 40)
           }
           this.marking({type: 'user', position: pos, icon: hereIcon});
@@ -295,8 +336,9 @@ export default {
     }
   },
   async mounted() {
-    this.setLoginMode(true);
+    this.setLoginMode(null);
     this.setLoading(true);
+    this.getUserTime();
     try {
       this.google = await this.init();
       this.map = new this.google.maps.Map(this.$refs.map, {
@@ -347,6 +389,10 @@ export default {
             }
           );
         }
+        this.myMarker.setIcon({
+          url : "https://k02a4061.p.ssafy.io/media/pin.svg",
+          scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
+        })
       }.bind(this))
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async function(position) {
@@ -360,8 +406,8 @@ export default {
           this.theaterMovieList = this.getTheaterMovies;
           this.nowHere = pos;
           const hereIcon = {
-            url : "https://image.flaticon.com/icons/svg/684/684908.svg",
-            scaledSize: new this.google.maps.Size(40, 40)
+            url : "https://k02a4061.p.ssafy.io/media/pin.svg",
+            scaledSize: new this.google.maps.Size(14*3, 14*3)
           }
           this.marking({type: 'user', position: pos, icon: hereIcon});
           this.marking({type: 'theater', position: this.theaterMovieList});

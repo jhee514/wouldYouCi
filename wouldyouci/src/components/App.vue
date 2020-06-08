@@ -1,19 +1,22 @@
 <template>
   <v-app>
-    <v-content>
-    <div id="app" data-app>
+    <div id="app" class="app" data-app>
       <router-view />
     </div>
-    </v-content>
-    <Nav />
+    <Nav v-if="getLoginMode === null"/>
   </v-app>
 </template>
 
 <script>
 import Nav from './nav/Nav';
+import { mapGetters } from 'vuex';
+
 export default {
   components: {
     Nav
+  },
+  computed: {
+    ...mapGetters(['getLoginMode'])
   },
   created() {
     this.$store.dispatch("initialLogin");
@@ -22,4 +25,7 @@ export default {
 </script>
 
 <style>
+  .app {
+    font-family: 'NanumBarunGothicOTF', monospace, 'Nanum Myeongjo', 'Noto Serif KR', 'Noto Sans KR', serif;
+  }
 </style>

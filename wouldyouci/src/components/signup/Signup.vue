@@ -6,8 +6,8 @@
     <div class='title'>
       <img class='title' src='../../assets/title.png' />
     </div>
-    <LoginForm v-if="isLoginMode" />
-    <SignupForm v-else />
+    <LoginForm v-if="getLoginMode === 'login'" />
+    <SignupForm v-else-if="getLoginMode === 'signup'" />
     <v-overlay :value="getLoading">
       <v-progress-circular
         :size="70"
@@ -25,7 +25,7 @@
 <script>
   import LoginForm from './forms/LoginForm.vue';
   import SignupForm from './forms/SignupForm.vue';
-  import { mapGetters } from 'vuex';
+  import { mapGetters, mapMutations } from 'vuex';
   import router from "../../router";
 
   export default {
@@ -35,12 +35,16 @@
       LoginForm
     },
     computed: {
-      ...mapGetters(['isLoginMode', 'isLoggedIn', 'getLoading'])
+      ...mapGetters(['getLoginMode', 'isLoggedIn', 'getLoading'])
     },
     methods: {
+      ...mapMutations(['setLoginMode']),
       goMainMap() {
         router.push('/');
       }
+    },
+    mounted() {
+      this.setLoginMode('login');
     },
     created() {
       if (this.isLoggedIn) {
