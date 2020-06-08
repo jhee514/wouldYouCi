@@ -53,11 +53,12 @@ self.addEventListener('push', function(event) {
   // console.log('[Service Worker] Push Received.');
   // console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
 
-  const title = 'WouldYoCi';
+  const title = 'WouldYouCi';
   const options = {
     body: `${event.data.text()}`,
-    icon: 'images/icons/planet-192.png',
-    badge: 'images/icons/planet-144.png'
+    icon: 'images/icon.png',
+    badge: 'images/badge.png',
+    type: "message"
   };
 
   event.waitUntil(self.registration.showNotification(title, options));
