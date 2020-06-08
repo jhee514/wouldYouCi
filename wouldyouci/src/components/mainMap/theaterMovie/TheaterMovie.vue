@@ -2,10 +2,11 @@
   <div>
 
     <v-chip
-            class="ml-2 mb-2 mychip"
-            color="mypink"
-            label
-            text-color="white"
+      class="ml-2 mb-2 mychip"
+      color="mypink"
+      label
+      text-color="white"
+      @click="goTheaterDetail(theaterId)"
     >
       <v-icon left>mdi-theater</v-icon>
       <span>{{ theaterName }}</span>
@@ -33,8 +34,8 @@
             <v-col class="pl-1 ml-1">
               <v-list-item>
                 <v-list-item-content class="pt-3 pb-4">
-                  <v-list-item-title class="mytitle">{{ movie.movie.name }}</v-list-item-title>
-                  <v-list-item-subtitle v-if="movie.movie.name_eng" class="mysubtitle">{{ movie.movie.name_eng }}</v-list-item-subtitle>
+                  <v-list-item-title class="mytitle">{{ changeName(movie.movie.name) }}</v-list-item-title>
+                  <v-list-item-subtitle v-if="movie.movie.name_eng" class="mysubtitle">{{ changeEngName(movie.movie.name_eng) }}</v-list-item-subtitle>
                   <v-list-item-content v-else class="mysubtitle2">.</v-list-item-content>
                 </v-list-item-content>
               </v-list-item>
@@ -47,7 +48,7 @@
                 </div>
 
                 <div class="divfont dehighlight ma-0">
-                  {{ movie.info }}
+                  {{ changeCinemaName(movie.info) }}
                 </div>
 
                 <div class="divseat ma-0" v-if="theaterType==='기타'">
@@ -93,12 +94,46 @@
 </template>
 
 <script>
+import router from '../../../router';
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'TheaterMovie',
-  props: ['theaterMovieList', 'theaterName', 'theaterType'],
+  props: ['theaterMovieList', 'theaterName', 'theaterType', 'theaterId'],
+  computed: {
+    ...mapGetters(['isLoggedIn'])
+  },
   methods: {
     goSite(url) {
       window.open(url, "예매창", "fullscreen=yes");
+    },
+    changeName(info) {
+      if (info.length > 7) {
+        return `${info.slice(0, 7)}...`
+      } else {
+        return info
+      }
+    },
+    changeEngName(info) {
+      if (info.length > 19) {
+        return `${info.slice(0, 19)}...`
+      } else {
+        return info
+      }
+    },
+    changeCinemaName(info) {
+      if (info.length > 16) {
+        return `${info.slice(0, 16)}...`
+      } else {
+        return info
+      }
+    },
+    goTheaterDetail(id) {
+      if (this.isLoggedIn) {
+        router.push(`/cinema/${id}`);
+      } else {
+        router.push('/signup');
+      }
     }
   }
 }

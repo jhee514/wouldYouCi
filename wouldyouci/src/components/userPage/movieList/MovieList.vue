@@ -51,8 +51,8 @@ export default {
       router.push(`/movie/${movieId}`);
     },
     getMovieName(name) {
-      if (name.length > 8) {
-        return `${name.slice(0, 8)}...`;
+      if (name.length > 7) {
+        return `${name.slice(0, 7)}...`;
       } else {
         return name;
       }

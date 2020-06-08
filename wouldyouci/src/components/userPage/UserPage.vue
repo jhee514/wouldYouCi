@@ -112,7 +112,7 @@ export default {
       userName: null,
       profileURL: null,
       tab: 0,
-      items: ['내가 선호하는 영화', '내가 평가한 영화']
+      items: ['선호하는 영화', '평가한 영화']
     }
   },
   computed: {
