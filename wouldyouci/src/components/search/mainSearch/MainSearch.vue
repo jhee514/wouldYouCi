@@ -4,10 +4,10 @@
       <TheaterList v-bind:Label="'근처 영화관'" v-bind:pos="pos" v-bind:TheaterList="TheaterList" />
     </div>
     <div class="released">
-      <CinemaList v-bind:Label="'개봉예정작'" v-bind:CinemaList="Commings" />
+      <CinemaList v-bind:Label="'상영예정작'" v-bind:CinemaList="Commings" />
     </div>
     <div class="current">
-      <CurrentList v-bind:Label="'현재 상영작 순위'" v-bind:CurrentList="Populars" />
+      <CurrentList v-bind:Label="'화제의 상영작 순위'" v-bind:CurrentList="Populars" />
     </div>
   </div>
 </template>

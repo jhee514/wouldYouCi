@@ -3,13 +3,16 @@
     <Title />
     <div class='search'>
       <v-container>
-        <v-radio-group dense v-model="searchType" row>
+          
+        <!-- <v-radio-group dense v-model="searchType" row>
           <v-radio label="영화" value="movies"></v-radio>
           <v-radio label="영화관" value="theater"></v-radio>
-        </v-radio-group>
+        </v-radio-group> -->
         <div class="auto">
+          
+          <!-- v-if="searchType === 'movies'" -->
           <v-autocomplete
-                  v-if="searchType === 'movies'"
+                  v-if="label"
                   :search-input.sync="keyword"
                   label="영화 제목을 검색해보세요!"
                   prepend-icon="fas fa-search"
@@ -32,13 +35,24 @@
                   v-on:keyup.enter="changeSearchMode(keyword)"
           >
           </v-autocomplete>
+          
         </div>
       </v-container>
       <div class="now" v-if="getInitSearchInfo">
-        <v-btn small text @click="reBringMyPos">
+        <v-row>
+          <v-btn small text @click="reBringMyPos">
           <v-icon small>fas fa-crosshairs</v-icon>
           {{ nowAddress }}
         </v-btn>
+        <v-spacer></v-spacer>
+        <v-switch
+            :label="label? '영화' : '극장'"
+            v-model="label"
+            color="lightpink"
+            class="toggle"
+         ></v-switch>
+        </v-row>
+        
       </div>
       <div v-if="getSearchMode">
         <MainSearch v-if="getSearchMode==='before'" v-bind:pos="pos" v-bind:Commings="commings" v-bind:Populars="populars" v-bind:TheaterList="nearTheater"/>
@@ -86,7 +100,8 @@
         commings: [],
         populars: [],
         isloading: false,
-        items: []
+        items: [],
+        label:true,
       }
     },
     computed: {

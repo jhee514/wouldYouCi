@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="label">
-      {{ Label }}
+      <h4>{{ Label }}</h4>
     </div>
     <v-slide-group
-      class="pa-4 cinemaList"
+      class="lists"
       active-class="success"
       v-if="TheaterList && TheaterList.length"
     >
