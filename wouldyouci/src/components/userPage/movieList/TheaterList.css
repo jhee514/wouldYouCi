@@ -1,3 +1,9 @@
+.label{
+    margin-top: 2vh;
+    margin-left: 6vw;
+    margin-bottom: 0;
+    color: #674c80;
+}
 .card{
     margin-right:2vh;
     background-size: cover;
@@ -5,7 +11,10 @@
     
     border-radius: 12px !important; 
 }
-
+.lists{
+    padding-top: 0;
+    margin-top: 0;
+}
 .cardname{
     font-size: small;
     padding-top: 11vh;
@@ -15,16 +24,10 @@
     text-align: center;
     font-size: small;
 }
-.label{
-    margin-top: 2vh;
-    margin-left: 4vw;
-    margin-bottom: 0;
-    color: #674c80;
-}
+
 .noContent{
     text-align: center;
-    margin-left: 2vw;
-    margin-right: 6vw;
+    margin-left: 5vw;
     margin-top: 2vh;
     margin-bottom: 5vh;
 }

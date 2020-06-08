@@ -1,18 +1,13 @@
-.avatar {
-  background-color: rgb(223, 21, 35)
+.rating-form {
+  padding: 5vh 5vw ;
 }
 
-.infos{
-  display: flex;
-  justify-content: space-between;
-  
-}
-
-.cinemaScore {
-  font-size: 3vh;
+.notification {
   text-align: center;
-  vertical-align: middle;
-  size: 20;
+}
+
+.rating {
+  padding: 0;
 }
 
 .user{
@@ -20,6 +15,13 @@
   display: inline-block;
   text-align: left;
   vertical-align: middle;
+  padding-top: 0.5vh;
+}
+
+.avg-score {
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 10%;
 
 }
 
@@ -27,7 +29,6 @@
   display: inline-block;
   text-align: right;
   vertical-align: middle;
-  size: 14;  
 }
 
 .content{
@@ -36,14 +37,16 @@
 }
 
 .comment{
-  display: inline-block;
-  text-align: left;
-
+  font-size: small;
 }
 
 .button{
   display: inline-block;
   text-align: right;
+}
+
+.upbutton{
+  margin-bottom: 6vh;
 }
 
 i.fas,

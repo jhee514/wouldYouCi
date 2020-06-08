@@ -49,7 +49,7 @@ export default {
         value => ( value < 0.5 ) || '최저 점수는 0.5점입니다.',
       ],
       rating: {
-        score: 0,
+        score: 0.5,
         comment: '',
       },
     }

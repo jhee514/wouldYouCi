@@ -6,7 +6,9 @@
 }
 
 .settingIcon{
-  text-align: right;
+  position: absolute;
+  right: 2vw;
+  opacity: 0.5;
 }
 
 span{
@@ -22,8 +24,11 @@ span{
 }
 
 .noReco{
-  margin-top: 2vh;
   text-align: center;
+  margin-left: 4vw;
+  margin-right: 6vw;
+  margin-top: 2vh;
+  margin-bottom: 5vh;
 }
 
 .exp{
@@ -31,6 +36,7 @@ span{
   padding-bottom: 5vh;
   padding-right: 3vw;
   padding-left: 3vw;
+  font-size: small;
 }
 
 #app > div > div.userPage > div.prefer > div.v-card.v-sheet.theme--light > button{

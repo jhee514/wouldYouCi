@@ -1,7 +1,7 @@
 <template>
   <v-card class="form" outlined>
-    <v-card-title>Signup</v-card-title>
-    <v-card-text>
+    <v-card-title class="formtitle">Signup</v-card-title>
+    <v-card-text class="pb-0">
       <v-form>
         <div v-if="getErrors.length" class="errors">
           <ul>
@@ -45,10 +45,10 @@
         ></v-text-field>
       </v-form>
     </v-card-text>
-    <v-card-actions>
+    <v-card-actions class="mb-2 pa-0">
       <v-spacer></v-spacer>
-      <v-btn text @click='setLoginMode("login")'>Login</v-btn>
-      <v-btn text @click.prevent='signup(userInfo)'>Submit</v-btn>
+      <v-btn text class="mr-0 ml-0" color="lightprimary" @click="setLoginMode('login')">Login</v-btn>
+      <v-btn text class="ml-1 mr-4" color="primary" @click.prevent="login(userInfo)">Submit</v-btn>
     </v-card-actions>
   </v-card>
 </template>

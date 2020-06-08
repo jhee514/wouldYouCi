@@ -25,15 +25,10 @@
   padding-top: 0.5vh;
 }
 
-.movie-score {
+.avg-score {
   text-align: center;
   vertical-align: middle;
   padding-top: 10%;
-
-}
-
-.movie-score > p {
-  margin: 0;
 
 }
 
@@ -41,7 +36,6 @@
   display: inline-block;
   text-align: right;
   vertical-align: middle;
-  
 }
 
 .content{
@@ -59,7 +53,7 @@
 }
 
 .upbutton{
-  margin-bottom: 6%;
+  margin-bottom: 6vh;
 }
 
 i.fas,

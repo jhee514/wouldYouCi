@@ -1,26 +1,31 @@
 <template>
-  <div>
+  <div class="body">
+
     <Title />
+    
     <div class="body">
-      <v-card elevation=0>
-        <div class="cinemaImage">
-          <v-img
-            v-if="details.img"
-            class="media"
-            :src="details.img"
-           >
-          </v-img>
-          <v-img 
-            v-else
-            aspect-ratio=1.7
-            src="../movieDetail/movieTrailer/defaultImg.jpg">
-            <template v-slot:placeholder>
-              <div>
-                이미지 준비중
-              </div>
-            </template>
-          </v-img>
-        </div>
+    
+      <div class="image">
+        <v-img
+          v-if="details.img"
+          class="media" 
+          :src="details.img"
+          >
+        </v-img>
+        <v-img 
+          v-else
+          class="media"
+          aspect-ratio=1.7
+          src="../movieDetail/movieTrailer/defaultImg.jpg">
+          <template v-slot:placeholder>
+            <div>
+              이미지 준비중
+            </div>
+          </template>
+        </v-img>
+      </div>
+
+      <div class="details">
 
         <v-list-item two-line>
           <v-list-item-content>
@@ -36,34 +41,40 @@
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-        
-        <v-card-actions>
-          <v-spacer></v-spacer>
+
+        <div class="right">
           <v-btn 
             icon 
-            :color="(isPicked) ? 'pink' : 'grey'"
+            :color="(isPicked) ? 'error' : 'grey'"
             @click.prevent="togglePickCinema">
             <v-icon>mdi-heart</v-icon>
           </v-btn>
-
+          <v-btn
+            icon
+            target="_blank"
+            :href="details.url" 
+            >
+            <v-icon>mdi-home</v-icon>
+          </v-btn>
           <v-dialog v-model="dialog">
             <template v-slot:activator="{ on }">
               <v-btn
                 v-on="on"
                 icon 
-                color="pink"
+                color="accent"
                 >
                 <v-icon>mdi-filmstrip</v-icon>
               </v-btn>
             </template>
             <CinemaOnScreens :onscreens="details.onscreens" @close="closeModal" />
           </v-dialog>
-        </v-card-actions>
+        </div>
+      </div>
 
+      <div class="tab-card">
         <v-tabs
           v-model="tab"
-          background-color="white"
-          color="amber"
+          background-color="transparent"
           centered
           fixed-tabs
           >
@@ -82,6 +93,7 @@
             <v-card flat>
               <v-card-text>
                 <component 
+                  class="tab-item"
                   v-bind:is="item.component" 
                   :details="details"
                   ></component>
@@ -89,10 +101,10 @@
             </v-card>
           </v-tab-item>
         </v-tabs-items>
-
-      </v-card>
+      </div>
     </div>
   </div>
+
 </template>
 
 <script>

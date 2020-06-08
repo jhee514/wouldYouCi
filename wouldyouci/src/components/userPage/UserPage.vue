@@ -1,9 +1,9 @@
 <template>
   <div>
     <Title />
-    <div class='userPage'>
-      <div class="settingIcon">
-        <v-icon class="setting" @click="isShow=!isShow">fas fa-cog</v-icon>
+    <div class='userPage mt-0 mr-0 ml-0'>
+      <div class="settingIcon ml-3 mr-3">
+        <v-icon small color="titlepink" @click="isShow=!isShow">fas fa-cog</v-icon>
         <v-dialog v-model="isShow">
           <SettingCard @settingCard="closeDialog" />
         </v-dialog>
@@ -18,7 +18,7 @@
       <div class="tabs">
         <v-tabs
           v-model="tab"
-          background-color="transparent"
+          background-color="rgba(163, 102, 244, 0.13)"
           grow
         >
           <v-tab
@@ -30,14 +30,13 @@
         </v-tabs>
       </div>
       <div class="prefer" v-if="tab===0">
-        <span>선호하는 영화관</span>
-        <TheaterList v-bind:TheaterList="theaterList"/>
-        <span>내가 좋아하는 영화</span>
-        <MovieList v-bind:CinemaList="pickMovies"/>
-        <span>찜한 영화</span>
-        <MovieList v-bind:CinemaList="pushMovies" />
-        <span>나에게 추천하는 상영 중 영화</span>
-        <MovieList v-if="recommendedOnscreen.length" v-bind:CinemaList="recommendedOnscreen"/>
+        <TheaterList v-bind:Label="'선호하는 영화관'" v-bind:TheaterList="theaterList"/>
+
+        <MovieList v-bind:Label="'내가 좋아하는 영화'" v-bind:CinemaList="pickMovies"/>
+
+        <MovieList v-bind:Label="'찜한 영화'" v-bind:CinemaList="pushMovies" />
+
+        <MovieList v-if="recommendedOnscreen.length" v-bind:Label="'추천 상영작'" v-bind:CinemaList="recommendedOnscreen"/>
         <v-card class="noReco" v-else>
           <div class="exp">
             현재 데이터가 부족해 영화 추천이 불가능 합니다.
@@ -47,8 +46,7 @@
             <v-icon small style="margin-left:3vw;">fas fa-arrow-right</v-icon>
           </v-btn>
         </v-card>
-        <span>나에게 추천하는 영화</span>
-        <MovieList v-if="recommendedMovies.length" v-bind:CinemaList="recommendedMovies"/>
+        <MovieList v-if="recommendedMovies.length" v-bind:Label="'이런 영화는 어때요?'" v-bind:CinemaList="recommendedMovies"/>
         <v-card class="noReco" v-else>
           <div class="exp">
             현재 데이터가 부족해 영화 추천이 불가능 합니다.

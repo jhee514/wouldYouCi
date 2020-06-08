@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="label">
-      {{ Label }}
+      <h4>{{ Label }}</h4>
     </div>
     <v-slide-group
       class="pa-2 cinemaList"
@@ -11,19 +11,19 @@
         v-for="(cinema, idx) in CinemaList"
         :key="idx"
       >
-      <div class="cinemaCard">
-        <v-card
-          class="poster"
-          :style="{backgroundImage:`url(${cinema.poster})`}"
-          @click="goDetail(cinema.id)"
-        >
-          
-        </v-card>
-        <div class="cinemaInfo">
-          <h5>{{cinema.name}}</h5>
+        <div class="cinemaCard">
+          <v-card
+            class="poster"
+            :style="{backgroundImage:`url(${cinema.poster})`}"
+            @click="goDetail(cinema.id)"
+          >
+            
+          </v-card>
+          <div class="cinemaInfo">
+            <h5>{{cinema.name}}</h5>
+          </div>
         </div>
-        </div>
-      </v-slide-item>
+        </v-slide-item>
     </v-slide-group>
   </div>
 </template>

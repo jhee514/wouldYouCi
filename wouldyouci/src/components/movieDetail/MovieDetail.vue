@@ -1,3 +1,4 @@
+
 <template>
   <div class="body">
 
@@ -7,6 +8,7 @@
 
 
     <div class="details">
+
       <v-list-item two-line>
         <v-list-item-content>
           <v-list-item-title>{{ details.name }}</v-list-item-title>
@@ -32,14 +34,14 @@
           </v-btn>
 
           <v-btn v-show="toBeReleased && isPicked"
-            color='secondary'
+            color="error"
             icon
             @click.prevent="togglePickMovie">
             <v-icon>mdi-bell</v-icon>
           </v-btn>
 
           <v-btn v-show="!toBeReleased && isPicked"
-            color='secondary'
+            color="error"
             icon
             @click.prevent="togglePickMovie">
             <v-icon>mdi-heart</v-icon>
@@ -58,7 +60,7 @@
                 <v-icon>mdi-video-vintage</v-icon>
               </v-btn>
             </template>
-            <ShowingCinemas @close="closeModal" />
+            <MovieShowingCinemas @close="closeModal" />
           </v-dialog>
         </div>
       </div>
@@ -84,15 +86,15 @@
           v-for="item in items"
           :key="item.tab"
           >
-          <v-card
-            flat>
+          <v-cardflat>
             <v-card-text>
-              <component class="tab-item"
+              <component 
+                class="tab-item"
                 v-bind:is="item.component" 
                 :details="details"
                 ></component>
             </v-card-text>
-          </v-card>
+          </v-cardflat>
         </v-tab-item>
       </v-tabs-items>
     </div>
@@ -103,7 +105,7 @@
 <script>
 import Title from '../nav/Title.vue';
 import MovieTrailer from './movieTrailer/MovieTrailer';
-import ShowingCinemas from './movieInfo/ShowingCinemas';
+import MovieShowingCinemas from './movieInfo/MovieShowingCinemas';
 import MovieInfo from './movieInfo/MovieInfo';
 import MovieRatings from './movieRatings/MovieRatings';
 import Score from '../ratingForm/Score';
@@ -115,7 +117,7 @@ export default {
   components: {
     Title,
     MovieTrailer,
-    ShowingCinemas,
+    MovieShowingCinemas,
     MovieInfo,
     MovieRatings,
     Score,
