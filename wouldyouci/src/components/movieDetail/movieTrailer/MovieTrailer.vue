@@ -26,19 +26,12 @@
         min-width="290"
         >
         <v-card class="trailer-container">
-
-
-
           <iframe 
             class="trailer"
             :src="details.trailer"
             allowfullscreen
             frameborder="0"
             ></iframe>
-
-
-
-
           <v-btn
             color="primary"
             icon
