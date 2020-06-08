@@ -36,3 +36,7 @@ span{
 #app > div > div.userPage > div.prefer > div.v-card.v-sheet.theme--light > button{
   padding-bottom: 5vh;
 }
+
+.recommend{
+  margin-top: 3vh;
+}

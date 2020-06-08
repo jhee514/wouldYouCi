@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="label">
+      {{ Label }}
+    </div>
     <v-slide-group
       dark
       class="pa-4"
@@ -10,20 +13,18 @@
         v-for="(cinema, idx) in CinemaList"
         :key="idx"
       >
-        <v-card
-          height="auto"
-          width="40vw"
-          style="margin-right:2vh"
-          @click="goDetail(cinema.id)"
-        >
-          <v-img 
-            :src="cinema.poster"
-            height="30vh"
-            width="40vw"
+        <div class="cinemaCard">
+          <v-card
+            class="poster"
+            :style="{backgroundImage:`url(${cinema.poster})`}"
+            @click="goDetail(cinema.id)"
           >
-          </v-img>
-          <v-card-text>{{ getMovieName(cinema.name) }}</v-card-text>
-        </v-card>
+            
+          </v-card>
+          <div class="cinemaInfo">
+            <h5>{{cinema.name}}</h5>
+          </div>
+        </div>
       </v-slide-item>
     </v-slide-group>
     <v-card
@@ -45,7 +46,7 @@ import router from "@/router";
 
 export default {
   name: 'MovieList',
-  props: ["CinemaList"],
+  props: ["CinemaList",'Label'],
   methods: {
     goDetail(movieId) {
       router.push(`/movie/${movieId}`);

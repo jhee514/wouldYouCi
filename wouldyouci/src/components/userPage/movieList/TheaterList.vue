@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div>
+      {{ Label }}
+    </div>
     <v-slide-group
       class="pa-4 cinemaList"
       active-class="success"
@@ -9,21 +12,17 @@
         v-for="(theater, idx) in TheaterList"
         :key="idx"
       >
-        <v-card
-          dark
-          height="auto"
-          width="50vw"
-          style="margin-right:2vh"
-          @click="goDetail(theater.id)"
-        >
-          <v-img 
-            :src=theater.img
+        <div class="theaterinfo">
+          <v-card
+            class="card mb-1"
             height="15vh"
-            width="50vw"
+            width="40vw"
+            @click="goDetail(theater.id)"
+            :style="{backgroundImage:`url(${theater.img})`}"
           >
-          </v-img>
-          <v-card-text><h4>{{ getTheaterName(theater.name) }}</h4></v-card-text>
         </v-card>
+        <h5>{{getTheaterName(theater.name)}}</h5>
+        </div>
       </v-slide-item>
     </v-slide-group>
     <v-card
@@ -60,4 +59,4 @@ export default {
 }
 </script>
 
-<style src="./MovieList.css" scoped></style>
+<style src="./TheaterList.css" scoped></style>
