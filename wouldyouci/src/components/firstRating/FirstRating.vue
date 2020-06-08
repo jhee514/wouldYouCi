@@ -26,7 +26,7 @@
                 fas fa-film
               </v-icon>
             </v-avatar>
-            현재까지 평가한 영화 - {{ beforeCnt }} 편
+            현재까지 평가한 영화 - {{ beforeCnt + cnt }} 편
           </v-chip>
         </div>
         <v-row justify="end">
@@ -88,9 +88,6 @@
             </v-hover>
           </v-col>
         </v-row>
-        <v-avatar class="cntA" size="6vh" @click="submitRating">
-          <span>{{ cnt }}</span>
-        </v-avatar>
         <v-btn
           text
           large
