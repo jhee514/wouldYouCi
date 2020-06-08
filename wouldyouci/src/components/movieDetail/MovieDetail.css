@@ -1,5 +1,5 @@
 .body {
-  margin: 0;
+  margin-bottom: 10%;
   padding: 0;
 }
 
@@ -24,8 +24,10 @@
 }
 
 .right {
-  align-self: flex-end;
-  float: right;
+  margin: 16px;
+  display: inline-block;
+  position: absolute;
+  right: 8px;
 }
 
 .tab-item {

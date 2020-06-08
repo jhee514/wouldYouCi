@@ -1,9 +1,9 @@
 <template>
-  <v-container class="white lighten-5">
+  <v-card>
     <v-tabs
       v-model="tab"
-      background-color="transparent"
-      color="pink"
+      background-color="white"
+      color="primary"
       light
       right
       >
@@ -32,22 +32,34 @@
           >
           <template v-slot:icon>
             <router-link :to="{ name: 'MovieDetail', params: {id: movie.movie.id}}">
-            <v-avatar>
+            <v-avatar
+              >
               <v-img
                 :src="movie.movie.poster"
               ></v-img>
             </v-avatar>
-            </router-link>
+          </router-link>
           </template>
-            <v-row class="pt-1">
-              <v-col cols="3">
+            <v-row 
+              no-gutters
+              align="center"
+              justify="center"
+              >
+              <v-col 
+                class="time" 
+                cols="4">
                 <strong>{{ formatTime(movie.start_time)}}</strong>
-                 ~{{ formatTime(movie.end_time) }}
+                  ~{{ formatTime(movie.end_time) }}
               </v-col>
               <v-col>
                 <strong>{{ movie.movie.name }}</strong>
                 <div class="caption mb-2">
-                  {{ movie.info }} | {{ movie.seats }} / {{movie.total_seats}}석
+                  <p class="content">
+                    {{ movie.info }}
+                  </p>
+                  <p class="content">
+                    {{ movie.seats }} / {{movie.total_seats}}석
+                  </p>
                 </div>
               </v-col>
             </v-row>
@@ -59,7 +71,7 @@
       <v-spacer></v-spacer>
       <v-btn color="blue darken-1" text @click="closeMe">Close</v-btn>
     </v-row>
-  </v-container>
+  </v-card>
 </template>
 
 
