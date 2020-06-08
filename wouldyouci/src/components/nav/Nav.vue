@@ -1,7 +1,6 @@
 <template>
 <v-bottom-navigation
-  color="amber"
-  horizontal
+  color="secondary"
   height="7vh"
   app
   fixed
@@ -11,18 +10,18 @@
   align="center"
   >
     <v-btn @click="goMap">
-      <v-icon small>mdi-map-marker-outline</v-icon>
-      <span>Nearby</span>
+      <v-icon class="pt-1">mdi-map-outline</v-icon>
+      <span class="pt-1">Nearby</span>
     </v-btn>
 
     <v-btn @click="goSearch">
-      <v-icon small>mdi-magnify</v-icon>
-      <span>Search</span>
+      <v-icon class="pt-1">mdi-magnify</v-icon>
+      <span class="pt-1">Search</span>
     </v-btn>
 
     <v-btn @click="goUserPage">
-      <v-icon small>mdi-account-outline</v-icon>
-      <span>My Page</span>
+      <v-icon class="pt-1">mdi-account-outline</v-icon>
+      <span class="pt-1">My Page</span>
     </v-btn>
   </v-bottom-navigation>
 </template>
@@ -79,19 +78,20 @@ export default {
   }
 }
 </script>
-
+<!--<style src="./Nav.css" scoped></style>-->
 <style>
-  v-btn {
-    padding: 0;
-  }
+  /*v-btn {*/
+  /*  padding: 0;*/
+  /*}*/
 
-  v-icon {
-    size: x-small;
-  }
+  /*v-icon {*/
+  /*  size: x-small;*/
+  /*}*/
 
   span {
     font-size: 1.5vh;
-    bottom: 0;
-    top: 0.5vh;
+    /*bottom: 0;*/
+    align-items: center;
+    /*top: 0.5vh;*/
   }
 </style>
