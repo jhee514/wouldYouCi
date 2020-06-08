@@ -47,3 +47,18 @@ self.addEventListener('fetch', (evt) => {
       })
   );
 });
+
+// push 부분
+self.addEventListener('push', function(event) {
+  // console.log('[Service Worker] Push Received.');
+  // console.log(`[Service Worker] Push had this data: "${event.data.text()}"`);
+
+  const title = 'WouldYoCi';
+  const options = {
+    body: `${event.data.text()}`,
+    icon: 'images/icons/planet-192.png',
+    badge: 'images/icons/planet-144.png'
+  };
+
+  event.waitUntil(self.registration.showNotification(title, options));
+});
