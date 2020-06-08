@@ -5,7 +5,7 @@
         아이디
       </p>
       <h3>
-        userName
+        {{ UserName }}
       </h3>
       <v-text-field
         label="New Password"
@@ -22,11 +22,10 @@
         :rules="[rules.required, rules.passwordMatch]"
       ></v-text-field>
     </v-card-text>
-    <v-card-actions>
-      <v-item-group>
-        <v-btn text @click="change(userInfo)">변경</v-btn>
-        <v-btn text @click="closeDialog">취소</v-btn>
-      </v-item-group>
+    <v-card-actions class="mb-2 pa-0">
+      <v-spacer></v-spacer>
+        <v-btn text class="mr-0 ml-0" color="lightprimary" @click="change(userInfo)">submit</v-btn>
+        <v-btn text class="ml-1 mr-4" color="primary" @click="closeDialog">cancle</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -35,6 +34,7 @@
 import { mapActions } from 'vuex';
 export default {
   name: 'changeUserPass',
+  props: ["UserName"],
   data() {
     return {
       userInfo: {

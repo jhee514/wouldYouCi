@@ -5,7 +5,6 @@
   app
   fixed
   grow
-  hide-on-scroll
   shift
   align="center"
   >

@@ -15,10 +15,10 @@
       clearable
     >
     </v-img>
-    <v-card-actions>
+    <v-card-actions class="mb-2 pa-0">
       <v-item-group>
-        <v-btn text @click="change(image)">저장</v-btn>
-        <v-btn text @click="closeDialog">취소</v-btn>
+        <v-btn text class="mr-0 ml-0" color="lightprimary" @click="change(image)">submit</v-btn>
+        <v-btn text class="ml-1 mr-1" color="primary" @click="closeDialog">cancle</v-btn>
       </v-item-group>
     </v-card-actions>
   </v-card>
