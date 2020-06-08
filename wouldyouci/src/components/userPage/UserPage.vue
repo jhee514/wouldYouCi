@@ -32,8 +32,10 @@
       <div class="prefer" v-if="tab===0">
         <span>선호하는 영화관</span>
         <TheaterList v-bind:TheaterList="theaterList"/>
+        <span>내가 좋아하는 영화</span>
+        <MovieList v-bind:CinemaList="pickMovies"/>
         <span>찜한 영화</span>
-        <MovieList v-bind:CinemaList="wishMovies"/>
+        <MovieList v-bind:CinemaList="pushMovies" />
         <span>나에게 추천하는 상영 중 영화</span>
         <MovieList v-if="recommendedOnscreen.length" v-bind:CinemaList="recommendedOnscreen"/>
         <v-card class="noReco" v-else>
@@ -100,7 +102,8 @@ export default {
     return {
       theaterList: null,
       ratedMovies: null,
-      wishMovies: null,
+      pickMovies: null,
+      pushMovies: null,
       recommendedOnscreen: [],
       recommendedMovies: [],
       isShow: false,
@@ -116,7 +119,7 @@ export default {
     ...mapGetters(['getUserInfo', 'getLoading'])
   },
   methods: {
-    ...mapMutations(['setLoading']),
+    ...mapMutations(['setLoading', 'setLoginMode']),
     ...mapActions(['bringUserInfo', 'bringRatedMovies']),
     closeDialog(type) {
       if (type === "image") {
@@ -155,6 +158,7 @@ export default {
     }
   },
   async mounted() {
+    this.setLoginMode(null);
     this.setLoading(true);
     await this.bringUserInfo();
     const HOST = process.env.VUE_APP_SERVER_HOST;
@@ -163,7 +167,8 @@ export default {
     }
     this.userName = this.getUserInfo.data.user.username;
     this.theaterList = this.getUserInfo.data.pick_cinemas;
-    this.wishMovies = this.getUserInfo.data.pick_movies;
+    this.pickMovies = this.getUserInfo.data.pick_movies;
+    this.pushMovies = this.getUserInfo.data.push_movies;
     this.recommendedOnscreen = this.getUserInfo.data.recommend_onscreen;
     this.recommendedMovies = this.getUserInfo.data.recommend_movies;
     const res = await this.bringRatedMovies();

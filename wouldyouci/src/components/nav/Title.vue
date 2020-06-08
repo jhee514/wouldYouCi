@@ -1,7 +1,6 @@
 <template>
   <div class="title">
-    <img class='popcorn' src='../../assets/popcorn.png' alt='popcorn' />
-    <span class="name">우리 주변의 씨네마</span>
+    <span class="pl-1 pr-1"> Would You Ci </span>
   </div>
 </template>
 

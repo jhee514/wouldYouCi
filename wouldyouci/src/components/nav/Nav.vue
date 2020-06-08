@@ -1,9 +1,7 @@
 <template>
 <v-bottom-navigation
-  v-model="bottomNav"
-  color="amber"
-  horizontal
-  height="5vh"
+  color="secondary"
+  height="7vh"
   app
   fixed
   grow
@@ -12,18 +10,18 @@
   align="center"
   >
     <v-btn @click="goMap">
-      <v-icon small>mdi-map-marker-outline</v-icon>
-      <span>Nearby</span>
+      <v-icon class="pt-1">mdi-map-outline</v-icon>
+      <span class="pt-1">Nearby</span>
     </v-btn>
 
     <v-btn @click="goSearch">
-      <v-icon small>mdi-magnify</v-icon>
-      <span>Search</span>
+      <v-icon class="pt-1">mdi-magnify</v-icon>
+      <span class="pt-1">Search</span>
     </v-btn>
 
     <v-btn @click="goUserPage">
-      <v-icon small>mdi-account-outline</v-icon>
-      <span>My Page</span>
+      <v-icon class="pt-1">mdi-account-outline</v-icon>
+      <span class="pt-1">My Page</span>
     </v-btn>
   </v-bottom-navigation>
 </template>
@@ -43,7 +41,7 @@ export default {
     ...mapGetters(['getSearchMode', 'isLoggedIn']),
   },
   methods: {
-    ...mapMutations(['setSearchMode']),
+    ...mapMutations(['setSearchMode', 'setLoginMode']),
     goMap() {
       this.bottomNav = 0
       const link = document.location.href.split("/");
@@ -57,22 +55,16 @@ export default {
         const link = document.location.href.split("/");
         if (link[link.length - 1] !== "search") {
           router.push('/search');
+        } else {
+          location.reload();
         }
         if (this.getSearchMode === 'after') {
           this.setSearchMode('before');
         }
       } else {
+        this.setLoginMode('login');
         router.push('/signup');
       }
-
-      //개발 중 코드
-      // const link = document.location.href.split("/");
-      // if (link[link.length - 1] !== "search") {
-      //   router.push('/search');
-      // }
-      // if (this.getSearchMode === 'after') {
-      //   this.setSearchMode('before');
-      // }
     },
     goUserPage() {
       // 실제 출시용 코드
@@ -84,31 +76,27 @@ export default {
           location.reload();
         }
       } else {
-        router.push('signup');
+        this.setLoginMode('login');
+        router.push('/signup');
       }
-
-      // 개발용 코드
-      // const link = document.location.href.split("/");
-      // if (link[link.length - 1] !== "userPage") {
-      //   router.push('/userPage');
-      // }
     }
   }
 }
 </script>
-
+<!--<style src="./Nav.css" scoped></style>-->
 <style>
-  v-btn {
-    padding: 0;
-  }
+  /*v-btn {*/
+  /*  padding: 0;*/
+  /*}*/
 
-  v-icon {
-    size: x-small;
-  }
+  /*v-icon {*/
+  /*  size: x-small;*/
+  /*}*/
 
   span {
     font-size: 1.5vh;
-    bottom: 0;
-    top: 0.5vh;
+    /*bottom: 0;*/
+    align-items: center;
+    /*top: 0.5vh;*/
   }
 </style>
