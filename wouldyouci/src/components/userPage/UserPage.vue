@@ -29,14 +29,14 @@
           </v-tab>
         </v-tabs>
       </div>
-      <div class="prefer mr-5 ml-5" v-if="tab===0">
-        <span>선호하는 영화관</span>
-        <TheaterList v-bind:TheaterList="theaterList"/>
-        <span>내가 좋아하는 영화</span>
-        <MovieList v-bind:CinemaList="pickMovies"/>
-        <span>찜한 영화</span>
-        <MovieList v-bind:CinemaList="pushMovies" />
-        <span>나에게 추천하는 상영 중 영화</span>
+      <div class="prefer" v-if="tab===0">
+        <TheaterList v-bind:Label="'선호하는 영화관'" v-bind:TheaterList="theaterList"/>
+
+        <MovieList v-bind:Label="'내가 좋아하는 영화'" v-bind:CinemaList="pickMovies"/>
+
+        <MovieList v-bind:Label="'찜한 영화'" v-bind:CinemaList="pushMovies" />
+
+        <div class="recommend">나에게 추천하는 상영 중 영화</div>
         <MovieList v-if="recommendedOnscreen.length" v-bind:CinemaList="recommendedOnscreen"/>
         <v-card class="noReco" v-else>
           <div class="exp">
