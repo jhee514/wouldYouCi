@@ -6,6 +6,7 @@
     </v-dialog>
     <div id="map" ref="map">
     </div>
+    
     <v-overlay :value="getLoading">
         <v-progress-circular
                 :size="70"

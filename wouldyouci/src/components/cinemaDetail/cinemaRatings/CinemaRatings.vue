@@ -143,7 +143,6 @@ export default {
         };
       const resData = await this.fetchRatings({item, params})
       this.busy = false;
-      console.log(resData)
       if ( resData.count > 0 ) {
         this.isRatings = true;
         for ( const rating of resData.results) {

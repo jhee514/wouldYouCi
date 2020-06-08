@@ -306,7 +306,11 @@ const actions = {
         })
         .catch(err => {
           err;
-          reject(Error('error'))
+          if ( err.response.status == 404) {
+            router.push('/404')
+          } else {
+            reject(Error('error'))
+          }
         })
     })
   },
@@ -325,7 +329,11 @@ const actions = {
         })
         .catch(err => {
           err;
-          reject(Error('error'))
+          if ( err.response.status == 404) {
+            router.push('/404')
+          } else {
+            reject(Error('error'))
+          }
         })
     })
   },
@@ -377,11 +385,11 @@ const actions = {
     return new Promise(function(resolve, reject) {
       axios.get(`${HOST}/${item}/rating/page/`, options)
         .then(res => {
-          console.log(res.data)
           resolve(res.data)
+          console.log(res.data)
         })
         .catch(err => {
-          err;
+          console.log(err);
           reject(Error('error'))
         })
     })
@@ -401,8 +409,6 @@ const actions = {
           resolve(res);
         })
         .catch(err => {
-          console.log(err);
-          console.log(err.response.status);
           reject(Error('error'));
           if (err.response.status == 403) {
             alert('이미 리뷰를 작성하셨습니다.')
@@ -458,11 +464,10 @@ const actions = {
       axios.get(`${HOST}/movie/${movieId}/onscreen/`, options)
         .then(res => {
           commit('setMovieShowingCinemas', res.data);
-          console.log(res)
           resolve('ok')
         })
         .catch(err => {
-          console.log(err);
+          err;
           reject(Error('error'))
         })
     })

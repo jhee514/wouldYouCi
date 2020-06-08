@@ -25,7 +25,6 @@
 
 .score{
   display: inline-block;
-  /* vertical-align: baseline; */
   text-align: right;
   vertical-align: middle;
   size: 14;  

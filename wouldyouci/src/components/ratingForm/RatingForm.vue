@@ -3,8 +3,8 @@
     <div class="score">
       <v-rating
         v-model="rating.score"
-        color="amber"
-        background-color="amber lighten-3"
+        color="pink lighten-1"
+        background-color="pink"
         half-increments
         hover
         size="18">
@@ -24,7 +24,7 @@
       ></v-textarea>
       <v-btn 
         class="button"
-        color="amber darken-3" 
+        color="pink" 
         icon
         text 
         @click.prevent="submitForm(rating)"
@@ -49,7 +49,7 @@ export default {
         value => ( value < 0.5 ) || '최저 점수는 0.5점입니다.',
       ],
       rating: {
-        score: 5,
+        score: 0,
         comment: '',
       },
     }

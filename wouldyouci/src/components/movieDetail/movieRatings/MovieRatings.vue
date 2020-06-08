@@ -3,81 +3,96 @@
     class="ratings"      
     v-infinite-scroll="loadMore"
     infinite-scroll-disabled="busy"
-    infinite-scroll-distance="10"
+    infinite-scroll-distance="0"
     >
-    <div class="movieScore">
-      <span>{{ Number(this.details.score.toFixed(2)) }} </span>
+    
+    <RatingForm class="rating-form" v-if="!scored" @submitRating="addRating"/>
+    <div v-else>
+      <div class="notification">
+        리뷰를 작성한 영화입니다.
+      </div>
+    </div>
+
+    <div class="movie-score">
+      <div>{{ Number(this.details.score.toFixed(2)) }} </div>
       <v-rating
         class="score"
         :value="details.score"
         background-color="amber lighten-3"
-        dense
         half-increments
         readonly
         size=20
         ></v-rating>
     </div>
-    
-    <RatingForm v-if="!scored" @submitRating="addRating"/>
-    <div v-else>리뷰를 작성한 영화입니다.</div>
 
     <v-list 
       v-if="isRatings"
       >
-      <template v-for="(rating, index) in ratings">
-        <v-list-item :key="index">
-          <v-list-item-avatar class="avatar" small>
-            <span class="white--text headline">{{ rating.user.username[0] }}</span>          
-          </v-list-item-avatar>
-          <v-list-item-content>
-              <div class="infos">
-                <div class="user">
-                 {{ rating.user.username }} | {{ formatDate(rating.updated_at) }}
-                </div>
-                <div class="score">
-                  <v-rating
-                    class="score"
-                    :value="rating.score"
-                    background-color="amber lighten-3"
-                    color="amber"
-                    dense
-                    half-increments
-                    readonly
-                    size=14
-                    ></v-rating>
-                </div>
-              </div>
-              <div class="content">
-                <p class="comment">{{ rating.comment}}</p>
-                
-                <div v-if="rating.user.username == currentUser.username" class="button">
-                  <v-dialog v-model="dialog">
-                    <template v-slot:activator="{ on }">
-                      <v-btn
-                        v-on="on"
-                        icon 
-                        color="grey"
-                        x-small
-                        >
-                        <v-icon>mdi-pencil</v-icon>
-                      </v-btn>
-                    </template>
-                    <RatingEditForm :rating="rating" :index="index" @close="closeModal" @editRating="editRating"/>
-                  </v-dialog>
+      <v-list-item
+        v-for="(rating, index) in ratings"
+        :key="index"
+        class="rating"
+        >
+        <v-list-item-avatar
+          color="primary" 
+          x-small
+          >
+          <img 
+            v-if="rating.user.file.length"
+            :src="getUserProfile(rating.user)"
+            />
+          <span 
+            v-else 
+            class="white--text headline">
+            {{ rating.user.username[0] }}
+          </span>
+        </v-list-item-avatar>
 
-                  <v-btn 
+        <v-list-item-content>
+          <div class="infos">
+            <div class="user">
+              {{ rating.user.username }} | {{ formatDate(rating.updated_at) }}
+            </div>
+            <div class="score">
+              <v-rating
+                class="score"
+                :value="rating.score"
+                background-color="amber lighten-3"
+                color="amber"
+                dense
+                half-increments
+                readonly
+                size=14
+                ></v-rating>
+            </div>
+          </div>
+          <div class="content">
+            <span class="comment">{{ rating.comment}}</span>
+            <div v-if="rating.user.username == currentUser.username" class="button">
+              <v-dialog v-model="dialog">
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    v-on="on"
                     icon 
-                    @click.prevent="deleteRating(index, rating, details.id)">
-                    <i class="fas fa-times fa-xs"></i>
+                    color="grey"
+                    x-small
+                    >
+                    <v-icon>mdi-pencil</v-icon>
                   </v-btn>
-                </div>
+                </template>
+                <RatingEditForm :rating="rating" :index="index" @close="closeModal" @editRating="editRating"/>
+              </v-dialog>
 
-              </div>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
+              <v-btn 
+                icon 
+                @click.prevent="deleteRating(index, rating, details.id)">
+                <i class="fas fa-times fa-xs"></i>
+              </v-btn>
+            </div>
+          </div>
+        </v-list-item-content>
+      </v-list-item>
       <v-btn
-
         class="upbutton"
         small
         dark
@@ -89,9 +104,11 @@
         ><v-icon>mdi-arrow-up</v-icon></v-btn>
     </v-list>
 
-    <p v-else>
-      첫번째 리뷰를 남겨주세요 :)
-    </p>
+    <div v-else>
+      <div class="notification">
+        첫번째 리뷰를 남겨주세요 :)
+      </div>
+    </div>
   </div>
 </template>
 
@@ -117,6 +134,7 @@ export default {
       ratings: [],
       currentUser: '',
       scored: false,
+      total: 0,
 
     }
   },
@@ -135,8 +153,27 @@ export default {
     ...mapGetters(['getMovieRatings']),
  
   },
+
   methods: {
     ...mapActions(['fetchRatings', 'postRating', 'delRating', 'patchRating' ]),
+
+    // async loadMore() {
+    //   this.busy = true;
+    //   const item = 'movie'
+    //   const params = { 
+    //     movie: this.details.id, 
+    //     page: this.page++,
+    //     };
+
+    //   const resData = await this.fetchRatings({item, params})
+    //   this.busy = false;
+    //   if ( resData.count > 0 ) {
+    //     this.isRatings = true;
+    //     for ( const rating of resData.results) {
+    //       this.ratings.push(rating);
+    //     }
+    //   }
+    // },
 
     async loadMore() {
       this.busy = true;
@@ -145,15 +182,30 @@ export default {
         movie: this.details.id, 
         page: this.page++,
         };
+
       const resData = await this.fetchRatings({item, params})
-      this.busy = false;
-      if ( resData.count > 0 ) {
+      if ( resData.results.length > 0 ) {
         this.isRatings = true;
         for ( const rating of resData.results) {
           this.ratings.push(rating);
         }
       }
-    },
+      setTimeout(function () {
+        this.busy = false;
+        }, 1000)
+      },
+
+    // loadMore() {
+    //   this.busy = true;
+    //   console.log('loading... ' + new Date());
+    //   setTimeout(function () {
+    //     for (var i = 0, j = 10; i < j; i++) {
+    //         console.log(this.total + i)
+    //       }
+    //       console.log('NOT BUSY')
+    //       this.busy = false
+    //     }, 10000)
+    //   },
 
     formatDate(date) {
       var dayjs = require('dayjs')
@@ -162,6 +214,12 @@ export default {
     
     closeModal() {
       this.dialog = false;
+    },
+
+    getUserProfile(user) {
+      const HOST = process.env.VUE_APP_SERVER_HOST;
+      const profileURL = `${HOST}/${user.file[0]}`;
+      return profileURL
     },
 
     deleteRating(index, rating) {
