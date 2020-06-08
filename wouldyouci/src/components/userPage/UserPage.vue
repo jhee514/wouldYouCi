@@ -47,7 +47,7 @@
             <v-icon small style="margin-left:3vw;">fas fa-arrow-right</v-icon>
           </v-btn>
         </v-card>
-        <span>나에게 추천하는 영화</span>
+        <span class="recommend">나에게 추천하는 영화</span>
         <MovieList v-if="recommendedMovies.length" v-bind:CinemaList="recommendedMovies"/>
         <v-card class="noReco" v-else>
           <div class="exp">

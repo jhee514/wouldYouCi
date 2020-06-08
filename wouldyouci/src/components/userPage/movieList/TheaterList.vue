@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div class="label">
       {{ Label }}
     </div>
     <v-slide-group
