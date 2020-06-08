@@ -1,3 +1,23 @@
+.label{
+  margin-top: 1vh;
+}
+.cinemaCard{
+  margin-right: 4vw;
+  
+  text-align: center;
+
+}
+.poster{
+  height:28vh;
+  width:35vw;
+  background-size: cover;
+  background-position:center;
+  border-radius: 15px !important; 
+}
+.cinemaInfo{
+  margin-top: 1vh;
+  font-size: small;
+}
 .noThea {
   margin-top: 1.5vh;
   margin-bottom: 1.5vh;

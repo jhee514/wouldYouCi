@@ -25,7 +25,10 @@ export default {
 </script>
 
 <style>
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+
   .app {
-    font-family: 'NanumBarunGothicOTF', monospace, 'Nanum Myeongjo', 'Noto Serif KR', 'Noto Sans KR', serif;
+    /* font-family: 'Noto Sans KR', monospace, 'Nanum Myeongjo', 'Noto Serif KR', 'NanumBarunGothicOTF' serif; */
+    font-family: 'Noto Sans KR', sans-serif;
   }
 </style>

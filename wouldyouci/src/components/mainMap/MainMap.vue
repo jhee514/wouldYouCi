@@ -43,10 +43,10 @@
 
     <div v-if="isChangeLocation">
       <v-btn small class="nowArea" v-if="loading" loading>
-        <v-icon small class="btnIcon" left="1">fas fa-undo-alt</v-icon> 주변 시네마 검색
+        <v-icon small class="btnIcon" left>fas fa-undo-alt</v-icon> 주변 시네마 검색
       </v-btn>
       <v-btn small class="nowArea" color="rgba(255, 255, 255, 0.8)" @click="changeLoading" v-else>
-        <v-icon small class="btnIcon" left="1">mdi-map-search-outline</v-icon> 여기 주변 시네마
+        <v-icon small class="btnIcon" left>mdi-map-search-outline</v-icon> 여기 주변 시네마
       </v-btn>
     </div>
 
