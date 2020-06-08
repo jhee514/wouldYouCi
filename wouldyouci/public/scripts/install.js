@@ -1,4 +1,3 @@
-// CODELAB: Add event listener for appinstalled event
 window.addEventListener('appinstalled', logAppInstalled);
 /**
  * Event handler for appinstalled event.
@@ -7,7 +6,6 @@ window.addEventListener('appinstalled', logAppInstalled);
  * @param {Event} evt
  */
 function logAppInstalled(evt) {
-  // CODELAB: Add code to log the event
   evt;
   // console.log('Cinema App was installed.', evt);
 }
