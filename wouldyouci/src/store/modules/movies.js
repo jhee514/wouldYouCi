@@ -373,6 +373,28 @@ const actions = {
         err;
       })
   },
+
+
+  fetchScore: ({ commit }, {item, itemId} ) => {
+    commit;
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+    }
+    return new Promise(function(resolve, reject) {
+      axios.get(`${HOST}/${item}/${itemId}/score/`, options)
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(err => {
+          reject(err, Error('error'))
+        })
+    })
+  },
+
+
   fetchRatings: ({ commit }, {item, params} ) => {
     commit;
     const token = sessionStorage.getItem('jwt');
@@ -406,6 +428,7 @@ const actions = {
     return new Promise(function(resolve, reject) {
       axios.post(`${HOST}/${item}/rating/`, rating, options)
         .then(res => {
+          console.log("movies res:", res)
           resolve(res);
         })
         .catch(err => {

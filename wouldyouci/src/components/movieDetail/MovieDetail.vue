@@ -32,14 +32,14 @@
           </v-btn>
 
           <v-btn v-show="toBeReleased && isPicked"
-            color='secondary'
+            color="error"
             icon
             @click.prevent="togglePickMovie">
             <v-icon>mdi-bell</v-icon>
           </v-btn>
 
           <v-btn v-show="!toBeReleased && isPicked"
-            color='secondary'
+            color="error"
             icon
             @click.prevent="togglePickMovie">
             <v-icon>mdi-heart</v-icon>

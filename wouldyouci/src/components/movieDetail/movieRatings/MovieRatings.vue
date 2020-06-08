@@ -3,7 +3,7 @@
     class="ratings"      
     v-infinite-scroll="loadMore"
     infinite-scroll-disabled="busy"
-    infinite-scroll-distance="0"
+    infinite-scroll-distance="2"
     >
     
     <RatingForm class="rating-form" v-if="!scored" @submitRating="addRating"/>
@@ -14,11 +14,11 @@
     </div>
 
     <div class="movie-score">
-      <div>{{ Number(this.details.score.toFixed(2)) }} </div>
+      <div>{{ this.movieScore }} </div>
       <v-rating
         class="score"
-        :value="details.score"
-        background-color="amber lighten-3"
+        :value="movieScore"
+        background-color="primary"
         half-increments
         readonly
         size=20
@@ -26,7 +26,7 @@
     </div>
 
     <v-list 
-      v-if="isRatings"
+      v-show="isRatings"
       >
       <v-list-item
         v-for="(rating, index) in ratings"
@@ -38,7 +38,7 @@
           x-small
           >
           <img 
-            v-if="rating.user.file.length"
+            v-if="rating.user.file"
             :src="getUserProfile(rating.user)"
             />
           <span 
@@ -57,8 +57,8 @@
               <v-rating
                 class="score"
                 :value="rating.score"
-                background-color="amber lighten-3"
-                color="amber"
+                background-color="secondary"
+                color="primary"
                 dense
                 half-increments
                 readonly
@@ -93,6 +93,7 @@
         </v-list-item-content>
       </v-list-item>
       <v-btn
+        v-show="isRatings"
         class="upbutton"
         color="primary"
         small
@@ -104,7 +105,7 @@
         ><v-icon dark>mdi-arrow-up</v-icon></v-btn>
     </v-list>
 
-    <div v-else>
+    <div v-show="!isRatings">
       <div class="notification">
         첫번째 리뷰를 남겨주세요 :)
       </div>
@@ -127,19 +128,19 @@ export default {
 
   data() {
     return {
+      currentUser: '',
       busy: false,
-      page: 1,
+      nextPage: 1,
       dialog: false,
+      movieScore: 0,
+
+      scored: false,
       isRatings: false,
       ratings: [],
-      currentUser: '',
-      scored: false,
-      total: 0,
-
     }
   },
   
-  created() {
+  async created() {
     var jwt = require('jsonwebtoken');
     const token = sessionStorage.getItem('jwt');
     var decoded = jwt.decode(token, {complete: true});
@@ -147,6 +148,8 @@ export default {
     if (this.details.has_score) {
       this.scored = true
     }
+    this.getMovieScore()
+
   },
 
   computed: {
@@ -155,57 +158,37 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchRatings', 'postRating', 'delRating', 'patchRating' ]),
+    ...mapActions(['fetchScore', 'fetchRatings', 'postRating', 'delRating', 'patchRating' ]),
 
-    // async loadMore() {
-    //   this.busy = true;
-    //   const item = 'movie'
-    //   const params = { 
-    //     movie: this.details.id, 
-    //     page: this.page++,
-    //     };
-
-    //   const resData = await this.fetchRatings({item, params})
-    //   this.busy = false;
-    //   if ( resData.count > 0 ) {
-    //     this.isRatings = true;
-    //     for ( const rating of resData.results) {
-    //       this.ratings.push(rating);
-    //     }
-    //   }
-    // },
+    async getMovieScore() {
+      const item = 'movie';
+      const itemId = this.details.id
+      const resData = await this.fetchScore({item, itemId});
+      this.movieScore = resData["score"];
+    },
 
     async loadMore() {
       this.busy = true;
-      const item = 'movie'
-      const params = { 
-        movie: this.details.id, 
-        page: this.page++,
-        };
-
-      const resData = await this.fetchRatings({item, params})
-      if ( resData.results.length > 0 ) {
-        this.isRatings = true;
-        for ( const rating of resData.results) {
-          this.ratings.push(rating);
+      if ( this.nextPage > 0 ) {
+        const item = 'movie'
+        const params = { 
+          movie: this.details.id, 
+          page: this.nextPage++,
+          };
+        const resData = await this.fetchRatings({item, params})
+        if ( resData.count > 0 ) {
+          this.isRatings = true;
+          for ( const rating of resData.results) {
+            this.ratings.push(rating);
+          }
+        }
+        if ( resData.next == null ) {
+          this.nextPage = 0
         }
       }
-      setTimeout(function () {
-        this.busy = false;
-        }, 1000)
-      },
 
-    // loadMore() {
-    //   this.busy = true;
-    //   console.log('loading... ' + new Date());
-    //   setTimeout(function () {
-    //     for (var i = 0, j = 10; i < j; i++) {
-    //         console.log(this.total + i)
-    //       }
-    //       console.log('NOT BUSY')
-    //       this.busy = false
-    //     }, 10000)
-    //   },
+      this.busy = false;
+    },
 
     formatDate(date) {
       var dayjs = require('dayjs')
@@ -222,32 +205,28 @@ export default {
       return profileURL
     },
 
-    deleteRating(index, rating) {
+    async deleteRating(index, rating) {
       const item = 'movie'
       const ratingId = rating.id;
       if(confirm('삭제하시겠습니까?')){
-        this.delRating({item, ratingId});
+        await this.delRating({item, ratingId});
         this.$delete(this.ratings, index)
-        if ( index === 0 ) {
-          this.isRatings = false
-        }
+        await this.getMovieScore()
+        this.scored = false
+        this.ratings = [];
+        this.nextPage = 1;
+        this.loadMore();
       }
-      this.scored = false
     },
     
     async addRating(rating){
       const item = 'movie'
       rating[item] = this.details.id;
-      const res = await this.postRating({item, rating});
-      res.data["user"] = this.currentUser;
-      if ( this.isRatings ) {
-        this.ratings.unshift(res.data)
-      } else {
-        this.isRatings = true
-        this.ratings.push(res.data)
-      }
-      this.scored = true
-
+      await this.postRating({item, rating});
+      this.scored = true;
+      this.ratings = [];
+      this.nextPage = 1;
+      this.loadMore();
     },
     
     async editRating(editedRating) {
@@ -256,7 +235,7 @@ export default {
       editedRating[item] = this.details.id;
       await this.patchRating({item, editedRating});
       this.ratings = [];
-      this.page = 1;
+      this.nextPage = 1;
       this.loadMore();
 
     },
