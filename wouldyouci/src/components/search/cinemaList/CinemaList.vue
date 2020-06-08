@@ -1,31 +1,28 @@
 <template>
   <div>
-    <div>
+    <div class="label">
       {{ Label }}
     </div>
     <v-slide-group
-      class="cinemaList"
+      class="pa-2 cinemaList"
       active-class="success"
     >
       <v-slide-item
         v-for="(cinema, idx) in CinemaList"
         :key="idx"
       >
+      <div class="cinemaCard">
         <v-card
-          class="ma-4"
-          height="auto"
-          width="45vw"
+          class="poster"
+          :style="{backgroundImage:`url(${cinema.poster})`}"
           @click="goDetail(cinema.id)"
-          dark
         >
-          <v-img 
-            :src=cinema.poster
-            height="40vh"
-            width="45vw"
-          >
-          </v-img>
-          <v-card-text>{{ getMovieName(cinema.name) }}</v-card-text>
+          
         </v-card>
+        <div class="cinemaInfo">
+          <h5>{{cinema.name}}</h5>
+        </div>
+        </div>
       </v-slide-item>
     </v-slide-group>
   </div>

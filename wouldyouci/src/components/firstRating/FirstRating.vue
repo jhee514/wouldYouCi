@@ -30,11 +30,11 @@
           </v-chip>
         </div>
         <v-row justify="end">
-          <v-btn color="rgba(173, 139, 232, 0.9)" class="next" text @click="goMap">
+          <v-btn color="rgba(173, 139, 232, 0.9)" class="next"  text @click="goMap">
             다음에 하기<v-icon small>fas fa-arrow-right</v-icon>
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="rgba(173, 139, 232, 0.9)" @click="submitRating" text>저 장</v-btn>
+          <v-btn class="save" color="rgba(173, 139, 232, 0.9)" @click="submitRating" text>저 장</v-btn>
         </v-row>
         <v-row dense justify="center">
           <v-col

@@ -1,0 +1,17 @@
+.card{
+    margin-right:2vh;
+    background-size: cover;
+    background-position:center;
+    
+    border-radius: 12px !important; 
+}
+
+.cardname{
+    font-size: small;
+    padding-top: 11vh;
+    bottom:0.5vh;
+}
+.theaterinfo{
+    text-align: center;
+    font-size: small;
+}

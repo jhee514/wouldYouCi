@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <v-chip
       class="ml-2 mb-2 mychip"
       color="mypink"

@@ -13,6 +13,12 @@
 
 .next{
   margin-left: 3vw;
+  margin-top: 1vh;
+  
+}
+.save{
+  margin-right: 3vw;
+  margin-top: 1vh;
 }
 
 #app > div > div.firstRating > div.container.container--fluid > div:nth-child(1) > button > span > i{
@@ -20,13 +26,13 @@
 }
 
 .v-btn{
-  margin-top: 1vh;
-  margin-right: 3vw;
+  font-size: 10vw;
 }
 
 .upBtn {
   position: fixed;
   bottom: 7vh;
+  margin-right: 3vw;
   right: 0vw;
   color: rgb(173, 139, 232);
 }
@@ -65,7 +71,7 @@
 
 .chip{
   z-index: 1;
-  left: 20vw;
+  left: 28.5vw;
   bottom: 9.3vh;
   position: fixed;
   color:#FFFFFF
