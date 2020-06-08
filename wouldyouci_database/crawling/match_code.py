@@ -3,7 +3,7 @@ import urllib.request
 from dotenv import load_dotenv
 import json
 import requests
-import pyperclip  # 인증시 아이디 비번 복붙
+import pyperclip 
 import time
 import datetime
 
@@ -61,7 +61,6 @@ def getNaverInfo(movie_name, director_name):
         "X-Naver-Client-Id":NAVER_CLIENT_ID,
         "X-Naver-Client-secret":NAVER_CLIENT_SECRET,
     }
-    print(movie_name)
     req = requests.get(NAVER_REQUEST_URL+"query="+movie_name+"&display=100", headers = header).json()
     req_items = req['items']
     if req_items:
@@ -89,6 +88,35 @@ def naverLogin():
     driver.find_element_by_xpath('//*[@value="로그인"]').click()
     time.sleep(1)
 
+def getTrailer(title, s_opt):
+    res = ''
+    YOUTUBE_KEY = os.getenv('YOUTUBE_KEY')
+    REQUEST_URL = 'https://www.googleapis.com/youtube/v3/search?'
+    YOUTUBE_SEARCH = 'https://www.youtube.com/results?'
+    options = {
+        'key': YOUTUBE_KEY,
+        'part': 'id',
+        'q': title + ' ' + s_opt,
+        'maxResults': 1,
+        'type': 'video',
+        'videoDuration': 'short'
+    }
+    search_option = {
+        'search_query': title + ' ' + s_opt,
+    }
+    url_option = urllib.parse.urlencode(options)
+    SEARCH_URL = REQUEST_URL+url_option
+    SEARCH_RESULT = json.loads(urllib.request.urlopen(SEARCH_URL).read())
+    ITEM_LIST = SEARCH_RESULT['items']
+    if ITEM_LIST:
+        YOUTUBE_VIDEO_URL = 'https://www.youtube.com/embed/'
+        for ITEM in ITEM_LIST:
+            if ITEM['id'].get('videoId'):
+                youtube_code = ITEM['id']['videoId']
+                break
+        res = YOUTUBE_VIDEO_URL + youtube_code
+    return res
+        
 def getMovieDetail(movie_code, movie_info, movie_name):
     NAVER_MOVIE_BASE = 'https://movie.naver.com/movie/bi/mi/basic.nhn?code='
     NAVER_IMAGE_URL = 'https://movie.naver.com/movie/bi/mi/photoViewPopup.nhn?movieCode='
@@ -163,6 +191,8 @@ def getMovieDetail(movie_code, movie_info, movie_name):
     if description:
         new_fields['summary'] = getSummary(description.text)
     
+    new_info['trailer'] = getTrailer(movie_name, '예고편')
+
     new_info['fields'] = new_fields
     return new_info
                 
@@ -262,12 +292,14 @@ def getCompanyDetail(tg_dict):
     BASE_DICT = {
         'CGV': 'http://www.cgv.co.kr/movies/detail-view/?midx=',
         'MEGABOX': 'https://www.megabox.co.kr/movie-detail?rpstMovieNo=',
-        'LOTTE':'https://www.lottecinema.co.kr/NLCHS/Movie/MovieDetailView?movie='
+        'LOTTE':'https://www.lottecinema.co.kr/NLCHS/Movie/MovieDetailView?movie=',
+        'YES': 'https://movie.yes24.com/MovieInfo/Index?mId=M'
     }
     director_name = ''
     for company, code in tg_dict.items():
-        if company == 'DAEHAN':
+        if company == 'CINEQ':
             return ''
+
         base_url = BASE_DICT[company]
         detail_url = base_url + code
         detail_html = urllib.request.urlopen(detail_url)
@@ -299,6 +331,17 @@ def getCompanyDetail(tg_dict):
             if ul_box and ul_box.find('em').text == '감독':
                 director_name = ul_box.find('a').text
         
+        elif company == 'YES':
+            driver.get(detail_url)
+            time.sleep(2)
+            detail_source = driver.page_source
+            detail_soup = BeautifulSoup(detail_source, 'html.parser')
+            people_list = detail_soup.find_all('div', {'class': 'act_info'})
+            for people in people_list:
+                people_job = people.find('p', {'class': 'job'})
+                if people_job and people_job.text == '감독':
+                    director_name = people.find('p', {'class': 'name dot_st'}).text
+                    break
         if director_name:
             break
     return director_name
@@ -409,8 +452,8 @@ def matchingMovieCode():
     with open('08_movie_match.json', 'w', encoding='UTF-8') as fp:
         json.dump(movie_dict, fp, ensure_ascii=False, indent=4)
 
-    # with open('06_complete.json', 'w', encoding='UTF-8') as fp:
-    #     json.dump(complete_list, fp, ensure_ascii=False, indent=4)
+    with open('06_complete.json', 'w', encoding='UTF-8') as fp:
+        json.dump(complete_list, fp, ensure_ascii=False, indent=4)
 
-    # with open('04_peoples_save.json', 'w', encoding='UTF-8') as fp:
-    #     json.dump(people_check, fp, ensure_ascii=False, indent=4)
+    with open('04_peoples_save.json', 'w', encoding='UTF-8') as fp:
+        json.dump(people_check, fp, ensure_ascii=False, indent=4)

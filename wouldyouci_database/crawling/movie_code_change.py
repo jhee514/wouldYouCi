@@ -1,8 +1,10 @@
 import json
 
 def findCinemaCompany(tg_pk):
-    if tg_pk == 74:
-        return 'DAEHAN'
+    if tg_pk == 75 or tg_pk == 84:
+        return 'CINEQ'
+    elif tg_pk == 74 or (tg_pk > 75 and tg_pk != 84):
+        return 'YES'
 
     for cinema in cinema_list:
         if cinema['pk'] == tg_pk:
