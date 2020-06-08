@@ -34,7 +34,7 @@
 
         <MovieList v-bind:Label="'내가 좋아하는 영화'" v-bind:CinemaList="pickMovies"/>
 
-        <MovieList v-bind:Label="'찜한 영화'" v-bind:CinemaList="pushMovies" />
+        <MovieList v-bind:Label="'찜한 상영예정작'" v-bind:CinemaList="pushMovies" />
 
         <MovieList v-if="recommendedOnscreen.length" v-bind:Label="'추천 상영작'" v-bind:CinemaList="recommendedOnscreen"/>
         <v-card class="noReco" v-else>
