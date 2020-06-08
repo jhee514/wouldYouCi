@@ -5,7 +5,7 @@
         아이디
       </p>
       <h3>
-        userName
+        {{ UserName }}
       </h3>
       <v-text-field
         label="New Password"
@@ -35,6 +35,7 @@
 import { mapActions } from 'vuex';
 export default {
   name: 'changeUserPass',
+  props: ["UserName"],
   data() {
     return {
       userInfo: {

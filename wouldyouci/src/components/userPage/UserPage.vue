@@ -11,7 +11,7 @@
           <ChangeUserImage v-if="isShowChangeImgDialog" @changeUserImage="closeChangeImgDialog" @changeP="changeP"/>
         </v-dialog>
         <v-dialog v-model="isShowChangePassDialog">
-          <ChangeUserPass v-if="isShowChangePassDialog" @changeUserPass="closeChangePassDialog"/>
+          <ChangeUserPass v-if="isShowChangePassDialog" v-bind:UserName="userName" @changeUserPass="closeChangePassDialog"/>
         </v-dialog>
       </div>
       <UserInfo v-bind:UserName="userName" v-bind:UserProfile="profileURL" @deleteP="deleteP"/>
