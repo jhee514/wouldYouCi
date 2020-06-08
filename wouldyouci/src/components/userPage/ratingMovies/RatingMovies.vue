@@ -11,8 +11,8 @@
             color="rgba(173, 139, 232, 0.8)"
             text-color="#FFFFFF"
              text @click="goFirstRating">
-            영화 평가하기
-            <v-icon>fas fa-arrow-right</v-icon>
+            영화 평가하기 
+            <v-icon small>fas fa-arrow-right</v-icon>
           </v-chip>
         </div>
           <v-chip

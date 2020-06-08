@@ -35,7 +35,9 @@
    padding-left: 0;
 }
 .mycard{
+  margin-left: 3vw;
   height: 18vh;
+  width: 87vw;
 }
 
 .card_image{

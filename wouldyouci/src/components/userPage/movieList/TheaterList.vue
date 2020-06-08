@@ -4,7 +4,7 @@
       <h4>{{ Label }}</h4>
     </div>
     <v-slide-group
-      class="lists"
+      class="pa-2 pl-4"
       active-class="success"
       v-if="TheaterList && TheaterList.length"
     >
@@ -14,7 +14,7 @@
       >
         <div class="theaterinfo">
           <v-card
-            class="card mb-1"
+            class="card"
             height="15vh"
             width="40vw"
             @click="goDetail(theater.id)"
