@@ -1,9 +1,9 @@
 <template>
   <div>
     <Title />
-    <div class='userPage'>
-      <div class="settingIcon">
-        <v-icon class="setting" @click="isShow=!isShow">fas fa-cog</v-icon>
+    <div class='userPage mt-0 mr-0 ml-0'>
+      <div class="settingIcon ml-3 mr-3">
+        <v-icon small color="titlepink" @click="isShow=!isShow">fas fa-cog</v-icon>
         <v-dialog v-model="isShow">
           <SettingCard @settingCard="closeDialog" />
         </v-dialog>
@@ -18,7 +18,7 @@
       <div class="tabs">
         <v-tabs
           v-model="tab"
-          background-color="transparent"
+          background-color="rgba(163, 102, 244, 0.13)"
           grow
         >
           <v-tab
@@ -29,7 +29,7 @@
           </v-tab>
         </v-tabs>
       </div>
-      <div class="prefer" v-if="tab===0">
+      <div class="prefer mr-5 ml-5" v-if="tab===0">
         <span>선호하는 영화관</span>
         <TheaterList v-bind:TheaterList="theaterList"/>
         <span>내가 좋아하는 영화</span>
@@ -112,7 +112,7 @@ export default {
       userName: null,
       profileURL: null,
       tab: 0,
-      items: ['내가 선호하는 영화', '내가 평가한 영화']
+      items: ['선호하는 영화', '평가한 영화']
     }
   },
   computed: {

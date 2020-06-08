@@ -6,7 +6,9 @@
 }
 
 .settingIcon{
-  text-align: right;
+  position: absolute;
+  right: 2vw;
+  opacity: 0.5;
 }
 
 span{
