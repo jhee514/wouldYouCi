@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="label">
-      {{ Label }}
+      <h4>{{ Label }}</h4>
     </div>
     <v-container class="ranklist" fluid grid-list-xl>
       <v-layout justify-center row wrap x12 md8>

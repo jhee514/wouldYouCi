@@ -36,8 +36,7 @@
 
         <MovieList v-bind:Label="'찜한 영화'" v-bind:CinemaList="pushMovies" />
 
-        <div class="recommend">나에게 추천하는 상영 중 영화</div>
-        <MovieList v-if="recommendedOnscreen.length" v-bind:CinemaList="recommendedOnscreen"/>
+        <MovieList v-if="recommendedOnscreen.length" v-bind:Label="'추천 상영작'" v-bind:CinemaList="recommendedOnscreen"/>
         <v-card class="noReco" v-else>
           <div class="exp">
             현재 데이터가 부족해 영화 추천이 불가능 합니다.
@@ -47,8 +46,7 @@
             <v-icon small style="margin-left:3vw;">fas fa-arrow-right</v-icon>
           </v-btn>
         </v-card>
-        <span class="recommend">나에게 추천하는 영화</span>
-        <MovieList v-if="recommendedMovies.length" v-bind:CinemaList="recommendedMovies"/>
+        <MovieList v-if="recommendedMovies.length" v-bind:Label="'이런 영화는 어때요?'" v-bind:CinemaList="recommendedMovies"/>
         <v-card class="noReco" v-else>
           <div class="exp">
             현재 데이터가 부족해 영화 추천이 불가능 합니다.

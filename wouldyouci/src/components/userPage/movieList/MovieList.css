@@ -1,6 +1,7 @@
 .label{
   margin-top: 2vh;
-  margin-left: 4vw;
+  margin-left: 6vw;
+  color:#674c80;
 }
 .cinemaCard{
   margin-right: 4vw;
@@ -31,7 +32,10 @@
 
 .noContent{
   text-align: center;
-  margin-left: 4vw;
+  margin-left: 5vw;
+  margin-top: 2vh;
+  margin-bottom: 5vh;
+
 }
 .noContentExp{
   padding-top: 8vh;

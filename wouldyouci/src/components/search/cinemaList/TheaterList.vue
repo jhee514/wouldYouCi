@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div>
-      {{ Label }}
+    <div class="label">
+      <h4>{{ Label }}</h4>
     </div>
     <v-slide-group
       class="pa-2 cinemaList"
@@ -28,21 +28,21 @@
     </v-slide-group>
     <v-card
       v-else-if="pos"
-      class="noThea"
+      class="noContent"
       height="20vh"
-      width="90vw"
+      width="86vw"
     >
-      <div class="noTheaExp">
+      <div class="noContentExp">
         근처에 영화관이 없습니다.
       </div>
     </v-card>
     <v-card
       v-else
-      class="noThea"
+      class="noContent"
       height="20vh"
-      width="90vw"
+      width="86vw"
     >
-      <div class="noTheaExp">
+      <div class="noContentExp">
         위치 정보를 허용해주세요.
       </div>
     </v-card>

@@ -1,9 +1,11 @@
 .label{
-  margin-top: 1vh;
+  margin-top: 2vh;
+  margin-left: 4vw;
+  margin-bottom: 0;
+  color: #674c80;
 }
 .cinemaCard{
-  margin-right: 4vw;
-  
+  margin-right: 4vw; 
   text-align: center;
 
 }

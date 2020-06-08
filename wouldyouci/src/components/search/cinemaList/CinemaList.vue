@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="label">
-      {{ Label }}
+      <h4>{{ Label }}</h4>
     </div>
     <v-slide-group
       class="pa-2 cinemaList"
