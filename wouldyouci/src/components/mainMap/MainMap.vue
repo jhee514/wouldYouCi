@@ -321,7 +321,7 @@ export default {
           this.theaterMovieList = this.getTheaterMovies;
           this.nowHere = pos;
           const hereIcon = {
-            url : "https://image.flaticon.com/icons/svg/684/684908.svg",
+            url : "https://k02a4061.p.ssafy.io/media/pin.svg",
             scaledSize: new this.google.maps.Size(40, 40)
           }
           this.marking({type: 'user', position: pos, icon: hereIcon});
@@ -388,6 +388,10 @@ export default {
             }
           );
         }
+        this.myMarker.setIcon({
+          url : "https://k02a4061.p.ssafy.io/media/pin.svg",
+          scaledSize: new this.google.maps.Size(zoomLevel*3, zoomLevel*3)
+        })
       }.bind(this))
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async function(position) {
@@ -401,8 +405,8 @@ export default {
           this.theaterMovieList = this.getTheaterMovies;
           this.nowHere = pos;
           const hereIcon = {
-            url : "https://image.flaticon.com/icons/svg/684/684908.svg",
-            scaledSize: new this.google.maps.Size(40, 40)
+            url : "https://k02a4061.p.ssafy.io/media/pin.svg",
+            scaledSize: new this.google.maps.Size(14*3, 14*3)
           }
           this.marking({type: 'user', position: pos, icon: hereIcon});
           this.marking({type: 'theater', position: this.theaterMovieList});

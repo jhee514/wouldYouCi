@@ -31,6 +31,12 @@ export default new Vuetify({
         lightPink:'#D9A796',
         white: '#fafafa',
         fontgrey: '#768285',
+        elsepink: '#ff748f',
+        megabox: '#672484',
+        cgv: '#e32f57',
+        lotte: '#f69a05',
+        titlepink: '#fb9cb5',
+        titleblue: '#6382ce',
       }
     },
   },
