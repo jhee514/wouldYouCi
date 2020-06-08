@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from django.shortcuts import get_object_or_404
 from django.db.models import Count
 from rest_framework import viewsets
@@ -53,7 +54,13 @@ def user_index(request):
     user = request.user
     user_serializer = UserDetailSerializer(user)
     pick_movies = user.pick_movies.all()
+
+    today = date.today()
+    push_movies = pick_movies.filter(open_date__gt=today + timedelta(days=1))
+    pick_movies = pick_movies.filter(open_date__lte=today + timedelta(days=1))
+
     pick_cinemas = user.pick_cinemas.all()
+    push_movies_serializer = SimpleMovieSerializer(push_movies, many=True)
     pick_movies_serializer = SimpleMovieSerializer(pick_movies, many=True)
     pick_cinemas_serializer = SimpleCinemaSerializer(pick_cinemas, many=True)
 
@@ -81,6 +88,7 @@ def user_index(request):
             'rating_tf': rating_tf,
             'pick_cinemas': pick_cinemas.count(),
             'pick_movies': pick_movies.count(),
+            'push_movies': push_movies.count(),
             'recommend_movies': recommend_movies_cnt,
             'recommend_onscreen': recommend_onscreen_cnt,
         },
@@ -88,6 +96,7 @@ def user_index(request):
             'user': user_serializer.data,
             'pick_cinemas': pick_cinemas_serializer.data,
             'pick_movies': pick_movies_serializer.data,
+            'push_movies': push_movies_serializer.data,
             'recommend_movies': recommend_movies,
             'recommend_onscreen': recommend_onscreen
         }

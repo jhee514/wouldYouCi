@@ -10,6 +10,7 @@ urlpatterns = [
     path('<int:movie_id>/', views.movie_detail, name='movie_detail'),
     path('<int:movie_id>/pick/', views.pick_movie, name='pick_movie'),
     path('<int:movie_id>/onscreen/', views.get_onscreen_cinema, name='get_onscreen_cinema'),
+    path('<int:movie_id>/score/', views.get_rating_avg, name='get_rating_avg'),
 
     path('rating/', views.create_rating, name='create_rating'),
     path('rating/page/', include(router.urls)),

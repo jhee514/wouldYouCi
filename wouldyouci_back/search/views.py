@@ -135,7 +135,7 @@ def search_index(request):
     today = date.today()
 
     comming_soon = Movie.objects.filter(open_date__gte=today,
-                                        open_date__lte=today + timedelta(days=31)).order_by('open_date')
+                                        open_date__lte=today + timedelta(days=62)).order_by('open_date')
     soon_serializer = PremovieSerializer(comming_soon, many=True)
 
     popular_movies = Movie.objects.exclude(onscreens=None).annotate(num_rating=Count('ratings'))
