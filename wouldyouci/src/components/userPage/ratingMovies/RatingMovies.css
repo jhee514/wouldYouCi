@@ -3,7 +3,12 @@
   padding-bottom: 0;
   padding-right: 0;
 }
- 
+.mod{
+  margin-right: 25vw;
+  margin-left: 6vw;
+  font-size: small;
+  color: #acacac;
+}
 .goReview{
   font-size: large;
   padding-right: 4vw;
