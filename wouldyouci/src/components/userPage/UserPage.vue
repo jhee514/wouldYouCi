@@ -163,7 +163,6 @@ export default {
     if (this.getUserInfo.data.user.file.length) {
       this.profileURL = `${HOST}/${this.getUserInfo.data.user.file[0]}`;
     }
-    console.log(this.getUserInfo)
     this.userName = this.getUserInfo.data.user.username;
     this.theaterList = this.getUserInfo.data.pick_cinemas;
     this.pickMovies = this.getUserInfo.data.pick_movies;
