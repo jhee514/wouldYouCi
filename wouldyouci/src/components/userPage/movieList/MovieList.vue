@@ -5,7 +5,7 @@
     </div>
     <v-slide-group
       dark
-      class="pa-4"
+      class="pa-4 pb-0"
       active-class="success"
       v-if="CinemaList && CinemaList.length"
     >
@@ -32,7 +32,7 @@
       class="noContent"
       height="20vh"
       width="90vw"
-      style="margin-right:2vh"
+      style="margin-right:2vh; margin-bottom:70px;"
     >
       <div class="noContentExp">
         해당 콘텐츠가 없습니다.

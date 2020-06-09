@@ -4,7 +4,7 @@
       <h4>{{ Label }}</h4>
     </div>
     <v-slide-group
-      class="pa-2 pl-4"
+      class="pa-2 pl-4 pb-10"
       active-class="success"
       v-if="TheaterList && TheaterList.length"
     >
@@ -30,7 +30,7 @@
       class="noContent"
       height="20vh"
       width="90vw"
-      style="margin-right:2vh"
+      style="margin-right:2vh; margin-bottom:70px;"
     >
       <div class="noContentExp">
         해당 콘텐츠가 없습니다.
