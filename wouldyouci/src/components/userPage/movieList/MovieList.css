@@ -3,10 +3,10 @@
   margin-left: 6vw;
   color:#674c80;
 }
+
 .cinemaCard{
   margin-right: 4vw;
   text-align: center;
-
 }
 .poster{
   height:28vh;
@@ -19,6 +19,7 @@
   margin-top: 1vh;
   font-size: small;
 }
+
 .noThea {
   margin-top: 1.5vh;
   margin-bottom: 1.5vh;
@@ -35,7 +36,6 @@
   margin-left: 5vw;
   margin-top: 2vh;
   margin-bottom: 5vh;
-
 }
 .noContentExp{
   padding-top: 8vh;
