@@ -44,9 +44,11 @@
         <div class="right">
           <v-btn 
             icon 
-            :color="(isPicked) ? 'elsepink' : 'grey'"
+            :color="(isPicked) ? 'elsepink' : 'lightgrey'"
             @click.prevent="togglePickCinema">
-            <v-icon>mdi-heart</v-icon>
+            <v-icon v-show="isPicked">mdi-heart</v-icon>
+            <span v-show="!isPicked">찜</span>
+            <v-icon v-show="!isPicked">mdi-plus</v-icon>
           </v-btn>
           <v-btn
             icon

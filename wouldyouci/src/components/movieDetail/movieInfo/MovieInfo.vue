@@ -7,8 +7,7 @@
         </span>
       </v-col>
       <v-col cols="10">
-        <span
-          class="content"
+        <span class="content"
           >
           {{ details.open_date }}
         </span>

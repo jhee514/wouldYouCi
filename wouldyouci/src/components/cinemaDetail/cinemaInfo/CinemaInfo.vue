@@ -1,35 +1,15 @@
 <template>
   <div class="body">
     <v-row no-gutters>
-      <!-- <v-col class="item" cols="3">
-        <span>
-          홈페이지
-        </span>
-      </v-col>
-      <v-col cols="9">
-        <span class="content">
-          <v-btn
-            text
-            target="_blank"
-            :href="details.url" 
-            >
-            홈페이지
-          </v-btn>
-        </span>
-      </v-col> -->
-    </v-row>
-    <v-row>
       <v-col class="item" cols="3">
         <span>
           주차 
         </span>
       </v-col>
       <v-col cols="9">
-        <p 
-          class="content"
-          >
+        <span class="content">
           {{ details.parking }}
-        </p>
+        </span>
       </v-col>
     </v-row>
     <v-row>
@@ -39,9 +19,9 @@
         </span>
       </v-col>
       <v-col cols="9">
-        <p class="content">
+      <span class="content">
           {{ details.public }}
-        </p>
+        </span>
       </v-col>
     </v-row>
     <v-row>

@@ -43,11 +43,10 @@
             v-if="rating.user.file"
             :src="getUserProfile(rating.user)"
             />
-          <span 
-            v-else 
-            class="white--text headline">
-            {{ rating.user.username[0] }}
-          </span>
+          <v-img 
+            v-else
+            src="../../../assets/astronaut.png"
+            />
         </v-list-item-avatar>
         <v-list-item-content>
           <div class="infos">

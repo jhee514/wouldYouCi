@@ -25,8 +25,9 @@
                         <v-list-item-subtitle class="mysubtitle">{{ data.address }}</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
-                    <v-card-text class="movieInfo">
+                    <v-card-text class="cinemaInfo">
                       <div class="rating">
+                        {{ data.score }}
                         <v-rating
                           :value="data.score"
                           color="amber"
