@@ -37,25 +37,37 @@
         <MovieList v-bind:Label="'찜한 상영예정작'" v-bind:CinemaList="pushMovies" />
 
         <MovieList v-if="recommendedOnscreen.length" v-bind:Label="'추천 상영작'" v-bind:CinemaList="recommendedOnscreen"/>
-        <v-card class="noReco" v-else>
-          <div class="exp">
-            현재 데이터가 부족해 영화 추천이 불가능 합니다.
-          </div>
-          <v-btn text @click="goFirstRating">
-            영화 평가하러 가기
-            <v-icon small style="margin-left:3vw;">fas fa-arrow-right</v-icon>
-          </v-btn>
-        </v-card>
+        <div v-else>
+          <div class="label">
+              <h4>추천 상영작</h4>
+            </div>
+          <v-card class="noReco" >
+            
+            <div class="exp">
+              현재 데이터가 부족해 영화 추천이 불가능 합니다.
+            </div>
+            <v-btn text @click="goFirstRating">
+              영화 평가하러 가기
+              <v-icon small style="margin-left:3vw;">fas fa-arrow-right</v-icon>
+            </v-btn>
+          </v-card>
+        </div>
+        
         <MovieList v-if="recommendedMovies.length" v-bind:Label="'이런 영화는 어때요?'" v-bind:CinemaList="recommendedMovies"/>
-        <v-card class="noReco" v-else>
-          <div class="exp">
-            현재 데이터가 부족해 영화 추천이 불가능 합니다.
-          </div>
-          <v-btn text @click="goFirstRating">
-            영화 평가하러 가기
-            <v-icon small style="margin-left:3vw;">fas fa-arrow-right</v-icon>
-          </v-btn>
-        </v-card>
+        <div v-else>
+          <div class="label">
+              <h4>이런 영화는 어때요?</h4>
+            </div>
+          <v-card class="noReco">
+            <div class="exp">
+              현재 데이터가 부족해 영화 추천이 불가능 합니다.
+            </div>
+            <v-btn text @click="goFirstRating">
+              영화 평가하러 가기
+              <v-icon small style="margin-left:3vw;">fas fa-arrow-right</v-icon>
+            </v-btn>
+          </v-card>
+        </div>
       </div>
       <div class="rating" v-else>
         <RatingMovies v-bind:CinemaList="ratedMovies"/>

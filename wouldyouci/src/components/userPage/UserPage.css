@@ -25,10 +25,11 @@ span{
 
 .noReco{
   text-align: center;
-  margin-left: 4vw;
-  margin-right: 6vw;
+  margin-left: 5vw;
+  margin-right: 5vw;
   margin-top: 2vh;
   margin-bottom: 5vh;
+  padding-bottom: 2vh;
 }
 
 .exp{
@@ -41,4 +42,10 @@ span{
 
 #app > div > div.userPage > div.prefer > div.v-card.v-sheet.theme--light > button{
   padding-bottom: 5vh;
+}
+
+.label{
+  margin-top: 2vh;
+  margin-left: 6vw;
+  color:#674c80;
 }
