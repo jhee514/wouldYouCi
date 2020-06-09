@@ -3,7 +3,7 @@ const HOST = process.env.VUE_APP_SERVER_HOST;
 const axios = require("axios");
 
 const state = {
-  LoginMode: true,
+  LoginMode: null,
   token: null,
   errors: [],
   loading: false,
@@ -11,7 +11,7 @@ const state = {
 };
 
 const getters = { 
-  isLoginMode: state => state.LoginMode,
+  getLoginMode: state => state.LoginMode,
   isLoggedIn: state => !!state.token,
   getErrors: state => state.errors,
   getLoading: state => state.loading,
@@ -19,7 +19,7 @@ const getters = {
 };
 
 const mutations = {
-  setLoginMode: state => (state.LoginMode = !state.LoginMode),
+  setLoginMode: (state, type) => (state.LoginMode = type),
   setToken: (state, token) => {
     state.token = token;
     sessionStorage.setItem("jwt", token);
@@ -66,7 +66,6 @@ const actions = {
           commit('setLoading', false);
           commit("setToken", res.data.token);
           dispatch("checkRating", 'login');
-          // router.push("/firstRating");
         })
         .catch(err => {
           commit('setLoading', false);

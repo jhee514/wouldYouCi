@@ -1,10 +1,11 @@
 div.logo{
-  margin-top: 50px;
+  margin-top: 40px;
+  margin-bottom: 10px;
   text-align: center;
 }
 
 img.logo{
-  width: 80px;
+  width: 50px;
   height: 50px;
 }
 
@@ -13,13 +14,14 @@ div.title{
 }
 
 img.title{
-  width: 200px;
-  height: 200px;
+  width: 300px;
+  height: 300px;
 }
 
 .goMapBtn{
   text-align: right;
-  margin-right: 10vw;
+  margin-top: 1vh;
+  margin-right: 11vw;
 }
 
 #app > div > div.goMapBtn > button {

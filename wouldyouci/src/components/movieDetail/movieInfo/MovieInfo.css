@@ -1,12 +1,12 @@
-.v-divider{
-  margin-top: 1vh;
-  margin-bottom: 1vh;
+.body {
+  padding: 0 16px;
 }
 
-.item{
+.container {
+  display: inline;
+}
+
+.item {
   color: grey;
-}
-
-.content{
-  color: black;
+  vertical-align: middle;
 }

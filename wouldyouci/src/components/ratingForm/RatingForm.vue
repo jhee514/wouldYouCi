@@ -3,8 +3,8 @@
     <div class="score">
       <v-rating
         v-model="rating.score"
-        color="amber"
-        background-color="orange lighten-3"
+        color="elsepink"
+        background-color="pink lighten-4"
         half-increments
         hover
         size="18">
@@ -15,16 +15,17 @@
         v-model="rating.comment"
         clearable
         clear-icon="fas fa-times xsmall"
+        elsepink
         label="관람평"
         rows="1"
         auto-grow
         hide-details="auto"
-        color="orange darken-3"
+        color="fontgrey"
         dense
       ></v-textarea>
       <v-btn 
         class="button"
-        color="orange darken-3" 
+        color="elsepink" 
         icon
         text 
         @click.prevent="submitForm(rating)"
@@ -49,7 +50,7 @@ export default {
         value => ( value < 0.5 ) || '최저 점수는 0.5점입니다.',
       ],
       rating: {
-        score: 0,
+        score: 0.5,
         comment: '',
       },
     }

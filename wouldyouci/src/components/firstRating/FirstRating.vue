@@ -9,64 +9,85 @@
     >
       <v-card class="explanation">
         <v-card-text>
-          아래의 영화 중 본 영화에 대해 1~5점 사이의 평점을 남겨주시면
+          아래의 영화 중 본 영화에 대해 평점을 남겨주시면
           당신의 취향에 맞는 영화를 추천해드립니다.
-          <h4>단, 최소 10개 이상의 영화를 평가해주셔서 추천이 가능합니다.</h4>
+          <h4>단, 최소 10개 이상의 영화를 평가해주셔야 추천이 가능합니다.</h4>
         </v-card-text>
       </v-card>
       <v-container fluid>
         <div class="chip">
           <v-chip
-            color="#998DE8"
+            color="rgba(173, 139, 232, 0.8)"
             text-color="#FFFFFF"
+            class="chip"
           >
             <v-avatar tile>
               <v-icon>
                 fas fa-film
               </v-icon>
             </v-avatar>
-            현재까지 평가한 영화 - {{ beforeCnt }} 편
+            현재까지 평가한 영화 - {{ beforeCnt + cnt }} 편
           </v-chip>
         </div>
         <v-row justify="end">
-          <v-spacer></v-spacer>
-          <v-btn @click="submitRating" text>제출</v-btn>
-          <v-btn class="next" text @click="goMap">
+          <v-btn color="rgba(173, 139, 232, 0.9)" class="next"  text @click="goMap">
             다음에 하기<v-icon small>fas fa-arrow-right</v-icon>
           </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn class="save" color="rgba(173, 139, 232, 0.9)" @click="submitRating" text>저 장</v-btn>
         </v-row>
         <v-row dense justify="center">
           <v-col
             v-for="card in cards"
             :key="card.name"
             cols="6"
-            sm="4"
+            xs="6"
+            sm="3"
+            md="3"
           >
-            <v-card 
+
+
+          <v-hover v-slot:default="{ hover }">
+            
+            <v-card
               class="movieCard"
             >
+
               <v-img
                 :src="card.poster"
                 class="white--text align-end"
-                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                height="40vh"
+                height="35vmin 40vmax"
+                width="35vmin 40vmax"
+                contain
               >
               </v-img>
 
-              <v-rating
-                @input="addRating({'id': card.id, 'rating': card.rating})"
-                v-model="card.rating"
-                color="#F7FE2E"
-                background-color="#F2F2F2"
-                half-increments
-                small
-              ></v-rating>
+              <v-expand-transition>
+                <div
+                  v-if="hover || card.rating >0"
+                  class="d-flex transition-fast-in-fast-out v-card--reveal"
+                >
+                  <div class="rating">
+                    {{card.name}}
+                    <v-divider></v-divider>
+                      <v-rating
+                    @input="addRating({'id': card.id, 'rating': card.rating})"
+                    v-model="card.rating"
+                    color="#FDD835"
+                    background-color="#757575"
+                    half-increments
+                    small
+                    hover
+                  ></v-rating>
+                  </div>
+                </div>
+              </v-expand-transition>
+
+              
             </v-card>
+            </v-hover>
           </v-col>
         </v-row>
-        <v-avatar class="cntA" size="6vh" color="#AD8BE8">
-          <span>{{ cnt }}</span>
-        </v-avatar>
         <v-btn
           text
           large
@@ -88,12 +109,10 @@
         indeterminate
       ></v-progress-circular>
     </div>
-    <Nav />
   </div>
 </template>
 
 <script>
-import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import router from '../../router';
 import { mapGetters, mapMutations, mapActions } from 'vuex';
@@ -101,7 +120,6 @@ import { mapGetters, mapMutations, mapActions } from 'vuex';
 export default {
   name: 'UserPage',
   components: {
-    Nav,
     Title
   },
   data() {
@@ -119,7 +137,7 @@ export default {
     ...mapGetters(['getLoading'])
   },
   methods: {
-    ...mapMutations(['setLoading']),
+    ...mapMutations(['setLoading', 'setLoginMode']),
     ...mapActions(['bringRatingMovies', 'submitRatings', 'checkRating']),
     goMap() {
       router.push('/');
@@ -149,6 +167,7 @@ export default {
     }
   },
   async mounted() {
+    this.setLoginMode(null);
     const res = await this.checkRating('notLogin');
     this.beforeCnt = res;
   }

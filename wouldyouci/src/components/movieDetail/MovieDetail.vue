@@ -1,103 +1,111 @@
+
 <template>
-  <div>
-    <Title />
-    <div class="body">
-      <v-card elevation=0>
-        <div 
-          v-if="details.trailer"
-          class="trailer"
-          >
-            <iframe 
-              id="player"
-              type="text/html" 
-              width="auto" 
-              height="auto"
-              allow="autoplay"
-              allowfullscreen
-              frameborder=0
-              :src=details.trailer
-              ></iframe>
-        </div>
-        <div v-else>
-           <v-img 
-            center
-            width="auto"
-            :src="details.poster" />
+  <div class="body">
+
+    <div class="trailer">
+      <MovieTrailer :details="details" />
+    </div>
+
+
+    <div class="details">
+
+      <v-list-item two-line>
+        <v-list-item-content>
+          <v-list-item-title>{{ details.name }}</v-list-item-title>
+          <v-list-item-subtitle>{{ details.name_eng }}</v-list-item-subtitle>
+          <v-list-item-subtitle>{{ details.watch_grade }}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+
+      <div class="container">
+        <div class="left">
+          {{ details.predicted_score }} % 일치  
         </div>
 
-        <v-list-item two-line>
-          <v-list-item-content>
-            <v-list-item-title class="headline">{{ details.name }}</v-list-item-title>
-            <v-list-item-subtitle>{{ details.name_eng }}</v-list-item-subtitle>
-            <v-list-item-subtitle>{{ details.watch_grade }}</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-        
-        <v-card-actions>
-          <Score :score="details.score"/>
-          <v-spacer></v-spacer>
+        <div class="right">
 
-          <v-btn 
-            icon 
-            :color="(isPicked) ? 'pink' : 'grey'"
+          <v-btn v-show="!isPicked"
+            color='grey'
+            text
+            @click.prevent="togglePickMovie">
+            <span>찜</span>
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+
+          <v-btn v-show="toBeReleased && isPicked"
+            color="elsepink"
+            icon
+            @click.prevent="togglePickMovie">
+            <v-icon>mdi-bell</v-icon>
+          </v-btn>
+
+          <v-btn v-show="!toBeReleased && isPicked"
+            color="elsepink"
+            icon
             @click.prevent="togglePickMovie">
             <v-icon>mdi-heart</v-icon>
           </v-btn>
-          <v-btn v-if="details.is_showing" icon>
-            <v-icon @submit.prevent="getTicket">mdi-share-variant</v-icon>
-          </v-btn>
-        </v-card-actions>
       
-        <div class="summary">
-          <div v-bind:style="lineClamp">
-            {{ details.summary }}
-          </div>
-          <v-btn icon @click.prevent="toggleSummaryClamp()">
-              <v-icon v-if="isHidden">mdi-arrow-down</v-icon>
-              <v-icon v-else>mdi-arrow-up</v-icon>
-          </v-btn>
+          <v-dialog 
+            v-if="details.is_showing"
+            v-model="dialog">
+            <template v-slot:activator="{ on }">
+              <v-btn
+                v-on="on"
+                color="titleblue"
+                text
+                >
+                <span>예매</span>
+                <v-icon>mdi-video-vintage</v-icon>
+              </v-btn>
+            </template>
+            <MovieShowingCinemas @close="closeModal" />
+          </v-dialog>
         </div>
-
-        <v-tabs
-          v-model="tab"
-          background-color="white"
-          color="orange dark-3"
-          centered
-          fixed-tabs
-        >
-          <v-tab
-            v-for="item in items"
-            :key="item.tab"
-          >
-            {{ item.tab }}
-          </v-tab>
-        </v-tabs>
-        <v-tabs-items v-model="tab">
-          <v-tab-item
-            v-for="item in items"
-            :key="item.tab"
-          >
-            <v-card flat>
-              <v-card-text>
-                <component 
-                  v-bind:is="item.component" 
-                  :details="details" 
-                  :user="user" 
-                  ></component>
-              </v-card-text>
-            </v-card>
-          </v-tab-item>
-        </v-tabs-items>
-
-      </v-card>
+      </div>
     </div>
-    <Nav />
+
+
+    <div class="tab-card">
+      <v-tabs
+        v-model="tab"
+        background-color="transparent"
+        centered
+        fixed-tabs
+        >
+        <v-tab
+          v-for="item in items"
+          :key="item.tab"
+          >
+          {{ item.tab }}
+        </v-tab>
+      </v-tabs>
+      <v-tabs-items v-model="tab">
+        <v-tab-item
+          v-for="item in items"
+          :key="item.tab"
+          >
+          <v-card flat>
+            <v-card-text>
+              <component 
+                class="tab-item"
+                v-bind:is="item.component" 
+                :details="details"
+                ></component>
+            </v-card-text>
+          </v-card>
+        </v-tab-item>
+      </v-tabs-items>
+    </div>
+  
   </div>
 </template>
 
 <script>
-import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
+import MovieTrailer from './movieTrailer/MovieTrailer';
+import MovieShowingCinemas from './movieInfo/MovieShowingCinemas';
 import MovieInfo from './movieInfo/MovieInfo';
 import MovieRatings from './movieRatings/MovieRatings';
 import Score from '../ratingForm/Score';
@@ -107,11 +115,22 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'MovieDetail',
   components: {
-    Nav,
     Title,
+    MovieTrailer,
+    MovieShowingCinemas,
     MovieInfo,
     MovieRatings,
     Score,
+  },
+
+  async created() {
+    await this.fetchMovieDetail(this.$route.params.id);
+    this.isPicked = this.details.pick_movies
+    // 개봉영화일까 아닐까
+    var dayjs = require('dayjs')
+    if ( dayjs().isBefore(dayjs(this.details.open_date))) {
+      this.toBeReleased = true
+    }
   },
 
   data() {
@@ -123,51 +142,22 @@ export default {
       ],
       expand: false,
       isPicked: false,
-      isHidden: true,
-      lineClamp: {
-        overflow: 'hidden',
-        display: '-webkit-box',
-        height: 'auto',
-        '-webkit-box-orient': 'vertical',
-        '-webkit-line-clamp': 3,
-      }
+      dialog: false,
+      toBeReleased: false,
     }
   },
 
   computed: {
     ...mapGetters({
       details: 'getMovieDetail',
-      user: 'getUserInfo',
       }),
-  
   },
 
   methods: {
-    ...mapActions(['fetchMovieDetail', 'bringUserInfo', 'togglePick', ]),
-
-    toggleSummaryClamp() {
-      console.log(this.summary)
-      if ( this.isHidden == false) {
-        this.isHidden = true;
-        this.lineClamp = {
-          overflow: 'hidden',
-          display: '-webkit-box',
-          height: 'auto',
-          '-webkit-box-orient': 'vertical',
-          '-webkit-line-clamp': 3,
-        }
-      } else {
-        this.isHidden = false;
-        this.lineClamp = {
-          display: 'block',
-          height: 'auto',
-          '-webkit-box-orient': 'vertical',
-          '-webkit-line-clamp': 'none',
-        }
-      }
+    ...mapActions(['fetchMovieDetail', 'togglePick', ]),
+    closeModal() {
+      this.dialog = false;
     },
-
-
     async togglePickMovie() {
       const item = 'movie'
       const itemId = this.details.id
@@ -176,20 +166,14 @@ export default {
         this.isPicked = false
       } else {
         this.isPicked = true
+        if ( this.toBeReleased ) {
+          alert('영화 개봉시 알려줄게~')
+        } else {
+          alert('나도 이 영화 좋아해~')
+        }
       }
     },
   },
-
-  async created() {
-    await this.fetchMovieDetail(this.$route.params.id);
-    await this.bringUserInfo()
-    if (this.user.pick_movies && this.user.pick_movies.includes(this.details.id)) {
-      this.isPicked = true
-    } else {
-      this.isPicked = false
-    }
-  },
-
 }
 </script>
 

@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div>
-      {{ Label }}
+    <div class="label">
+      <h4>{{ Label }}</h4>
     </div>
     <v-slide-group
-      class="pa-4 cinemaList"
+      class="pa-2"
       active-class="success"
       v-if="pos && TheaterList.length"
     >
@@ -12,40 +12,37 @@
         v-for="(theater, idx) in TheaterList"
         :key="idx"
       >
-        <v-card
-          class="ma-4"
-          height="20vh"
-          width="50vw"
-          style="margin-right:2vh"
-          @click="goDetail(theater.id)"
-        >
-          <v-img 
-            :src=theater.img
+        <div class="theaterinfo">
+          <v-card
+            class="card"
             height="15vh"
-            width="50vw"
+            width="40vw"
+            @click="goDetail(theater.id)"
+            :style="{backgroundImage:`url(${theater.img})`}"
           >
-          </v-img>
-          <v-card-text><h4>{{ theater.name }}</h4></v-card-text>
         </v-card>
+        <h5>{{getTheaterName(theater.name)}}</h5>
+        </div>
+        
       </v-slide-item>
     </v-slide-group>
     <v-card
       v-else-if="pos"
-      class="noThea"
+      class="noContent"
       height="20vh"
-      width="90vw"
+      width="86vw"
     >
-      <div class="noTheaExp">
+      <div class="noContentExp">
         근처에 영화관이 없습니다.
       </div>
     </v-card>
     <v-card
       v-else
-      class="noThea"
+      class="noContent"
       height="20vh"
-      width="90vw"
+      width="86vw"
     >
-      <div class="noTheaExp">
+      <div class="noContentExp">
         위치 정보를 허용해주세요.
       </div>
     </v-card>
@@ -60,9 +57,16 @@ export default {
   methods: {
     goDetail(id) {
       router.push(`/cinema/${id}`)
+    },
+    getTheaterName(name) {
+      if (name.length > 10) {
+        return `${name.slice(0, 10)}...`;
+      } else {
+        return name;
+      }
     }
   }
 }
 </script>
 
-<style src="./CinemaList.css" scoped></style>
+<style src="./TheaterList.css" scoped></style>

@@ -1,32 +1,29 @@
 <template>
   <div>
-    <div>
-      {{ Label }}
+    <div class="label">
+      <h4>{{ Label }}</h4>
     </div>
     <v-slide-group
-      class="cinemaList"
+      class="pa-2 cinemaList"
       active-class="success"
     >
       <v-slide-item
         v-for="(cinema, idx) in CinemaList"
         :key="idx"
       >
-        <v-card
-          class="ma-4"
-          height="auto"
-          width="45vw"
-          @click="goDetail(cinema.id)"
-          dark
-        >
-          <v-img 
-            :src=cinema.poster
-            height="40vh"
-            width="45vw"
+        <div class="cinemaCard">
+          <v-card
+            class="poster"
+            :style="{backgroundImage:`url(${cinema.poster})`}"
+            @click="goDetail(cinema.id)"
           >
-          </v-img>
-          <v-card-text>{{ cinema.name }}</v-card-text>
-        </v-card>
-      </v-slide-item>
+            
+          </v-card>
+          <div class="cinemaInfo">
+            <h5>{{cinema.name}}</h5>
+          </div>
+        </div>
+        </v-slide-item>
     </v-slide-group>
   </div>
 </template>
@@ -39,6 +36,13 @@ export default {
   methods: {
     goDetail(movieId) {
       router.push(`/movie/${movieId}`);
+    },
+    getMovieName(name) {
+      if (name.length > 8) {
+        return `${name.slice(0, 8)}...`;
+      } else {
+        return name;
+      }
     }
   }
 }

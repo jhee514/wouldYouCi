@@ -6,7 +6,7 @@
           "{{ KeyWords }}" 에 대한 검색 결과입니다.
         </div>
         <CinemaList v-if="Type==='movies'" v-bind:CinemaList="ResultList" />
-        <TheaterList v-else v-bind:TheaterList="ResultList" />
+        <TheaterList v-else v-bind:pos="true" v-bind:TheaterList="ResultList" />
       </div>
       <div v-if="ResultList.length && Similar.length">
         <v-divider

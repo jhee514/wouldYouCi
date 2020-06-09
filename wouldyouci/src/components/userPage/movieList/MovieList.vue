@@ -1,7 +1,11 @@
 <template>
   <div>
+    <div class="label">
+      <h4>{{ Label }}</h4>
+    </div>
     <v-slide-group
       dark
+      class="pa-4 pb-0"
       active-class="success"
       v-if="CinemaList && CinemaList.length"
     >
@@ -9,20 +13,18 @@
         v-for="(cinema, idx) in CinemaList"
         :key="idx"
       >
-        <v-card
-          class="ma-4"
-          height="auto"
-          width="40vw"
-          @click="goDetail(cinema.id)"
-        >
-          <v-img 
-            :src="cinema.poster"
-            height="30vh"
-            width="40vw"
+        <div class="cinemaCard">
+          <v-card
+            class="poster"
+            :style="{backgroundImage:`url(${cinema.poster})`}"
+            @click="goDetail(cinema.id)"
           >
-          </v-img>
-          <v-card-text>{{ cinema.name }}</v-card-text>
-        </v-card>
+            
+          </v-card>
+          <div class="cinemaInfo">
+            <h5>{{cinema.name}}</h5>
+          </div>
+        </div>
       </v-slide-item>
     </v-slide-group>
     <v-card
@@ -30,7 +32,7 @@
       class="noContent"
       height="20vh"
       width="90vw"
-      style="margin-right:2vh"
+      style="margin-right:2vh; margin-bottom:70px;"
     >
       <div class="noContentExp">
         해당 콘텐츠가 없습니다.
@@ -44,10 +46,17 @@ import router from "@/router";
 
 export default {
   name: 'MovieList',
-  props: ["CinemaList"],
+  props: ["CinemaList",'Label'],
   methods: {
     goDetail(movieId) {
       router.push(`/movie/${movieId}`);
+    },
+    getMovieName(name) {
+      if (name.length > 7) {
+        return `${name.slice(0, 7)}...`;
+      } else {
+        return name;
+      }
     }
   }
 }

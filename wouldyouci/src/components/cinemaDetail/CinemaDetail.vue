@@ -1,14 +1,31 @@
 <template>
-  <div>
+  <div class="body">
+
     <Title />
+    
     <div class="body">
-      <v-card elevation=0>
-        <div>
-          <v-img 
-            center
-            width="auto" 
-            :src="details.img" />
-        </div>
+    
+      <div class="image">
+        <v-img
+          v-if="details.img"
+          class="media" 
+          :src="details.img"
+          >
+        </v-img>
+        <v-img 
+          v-else
+          class="media"
+          aspect-ratio=1.7
+          src="../../assets/defaultImg.jpg">
+          <template v-slot:placeholder>
+            <div>
+              이미지 준비중
+            </div>
+          </template>
+        </v-img>
+      </div>
+
+      <div class="details">
 
         <v-list-item two-line>
           <v-list-item-content>
@@ -17,53 +34,55 @@
             <v-list-item-subtitle>
               <a 
                 class="tel"
-                :href="'tel' + details.tel"
-                >
+                :href="`tel:+${ details.tel }`">
                 {{ details.tel }}
               </a>
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-        
-        <v-card-actions>
-          <Score :score="details.score"/>
-          <v-spacer></v-spacer>
 
+        <div class="right">
           <v-btn 
             icon 
-            :color="(isPicked) ? 'pink' : 'grey'"
+            :color="(isPicked) ? 'elsepink' : 'lightgrey'"
             @click.prevent="togglePickCinema">
-            <v-icon>mdi-heart</v-icon>
+            <v-icon v-show="isPicked">mdi-heart</v-icon>
+            <span v-show="!isPicked">찜</span>
+            <v-icon v-show="!isPicked">mdi-plus</v-icon>
           </v-btn>
-
-
+          <v-btn
+            icon
+            target="_blank"
+            :href="details.url" 
+            >
+            <v-icon>mdi-home</v-icon>
+          </v-btn>
           <v-dialog v-model="dialog">
             <template v-slot:activator="{ on }">
               <v-btn
                 v-on="on"
                 icon 
-                color="pink"
+                color="titleblue"
                 >
                 <v-icon>mdi-filmstrip</v-icon>
               </v-btn>
             </template>
             <CinemaOnScreens :onscreens="details.onscreens" @close="closeModal" />
           </v-dialog>
+        </div>
+      </div>
 
-
-        </v-card-actions>
-
+      <div class="tab-card">
         <v-tabs
           v-model="tab"
-          background-color="white"
-          color="amber"
+          background-color="transparent"
           centered
           fixed-tabs
-        >
+          >
           <v-tab
             v-for="item in items"
             :key="item.tab"
-          >
+            >
             {{ item.tab }}
           </v-tab>
         </v-tabs>
@@ -71,27 +90,25 @@
           <v-tab-item
             v-for="item in items"
             :key="item.tab"
-          >
+            >
             <v-card flat>
               <v-card-text>
                 <component 
+                  class="tab-item"
                   v-bind:is="item.component" 
-                  :details="details" 
-                  :user="user" 
+                  :details="details"
                   ></component>
               </v-card-text>
             </v-card>
           </v-tab-item>
         </v-tabs-items>
-
-      </v-card>
+      </div>
     </div>
-    <Nav />
   </div>
+
 </template>
 
 <script>
-import Nav from '../nav/Nav.vue';
 import Title from '../nav/Title.vue';
 import CinemaInfo from './cinemaInfo/CinemaInfo';
 import CinemaRatings from './cinemaRatings/CinemaRatings';
@@ -103,7 +120,6 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'CinemaDetail',
   components: {
-    Nav,
     Title,
     CinemaInfo,
     CinemaRatings,
@@ -121,19 +137,24 @@ export default {
       expand: false,
       isPicked: false,
       dialog: false,
-
+    }
+  },
+  
+  async created() {
+    await this.fetchCinemaDetail(this.$route.params.id);
+    if (this.details.pick_cinemas) {
+      this.isPicked = true
     }
   },
 
   computed: {
     ...mapGetters({
       details: 'getCinemaDetail',
-      user: 'getUserInfo',
       }),
   },
 
   methods: {
-    ...mapActions(['fetchCinemaDetail', 'bringUserInfo', 'togglePick', ]),
+    ...mapActions(['fetchCinemaDetail', 'togglePick', ]),
     async togglePickCinema() {
       const item = 'cinema'
       const itemId = this.details.id
@@ -143,19 +164,7 @@ export default {
     closeModal() {
       this.dialog = false;
     },
-    splitText() {
 
-    }
-
-  },
-  async created() {
-    await this.fetchCinemaDetail(this.$route.params.id);
-    await this.bringUserInfo()
-    if (this.user.pick_cinemas && this.user.pick_cinemas.includes(this.details.id)) {
-      this.isPicked = true
-    } else {
-      this.isPicked = false
-    }
   },
 
 }

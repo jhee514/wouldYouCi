@@ -27,6 +27,8 @@ const state = {
   movieRatings: [],
   cinemaDetail: [],
   cinemaRatings: [],
+  movieShowingCinemas: [],
+  avgScore: null,
 };
 
 const getters = {
@@ -43,6 +45,8 @@ const getters = {
   getMovieRatings: state => state.movieRatings,
   getCinemaDetail: state => state.cinemaDetail,
   getCinemaRatings: state => state.cinemaRatings,
+  getMovieShowingCinemas: state => state.movieShowingCinemas,
+  getAvgScore: state => state.avgScore,
 };
 
 const mutations = {
@@ -60,6 +64,8 @@ const mutations = {
   setMovieRatings: (state, ratings) => state.movieRatings = ratings,
   setCinemaDetail: (state, details) => state.cinemaDetail = details,
   setCinemaRatings: (state, ratings) => state.cinemaRatings = ratings,
+  setMovieShowingCinemas: (state, cinemas) => state.movieShowingCinemas = cinemas,
+  setAvgScore: (state, score) => state.avgScore = score,
 };
 
 const actions = {
@@ -255,18 +261,14 @@ const actions = {
         Authorization: `JWT ${token}`
       }
     }
-    if (data.length >= 10) {
-      axios.post(`${HOST}/user/rating/`, {data}, options)
-        .then(res => {
-          res;
-          router.push('/');
-        })
-        .catch(err => {
-          err;
-        })
-    } else {
-      alert(`현재까지 ${data.length}개의 영화를 평가하셨습니다.\n추천을 받기 위해선 최소 10개 이상의 영화를 평가해주셔야 합니다.`);
-    }
+    axios.post(`${HOST}/user/rating/`, {data}, options)
+      .then(res => {
+        res;
+        router.push('/');
+      })
+      .catch(err => {
+        err;
+      })
   },
   bringRatedMovies: ({ getters }) => {
     getters;
@@ -287,8 +289,7 @@ const actions = {
         })
     })
   },
-  fetchMovieDetail: ({ getters, commit }, movieId) => {
-    getters;
+  fetchMovieDetail: ({ commit }, movieId) => {
     const token = sessionStorage.getItem('jwt');
     const options = {
       headers: {
@@ -303,7 +304,11 @@ const actions = {
         })
         .catch(err => {
           err;
-          reject(Error('error'))
+          if ( err.response.status == 404) {
+            router.push('/404')
+          } else {
+            reject(Error('error'))
+          }
         })
     })
   },
@@ -322,25 +327,13 @@ const actions = {
         })
         .catch(err => {
           err;
-          reject(Error('error'))
+          if ( err.response.status == 404) {
+            router.push('/404')
+          } else {
+            reject(Error('error'))
+          }
         })
     })
-  },
-  togglePickMovie: ({dispatch}, movieId ) => {
-    const token = sessionStorage.getItem('jwt');
-    const options = {
-      headers: {
-        Authorization: `JWT ${token}`,
-      }
-    }
-    axios.patch(`${HOST}/movie/${movieId}/pick/`, movieId, options)
-      .then(res => {
-        res;
-        return dispatch('fetchMovieDetail', movieId);
-      })
-      .catch(err => {
-        err;
-      })
   },
   togglePick: ({dispatch}, {item, itemId}) => {
     const token = sessionStorage.getItem('jwt');
@@ -362,6 +355,25 @@ const actions = {
         err;
       })
   },
+  fetchScore: ({ commit }, {item, itemId} ) => {
+    commit;
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+    }
+    return new Promise(function(resolve, reject) {
+      axios.get(`${HOST}/${item}/${itemId}/score/`, options)
+        .then(res => {
+          commit('setAvgScore', res.data["score"])
+          resolve(res.data)
+        })
+        .catch(err => {
+          reject(err, Error('error'))
+        })
+    })
+  },
   fetchRatings: ({ commit }, {item, params} ) => {
     commit;
     const token = sessionStorage.getItem('jwt');
@@ -374,11 +386,10 @@ const actions = {
     return new Promise(function(resolve, reject) {
       axios.get(`${HOST}/${item}/rating/page/`, options)
         .then(res => {
-          resolve(res.data.results)
+          resolve(res.data)
         })
         .catch(err => {
-          err;
-          reject(Error('error'))
+          reject(Error(err))
         })
     })
   },
@@ -397,8 +408,10 @@ const actions = {
           resolve(res);
         })
         .catch(err => {
-          err;
-          reject(Error('erroe'));
+          reject(Error('error'));
+          if (err.response.status == 403) {
+            alert('이미 리뷰를 작성하셨습니다.')
+          }
         })
       })
   },
@@ -410,14 +423,16 @@ const actions = {
         Authorization: `JWT ${token}`,
       }
     }
-    axios.delete(`${HOST}/${item}/rating/${ratingId}/`, options)
-      .then(res => {
-        res;
+    return new Promise(function(resolve, reject) {
+      axios.delete(`${HOST}/${item}/rating/${ratingId}/`, options)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        })
       })
-      .catch(err => {
-        err;
-      })
-    },
+  },
   patchRating: ({dispatch}, {item, editedRating}) => {
     dispatch;
     const token = sessionStorage.getItem('jwt');
@@ -438,6 +453,26 @@ const actions = {
       })
     })
   },
+  fetchMovieShowingCinemas: ({ commit }, movieId) => {
+    const token = sessionStorage.getItem('jwt');
+    const options = {
+      headers: {
+        Authorization: `JWT ${token}`
+      }
+    }
+    return new Promise(function(resolve, reject) {
+      axios.get(`${HOST}/movie/${movieId}/onscreen/`, options)
+        .then(res => {
+          commit('setMovieShowingCinemas', res.data);
+          resolve('ok')
+        })
+        .catch(err => {
+          err;
+          reject(Error('error'))
+        })
+    })
+  },
+
   
 
 };

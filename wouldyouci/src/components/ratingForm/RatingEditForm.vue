@@ -5,8 +5,8 @@
         <div class="score">
           <v-rating
             v-model="editedRating.score"
-            color="amber"
-            background-color="orange lighten-3"
+            color="blackpink"
+            background-color="blackpink"
             half-increments
             hover
             size="18">
@@ -24,15 +24,15 @@
             rows="1"
             auto-grow
             hide-details="auto"
-            color="orange darken-3"
+            color="fontgrey"
             dense
           ></v-textarea>
         </div>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="closeMe">Close</v-btn>
-        <v-btn color="blue darken-1" text @click="submit(editedRating)">Save</v-btn>
+        <v-btn color="lightgrey" text @click="closeMe">Close</v-btn>
+        <v-btn color="blackpink" text @click="submit(editedRating)">Save</v-btn>
       </v-card-actions>
     </v-card>
   </div>
@@ -43,7 +43,7 @@
 
 export default {
   name: "RatingEditForm",
-  props:["rating"],
+  props:["rating", "index"],
   data() {
     return {
       rules: [
@@ -56,6 +56,7 @@ export default {
         score: this.rating.score,
         comment: this.rating.comment,
         user: this.rating.user,
+        index: this.index,
       },
     }
   },
