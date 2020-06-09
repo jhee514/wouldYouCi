@@ -8,7 +8,6 @@
               :key="idx"
               :cols="12">
               <v-card
-                @click="goTheaterDetail(data.id)"
                 class="mycard"
                 elevation="0">
                 <v-row>
@@ -24,12 +23,28 @@
                       <v-list-item-content class="pt-3 pb-2">
                         <v-list-item-title class="mytitle">{{ data.name }}</v-list-item-title>
                         <v-list-item-subtitle class="mysubtitle">{{ data.address }}</v-list-item-subtitle>
-                        <v-list-item>{{data.onscreens}}</v-list-item>
-                        <!-- <v-list-item-subtitle class="mysubtitle">{{ data.tel }}</v-list-item-subtitle> -->
+                        <v-list-item>{{ data.onscreens }}</v-list-item>
+                        <v-list-item class="mysubtitle">{{ data.tel }}</v-list-item>
                       </v-list-item-content>
                     </v-list-item>
                     <v-card-text class="movieInfo">
-                      <p>{{ data.tel }}</p>
+                      <v-chip 
+                        x-small 
+                        label
+                        class="mb-1"
+                        color="#86D0EC"
+                        :href="data.url"
+                        >11
+                         홈페이지
+                        </v-chip>
+                      <v-chip 
+                        x-small
+                        label 
+                        color="#FCB5C7" 
+                        class="mb-1"
+                        @click="goTheaterDetail(data.id)"
+                        >상세정보
+                        </v-chip>
                     </v-card-text>
                   </v-col>
                 </v-row>

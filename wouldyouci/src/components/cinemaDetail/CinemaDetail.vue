@@ -16,7 +16,7 @@
           v-else
           class="media"
           aspect-ratio=1.7
-          src="../movieDetail/movieTrailer/defaultImg.jpg">
+          src="../../assets/defaultImg.jpg">
           <template v-slot:placeholder>
             <div>
               이미지 준비중
