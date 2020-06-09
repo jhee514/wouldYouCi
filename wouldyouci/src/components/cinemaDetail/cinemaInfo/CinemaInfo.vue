@@ -63,12 +63,11 @@
         </span>
       </v-col>
       <v-col cols="9">
-        <a 
-          class="tel"
-          :href="'tel' + details.tel"
-          >
-          {{ details.tel }}
-        </a>
+      <a 
+        class="tel"
+        :href="`tel:+${ details.tel }`">
+        {{ details.tel }}
+      </a>
       </v-col>
     </v-row>
 

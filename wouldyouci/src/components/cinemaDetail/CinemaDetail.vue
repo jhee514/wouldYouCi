@@ -34,8 +34,7 @@
             <v-list-item-subtitle>
               <a 
                 class="tel"
-                :href="'tel' + details.tel"
-                >
+                :href="`tel:+${ details.tel }`">
                 {{ details.tel }}
               </a>
             </v-list-item-subtitle>
