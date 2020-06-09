@@ -34,8 +34,7 @@
             <v-list-item-subtitle>
               <a 
                 class="tel"
-                :href="'tel' + details.tel"
-                >
+                :href="`tel:+${ details.tel }`">
                 {{ details.tel }}
               </a>
             </v-list-item-subtitle>
@@ -45,9 +44,11 @@
         <div class="right">
           <v-btn 
             icon 
-            :color="(isPicked) ? 'error' : 'grey'"
+            :color="(isPicked) ? 'elsepink' : 'lightgrey'"
             @click.prevent="togglePickCinema">
-            <v-icon>mdi-heart</v-icon>
+            <v-icon v-show="isPicked">mdi-heart</v-icon>
+            <span v-show="!isPicked">찜</span>
+            <v-icon v-show="!isPicked">mdi-plus</v-icon>
           </v-btn>
           <v-btn
             icon
@@ -61,7 +62,7 @@
               <v-btn
                 v-on="on"
                 icon 
-                color="accent"
+                color="titleblue"
                 >
                 <v-icon>mdi-filmstrip</v-icon>
               </v-btn>

@@ -4,21 +4,25 @@
 
   .label{
 	margin-top: 2vh;
-  }
+	}
+	
   .ranklist{
 	padding-top: 0;
 	background-color: white;
   }
-  .mychip >>> span{
+	
+	.mychip >>> span{
 	font-size: 12px;
 	font-family: 'Noto Sans KR', sans-serif;
   }
-  .movieInfo{
+	
+	.cinemaInfo{
 	 padding-top: 0;
 	 height: 10vh
-  }
+	}
+	
   .rating{
-	padding-bottom: 2vh;
+	/* padding-bottom: 2vh; */
   }
   
   .mycard{

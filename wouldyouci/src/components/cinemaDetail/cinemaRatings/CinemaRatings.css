@@ -15,19 +15,20 @@
   padding: 0;
 }
 
+.avg-score {
+  font-weight: 600;
+  font-size: large;
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 10%;
+}
+
 .user{
   font-size: 1.5vh;
   display: inline-block;
   text-align: left;
   vertical-align: middle;
   padding-top: 0.5vh;
-}
-
-.avg-score {
-  text-align: center;
-  vertical-align: middle;
-  padding-top: 10%;
-
 }
 
 .score{

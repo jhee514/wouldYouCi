@@ -46,13 +46,7 @@
             v-else
             src="../../../assets/astronaut1.png"
             />
-          <!-- <span 
-            v-else 
-            class="white--text headline">
-            {{ rating.user.username[0] }}
-          </span> -->
         </v-list-item-avatar>
-
         <v-list-item-content>
           <div class="infos">
             <div class="user">
@@ -101,7 +95,7 @@
         </v-list-item-content>
       </v-list-item>
       <v-btn
-        v-show="isRatings"
+        v-show="ratings.length > 5"
         class="upbutton"
         color="titleblue"
         small
