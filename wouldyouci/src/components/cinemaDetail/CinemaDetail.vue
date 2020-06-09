@@ -45,7 +45,7 @@
         <div class="right">
           <v-btn 
             icon 
-            :color="(isPicked) ? 'error' : 'grey'"
+            :color="(isPicked) ? 'elsepink' : 'grey'"
             @click.prevent="togglePickCinema">
             <v-icon>mdi-heart</v-icon>
           </v-btn>
@@ -61,7 +61,7 @@
               <v-btn
                 v-on="on"
                 icon 
-                color="accent"
+                color="titleblue"
                 >
                 <v-icon>mdi-filmstrip</v-icon>
               </v-btn>
