@@ -59,16 +59,16 @@
                 </div>
 
                 <v-chip x-small v-if="movie.movie.watch_grade==='15세 관람가'"
-                        label color="#FCB5C7" class="mb-1"
+                        label color="#FCB5C7" class="mb-1 mr-1"
                 >15+</v-chip>
                   <v-chip x-small v-else-if="movie.movie.watch_grade==='12세 관람가'"
-                         label color="#E9EA72" class="mb-1"
+                         label color="#E9EA72" class="mb-1 mr-1"
                   >12+</v-chip>
                   <v-chip x-small v-else-if="movie.movie.watch_grade==='전체 관람가'"
-                         label color="#C9EBF4" class="mb-1"
+                         label color="#C9EBF4" class="mb-1 mr-1"
                   >All</v-chip>
                   <v-chip x-small v-else-if="movie.movie.watch_grade==='청소년 관람불가'"
-                         label color="#BF3952" text-color="white" class="mb-1"
+                         label color="#BF3952" text-color="white" class="mb-1 mr-1"
                   >18+</v-chip>
                   <v-chip x-small v-else
                           label color="lightpink"
