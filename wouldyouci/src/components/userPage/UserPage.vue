@@ -100,8 +100,8 @@ export default {
     return {
       theaterList: null,
       ratedMovies: null,
-      pickMovies: null,
-      pushMovies: null,
+      pickMovies: [],
+      pushMovies: [],
       recommendedOnscreen: [],
       recommendedMovies: [],
       isShow: false,
@@ -165,8 +165,20 @@ export default {
     }
     this.userName = this.getUserInfo.data.user.username;
     this.theaterList = this.getUserInfo.data.pick_cinemas;
-    this.pickMovies = this.getUserInfo.data.pick_movies;
-    this.pushMovies = this.getUserInfo.data.push_movies;
+    // this.pickMovies = this.getUserInfo.data.pick_movies;
+    // this.pushMovies = this.getUserInfo.data.push_movies;
+    
+    for (var i in this.getUserInfo.data.pick_movies) {
+      console.log()
+      var dayjs = require('dayjs')
+      if (dayjs().isBefore(dayjs(this.getUserInfo.data.pick_movies[i].open_date))) {
+        this.pushMovies.push(this.getUserInfo.data.pick_movies[i])
+      } else {
+        this.pickMovies.push(this.getUserInfo.data.pick_movies[i])
+
+      }
+    }
+
     this.recommendedOnscreen = this.getUserInfo.data.recommend_onscreen;
     this.recommendedMovies = this.getUserInfo.data.recommend_movies;
     const res = await this.bringRatedMovies();
