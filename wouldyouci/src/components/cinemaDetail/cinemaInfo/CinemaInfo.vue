@@ -1,41 +1,56 @@
 <template>
   <div class="body">
     <v-row no-gutters>
-      <v-col class="item" cols="2">
-        <div>
+      <v-col class="item" cols="3">
+        <span>
           주차 
-        </div>
+        </span>
       </v-col>
-      <v-col cols="8">
-        <div class="content">
+      <v-col cols="9">
+        <span class="content">
           {{ details.parking }}
-        </div>
+        </span>
       </v-col>
     </v-row>
     <v-row>
-      <v-col class="item" cols="2">
-        <div>
+      <v-col class="item" cols="3">
+        <span>
           대중교통
-        </div>
+        </span>
       </v-col>
-      <v-col cols="8">
-      <div class="content">
+      <v-col cols="9">
+      <span class="content">
           {{ details.public }}
-        </div>
+        </span>
       </v-col>
     </v-row>
     <v-row>
-      <v-col class="item" cols="2">
-        <div>
+      <v-col class="item" cols="3">
+        <span>
           회사 
-        </div>
+        </span>
       </v-col>
-      <v-col cols="8">
-        <div class="content">
+      <v-col cols="9">
+        <span class="content">
           {{ details.type }}
-        </div>
+        </span>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col class="item" cols="3">
+        <span>
+          전화
+        </span>
+      </v-col>
+      <v-col cols="9">
+      <a 
+        class="tel"
+        :href="`tel:+${ details.tel }`">
+        {{ details.tel }}
+      </a>
+      </v-col>
+    </v-row>
+
   </div>
 </template>
 <script>

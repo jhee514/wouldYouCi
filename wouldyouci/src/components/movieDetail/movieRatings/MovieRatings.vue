@@ -40,7 +40,7 @@
           >
           
           <img 
-            v-if="rating.user.file[0]"
+            v-if="rating.user.file"
             :src="getUserProfile(rating.user)"
             />
           <v-img 

@@ -2,90 +2,98 @@
   <div class="body">
     <v-row no-gutters>
       <v-col class="item" cols="2">
-        <div>
+        <span>
           개봉
-        </div>
+        </span>
       </v-col>
       <v-col cols="10">
-        <div class="content"
+        <span class="content"
           >
           {{ details.open_date }}
-        </div>
+        </span>
       </v-col>
     </v-row>
 
     <v-row no-gutters>
       <v-col class="item" cols="2">
-        <div>
+        <span>
           장르
-        </div>
+        </span>
       </v-col>
       <v-col cols="10">
-        <div
+        <span
           class="content"
+          v-for="(genre, index) in details.genres"
+          :key="index"
           >
-          {{ this.details.genres.join(',') }}
-        </div>
+          {{ genre }}
+        </span>
       </v-col>
     </v-row>
 
     <v-row no-gutters>
       <v-col class="item" cols="2">
-        <div>
+        <span>
           등급
-        </div>
+        </span>
       </v-col>
       <v-col cols="10">
-        <div
+        <span
           class="content"
           >
           {{ details.watch_grade }} | {{ details.running_time }}
-        </div>
+        </span>
       </v-col>
     </v-row>
 
     <v-row no-gutters>
       <v-col class="item" cols="2">
-        <div>
+        <span>
           감독
-        </div>
+        </span>
       </v-col>
       <v-col cols="10">
-        <div
+        <span 
           class="content"
+          v-for="(director, index) in details.directors"
+          :key="index"
           >
-          {{ this.details.directors.join(',') }}
-        </div>
+          {{ director }},
+        </span>
       </v-col>
     </v-row>
 
     <v-row no-gutters>
       <v-col class="item" cols="2">
-        <div>
+        <span>
           출연
-        </div>
+        </span>
       </v-col>
       <v-col cols="10">
-        <div>
-          {{ this.details.actors.join(', ') }}
-        </div>
+        <span 
+          class="content"
+          v-for="(actor, index) in details.actors"
+          :key="index"
+          >
+          {{ actor }}, 
+        </span>
       </v-col>
     </v-row>
     
   
     <v-row no-gutters>
       <v-col class="item" cols="2">
-        <div>
+        <span>
           줄거리
-        </div>
+        </span>
       </v-col>
       <v-col cols="10">
-        <div class="content"
+        <span class="content"
           v-bind:style="lineClamp" 
           @click.prevent="toggleSummaryClamp()"
           >
           {{ details.summary }}
-        </div>
+        </span>
       </v-col>
     </v-row>
   </div>
