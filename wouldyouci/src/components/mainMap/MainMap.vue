@@ -22,16 +22,16 @@
       >
         <div class="v-toolbar__content">
           <v-text-field @click="timeSelector=!timeSelector"
-                        hide-details
-                        single-line
-                        v-bind:label="timeForUser"
-                        prepend-icon="search"
+            hide-details
+            single-line
+            v-bind:label="timeForUser"
+            prepend-icon="search"
           />
 
           <v-btn icon>
-              <v-icon
-                      color="lightpink"
-                      @click="setNowTime">mdi-history</v-icon>
+            <v-icon
+              color="lightpink"
+              @click="setNowTime">mdi-history</v-icon>
           </v-btn>
 
           <v-btn icon>
@@ -86,7 +86,7 @@ export default {
       map: null,
       google: null,
       nowHere: null,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      time: new Date(),
       timeForUser: null,
       isTimeChange: false,
       cardInfo: null,
@@ -236,9 +236,21 @@ export default {
       this.toggleBounce(this.cardInfo);
     },
     getUserTime() {
-      const targetTimes = this.time.split(' ');
-      const times = targetTimes[1].split(':');
-      this.timeForUser = `${targetTimes[0]} ${times[0]}시 ${times[1]}분 기준 영화`;
+      if (this.isTimeChange) {
+        const temp = this.time.split(' ');
+        const amPm = temp[0];
+        const hours = temp[1].split(':')[0];
+        const mins = temp[1].split(':')[1];
+        this.timeForUser = `${amPm} ${hours}시 ${mins}분 기준 영화`;
+      } else {
+        let hours = this.time.getHours();
+        let mins = this.time.getMinutes();
+        const amPm = hours >= 12 ? '오후' : '오전';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        mins = mins < 10 ? `0${mins}` : mins;
+        this.timeForUser = `${amPm} ${hours}시 ${mins}분 기준 영화`;
+      }
     },
     async changeLoading() {
       this.loading = true;
@@ -262,9 +274,9 @@ export default {
       const targetTimes = targetTime.split(' ');
       const times = targetTimes[1].split(':');
       if (targetTimes[0] !== 'null' && times[0] !== 'null' && times[1] !== 'null') {
+        this.isTimeChange = true;
         this.time = targetTime;
         this.getUserTime();
-        this.isTimeChange = true;
         if (this.showMovieCard) {
           this.showMovieCard = false;
           setTimeout(function() {
@@ -277,9 +289,9 @@ export default {
       }
     },
     async setNowTime() {
-      this.time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        this.getUserTime();
+      this.time = new Date();
       this.isTimeChange = false;
+      this.getUserTime();
       if (this.showMovieCard) {
         this.setLoading(true);
         await this.bringMovies({theaterID: this.theaterId, time: null});

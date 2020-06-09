@@ -39,7 +39,7 @@
                 </v-list-item-content>
               </v-list-item>
 
-              <v-card-text>
+              <v-card-text class="detail">
 
                 <div class="divseat ma-0">
                   <span class="spanstrong">{{ movie.start_time }}</span>
