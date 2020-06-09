@@ -72,7 +72,7 @@ class SearchMovieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = ('id', 'name', 'open_date', 'name_eng', 'poster', 'genres', 'running_time', 'watch_grade', 'score', 'ratings_count')
+        fields = ('id', 'actors', 'directors', 'name', 'open_date', 'name_eng', 'poster', 'genres', 'running_time', 'watch_grade', 'score', 'ratings_count')
 
 
 class PremovieSerializer(serializers.ModelSerializer):
@@ -104,6 +104,7 @@ class PremovieSerializer(serializers.ModelSerializer):
 
 class OnscreenSerializer(serializers.ModelSerializer):
     movie = SimpleMovieSerializer(read_only=True)
+    start_time = serializers.TimeField(format='%H:%M')
 
     class Meta:
         model = Onscreen
