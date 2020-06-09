@@ -34,7 +34,7 @@
             <v-list-item-subtitle>
               <a 
                 class="tel"
-                :href="`tel:+${ details.tel }`">
+                :href="`tel:+82${ details.tel }`">
                 {{ details.tel }}
               </a>
             </v-list-item-subtitle>
@@ -42,6 +42,13 @@
         </v-list-item>
 
         <div class="right">
+          <v-btn
+            icon
+            target="_blank"
+            :href="details.url" 
+            >
+            <v-icon>mdi-home</v-icon>
+          </v-btn>
           <v-btn 
             icon 
             :color="(isPicked) ? 'elsepink' : 'lightgrey'"
@@ -49,13 +56,6 @@
             <v-icon v-show="isPicked">mdi-heart</v-icon>
             <span v-show="!isPicked">찜</span>
             <v-icon v-show="!isPicked">mdi-plus</v-icon>
-          </v-btn>
-          <v-btn
-            icon
-            target="_blank"
-            :href="details.url" 
-            >
-            <v-icon>mdi-home</v-icon>
           </v-btn>
           <v-dialog v-model="dialog">
             <template v-slot:activator="{ on }">

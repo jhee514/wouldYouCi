@@ -4,11 +4,12 @@
 }
 
 .rating-form {
-  padding: 5vh 5vw ;
+  padding: 3vh 7vw ;
 }
 
 .notification {
   text-align: center;
+  padding-bottom: 10%;
 }
 
 .rating {
@@ -38,7 +39,6 @@
   vertical-align: middle;
   padding-top: 0.5vh;
 }
-
 
 .score{
   display: inline-block;
