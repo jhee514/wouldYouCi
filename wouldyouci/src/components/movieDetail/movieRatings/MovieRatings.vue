@@ -38,6 +38,7 @@
           color="lightgrey" 
           x-small
           >
+          
           <img 
             v-if="rating.user.file"
             :src="getUserProfile(rating.user)"

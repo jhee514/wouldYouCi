@@ -61,7 +61,7 @@
 
 .movieCard{
   position: absolute;
-  bottom: 7%;
+  bottom: 10vh;
   left: 2.5vw;
   width: 95vw;
 }

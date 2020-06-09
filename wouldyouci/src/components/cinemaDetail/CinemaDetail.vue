@@ -137,12 +137,14 @@ export default {
       expand: false,
       isPicked: false,
       dialog: false,
-
     }
   },
   
   async created() {
     await this.fetchCinemaDetail(this.$route.params.id);
+    if (this.details.pick_cinemas) {
+      this.isPicked = true
+    }
   },
 
   computed: {
@@ -162,10 +164,6 @@ export default {
     closeModal() {
       this.dialog = false;
     },
-    // TODO 텍스트 예쁘게 잘 잘라
-    splitText() {
-
-    }
 
   },
 
