@@ -3,8 +3,11 @@
     <div v-if="CinemaList">
       <v-spacer></v-spacer>
       
-      <div style="text-align:right">
-        <div 
+      <div>
+        <span class="mod">
+          평점을 수정할 수 있어요
+        </span>
+        <span 
             class="goReview"
         >
           <v-chip 
@@ -14,7 +17,7 @@
             영화 평가하기 
             <v-icon small>fas fa-arrow-right</v-icon>
           </v-chip>
-        </div>
+        </span>
           <v-chip
             color="rgba(173, 139, 232, 0.8)"
             text-color="#FFFFFF"
@@ -59,7 +62,7 @@
                           v-model="movie.score"
                           color="#FDD835"
                           background-color="#c5c2c2"
-                          size="6vw"
+                          size="5.5vw"
                           dense
                           half-increments
                           @input="changeRating({'ratingId': movie.id,'movieId': movie.movie.id, 'rating':movie.score})">

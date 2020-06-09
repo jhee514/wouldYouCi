@@ -21,18 +21,19 @@
    padding-top: 0; 
 }
 .rating{
-  padding-bottom: 2vh;
+  padding-bottom: 0vh;
 }
 
 .mycard{
   height: 24vh;
-  width: 80vw;
+  width: 85vw;
 }
 
 .card_image{
   margin-bottom: 1vh;
-  height: 20vh;
-  width: 25vw;
+  margin-left: 0vw;
+  height: 19vh;
+  width: 24vw;
   border-radius: 10px;
 }
 
@@ -43,7 +44,6 @@
 .noItem{
   opacity: 0.98;
 }
-
 .noMovie{
   text-align: center;
   position: relative;
@@ -71,4 +71,14 @@
   color: #ffffff;
   margin: 0;
   padding: 0;
+}
+
+.genre{
+  font-size: x-small;
+}
+
+.reviewCount{
+  padding-top: 6.8vh;
+  color: #acacac;
+  font-size: small;
 }

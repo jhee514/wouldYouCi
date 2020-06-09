@@ -13,14 +13,14 @@
           class="mycard"
           elevation="0">
           <v-row>
-            <v-col class="col-5">
+            <v-col class="col-4">
               <v-img
                 :src="movie.poster"
                 class="card_image"
               >
               </v-img>
             </v-col>
-            <v-col class="pl-1 pb-1 col-7">
+            <v-col class="pl-0 pr-0 pb-1 pt-2 mr-0 col-6">
               <v-list-item>
                 <v-list-item-content class="pt-3 pb-2">
                   <v-list-item-title class="mytitle">{{ movie.name }}</v-list-item-title>
@@ -42,7 +42,15 @@
                 x-small
                 ></v-rating>
                 </div>
-                
+                <span v-for="(genre, idx) in movie.genres" :key="idx">
+                      <span v-if="idx != movie.genres.length-1" class="genre" >
+                        {{genre +" |"}}
+                        </span>
+                        <span v-else class="genre" > 
+                          {{genre}}
+                        </span>
+                  </span>
+                <div>
                 <v-chip x-small v-if="movie.watch_grade==='15세 관람가'"
                         label color="#FCB5C7" class="mb-1"
                 >15+</v-chip>
@@ -58,8 +66,15 @@
                   <v-chip x-small v-else
                           label color="lightpink"
                   >{{ movie.watch_grade }}</v-chip>
-
+                  <v-chip label class="mb-1 ml-1" x-small color="#86D0EC">{{ movie.running_time }}</v-chip>
+                  </div>
+                  
+                  <!-- <span> | {{movie.}}</span> -->
               </v-card-text>
+            </v-col>
+            <v-col class="reviewCount">
+              리뷰
+              {{movie.ratings_count}}
             </v-col>
           </v-row>
         </v-card>
