@@ -2,7 +2,7 @@
   <div >
     <v-img v-if="!details.poster"
       class="poster"
-      src="./defaultImg.jpg" />
+      src="../../../assets/defaultImg.jpg" />
 
     <div v-else>
       <div class="poster-container"

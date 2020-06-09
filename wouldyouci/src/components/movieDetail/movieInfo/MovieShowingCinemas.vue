@@ -34,7 +34,7 @@
                         class="mb-1"
                         color="#86D0EC"
                         :href="data.url"
-                        >
+                        >11
                          홈페이지
                         </v-chip>
                       <v-chip 
