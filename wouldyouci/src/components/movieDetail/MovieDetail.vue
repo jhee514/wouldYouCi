@@ -86,7 +86,7 @@
           v-for="item in items"
           :key="item.tab"
           >
-          <v-cardflat>
+          <v-card flat>
             <v-card-text>
               <component 
                 class="tab-item"
@@ -94,7 +94,7 @@
                 :details="details"
                 ></component>
             </v-card-text>
-          </v-cardflat>
+          </v-card>
         </v-tab-item>
       </v-tabs-items>
     </div>

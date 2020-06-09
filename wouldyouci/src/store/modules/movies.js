@@ -366,7 +366,7 @@ const actions = {
     return new Promise(function(resolve, reject) {
       axios.get(`${HOST}/${item}/${itemId}/score/`, options)
         .then(res => {
-          commit('setAvgScore', res.data["score"].toFixed(2))
+          commit('setAvgScore', res.data["score"])
           resolve(res.data)
         })
         .catch(err => {
