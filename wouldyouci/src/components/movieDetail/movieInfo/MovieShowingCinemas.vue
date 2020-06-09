@@ -23,11 +23,20 @@
                       <v-list-item-content class="pt-3 pb-2">
                         <v-list-item-title class="mytitle">{{ data.name }}</v-list-item-title>
                         <v-list-item-subtitle class="mysubtitle">{{ data.address }}</v-list-item-subtitle>
-                        <v-list-item>{{ data.onscreens }}</v-list-item>
-                        <v-list-item class="mysubtitle">{{ data.tel }}</v-list-item>
                       </v-list-item-content>
                     </v-list-item>
                     <v-card-text class="movieInfo">
+                      <div class="rating">
+                        <v-rating
+                          :value="data.score"
+                          color="amber"
+                          background-color="white"
+                          half-increments
+                          readonly
+                          dense
+                          x-small
+                          ></v-rating>
+                      </div>
                       <v-chip 
                         x-small 
                         label

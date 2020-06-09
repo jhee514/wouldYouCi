@@ -101,7 +101,7 @@
         </v-list-item-content>
       </v-list-item>
       <v-btn
-        v-show="isRatings"
+        v-show="ratings.length > 5"
         class="upbutton"
         color="titleblue"
         small
