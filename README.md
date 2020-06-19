@@ -1,25 +1,32 @@
-# 🚀우주씨
+# 🚀우리 주변 씨네마
 
-![](https://img.shields.io/badge/version-0.0.1-green.svg) ![](https://img.shields.io/badge/created__at-20.05.11-yellow.svg) ![](https://img.shields.io/badge/updated__at-20.05.11-blue.svg) 
+![](https://img.shields.io/badge/version-1.0.0-green.svg) ![](https://img.shields.io/badge/created__at-11.05.20-yellow.svg) ![](https://img.shields.io/badge/updated__at-19.06.20-blue.svg) 
 
 > SSAFY 심화 프로젝트 
 >
-> 실시간 상영 영화 정보 조회 서비스
+> 실시간 위치기반 상영 영화 정보 조회 서비스
 
 
 
-- 🎢환상의 나라 A406 조에 오신것을 환영합니다
 
-- 💕 우리 주변 씨네마
-- 💕 Would you ci 
+
+## 🛒 Table of Contents
+
+- [서비스 소개](#서비스 소개)
+  - 기획 의도
+  - 주요 기능
+- [프로젝트 소개](#프로젝트 소개)
+  - 설치 및 실행 방법
+  - 기술 정리 문서
+- [팀 정보](#팀 정보)
+
+
 
 
 
 ## 서비스 소개
 
-
-
-### 배경
+### 🍿기획 의도
 
 - 대형 3사 위주의 영화 생태계
   - 대형 3사의 경우, 어느 영화관에서 어떤 영화를 상영하는지에 대한 정보를 많이 제공하고 있으며, 사용자들은 이에 대한 정보를 손쉽게 얻을 수 있습니다.
@@ -37,9 +44,11 @@
 
 
 
-### 우주씨(우리 주변 씨네마)
+### 🎁주요 기능
 
-![maintitle](./wouldyouci/src/assets/maintitle.jpg)
+#### 우리 주변 씨네마 (우주씨)
+
+<img src="./wouldyouci/src/assets/maintitle.jpg" alt="maintitle" style="zoom:50%;" />
 
 - 위치 기반
   - 사용자는 현재 자신의 위치를 기반으로 주변의 영화관들을 볼 수 있습니다.
@@ -85,25 +94,63 @@
 
 
 
-## Quick Start
 
-- `./wouldyouci_back`
 
-  ```
-  venv 가상환경 설정 - python 3.7
-  
-  touch .env
-  
-  pip install requirements.txt
-  
-  python manage.py runserver
-  ```
+## 프로젝트 소개
 
-  
+### 🏃‍♂️ 설치 및 실행
+
+#### 백앤드
+
+1. 기본 실행
+
+   - `./wouldyouci_back` 
+
+   - ```
+     venv 가상환경 설정 - python 3.7
+     
+     touch .env 
+     
+     pip install requirements.txt
+     
+     python manage.py runserver
+     ```
+
+   - 우주씨는 백앤드 서버를 실행시키기 위해 `Redis`, `Elastic Search` 의 설치 및 실행이 요구됩니다.  Redis, Elastic Search 가 설치 및 실행되지 않은 상태에서 Django를 실행 시킬 수 있으나 일부 기능이 제대로 작동하지 않을 수 있습니다. 
+
+   - env 파일에는 Django 의 secreat key 와 MySQL 연결을 위한 정보가 들어갑니다. 
+
+2. 빅데이터 트레인 파일 업데이트
+
+   - 배포 버전은 트레인 피클 파일이 함께 업로드 되어 있기 때문에 따로 학습시키지 않아도 되지만, 새로운 영화 데이터에 대한 분석 및 유저의 취향 분석의 정확도를 높여주기 위해 주기적으로 피클 파일을 업데이트 해주어야 합니다.
+
+   - `./wouldyouci_back/utils` 의 파일을 shell 로 실행시킵니다.
+
+     ```
+     from utils.update_train_data import *
+     get_genre_info()
+     get_genre_train_data()
+     get_movie_train_data()
+     KNN_train()
+     ```
+
+3. Elastic Search 인덱스 연결
+
+   - 검색 기능을 위해 Movie Model 을 Elastic Search 와 연결하여 인덱싱 합니다.
+
+   - Elastic Search를 실행시킨 뒤, 백앤드 폴더 상단 (manage.py 가 있는 위치)에서 인덱스를 생성합니다.
+
+     ```
+     python mange.py search_index —rebuild
+     ```
+
+     
+
+#### 프론트앤드
 
 - `./wouldyouci`
 
-  ```
+- ```
   npm install
   
   touch .env
@@ -111,28 +158,77 @@
   npm run serve
   ```
 
-  
-
-## 기술 스택
+- env 파일에는 Google API 와 Kakao API 를 사용하기 위한 key 정보가 들어갑니다.
 
 
 
-### 프론트엔드
-
-[front]: ./doc/front/front.md	"FrontEnd"
-
-
-- doc 폴더 문서
-  - 프로젝트 관리
-  - 와이어프레임
-  - [https 배포하기](.\doc\https_배포하기.md)
-
-  - [REST_API](.\doc\REST_API.md) - notion backup (05.27)
 
 
 
-- ERD
 
-  ![ERD](./doc/images/ERD.png)
+### 📕 문서 목록
 
-  
+- 프로젝트 관련 문서는 doc 폴더에서 더욱 구체적으로 확인하실 수 있습니다.
+- 각 문서에 하이퍼링크를 달아놓았으나 깃랩에서 정상적으로 작동하지 않을 수 있습니다. 
+
+
+
+#### 프로젝트 기획 (doc/project/)
+
+- [프로젝트 계획서](./doc/project/프로젝트_계획서.docx) : 프로젝트 기획서입니다.
+- [프로젝트 관리](./doc/project/프로젝트_관리.md) : git-flow, jira 및 프로젝트 룰을 정리합니다. 
+- [아이디어 회의](./doc/project/아이디어_회의.md) : 팀 우주씨는 `Notion` 을 활용합니다. 아이디어 회의 당시 노션 페이지를 백업한 문서입니다.
+
+
+
+#### 백앤드 (doc/back/)
+
+- [백앤드](./doc/back/Back-end.md) : 백앤드에서 활용한 주요 기술을 정리합니다. 목차는 다음과 같습니다.
+
+  ```
+  1. Database
+  	- ERD
+  	- Crawling
+  2. Bigdata
+  	- 추천시스템
+  	- 테스트 코드
+  3. API Server
+  	- Rest API
+  	- 배포
+  ```
+
+  - [크롤링 바로가기](./doc/back/크롤링/Data_Crawling.md)
+  - [빅데이터 바로가기](./doc/back/추천알고리즘/추천_시스템.md)
+  - [REST API 바로가기](./doc/back/API서버/REST_API.md)
+  - [배포 바로가기](./doc/back/API서버/https_배포하기.md)
+
+
+
+#### 프론트앤드 (doc/front/)
+
+- [프론트앤드](./doc/front/front.md)  : 프론트앤드에서 활용한 주요 기술을 정리합니다. 목차는 다음과 같습니다.
+
+  ```
+  1. vue.js / vuex.js / vuetify.js
+  2. PWA(Progressive Web App)
+  3. google Maps JavaScript API
+  ```
+
+- [Wireframe](./doc/front/wireframe/와이어프레임.pptx) : 기획단계에서 구성한 와이어프레임 ppt 파일입니다.
+
+
+
+
+
+
+
+## 팀 정보
+
+![A406](./doc/images/A406.jpg)
+
+
+
+
+
+
+
