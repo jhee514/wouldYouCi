@@ -193,7 +193,7 @@
 - HTTPS 에서 HTTP 로 요청을 보내면 에러가 난다.
     - [혼합 콘텐츠 방지](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/fixing-mixed-content?hl=ko)
 
-        ![HTTPS%20ac6be6a1ca48484ca5ef7d76831f44e7/error.png](.\images\error.png)
+        ![HTTPS%20ac6be6a1ca48484ca5ef7d76831f44e7/error.png](..\images\error.png)
 
 
 
@@ -237,7 +237,7 @@ $ nginx -s quit
     - [HTTP 503: 서비스 사용 불가](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-troubleshooting.html)
     - [Availability Zones for Your Application Load Balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-subnets.html)
 
-    ![HTTPS%20ac6be6a1ca48484ca5ef7d76831f44e7/503error.png](.\images\503error.png)
+    ![HTTPS%20ac6be6a1ca48484ca5ef7d76831f44e7/503error.png](..\images\503error.png)
 
 
 
@@ -252,7 +252,7 @@ $ nginx -s quit
     - dist 폴더 안에서 하지 말고 dist 폴더 자체를 압축해서 압축 해제하면 dist/ 폴더가 생기도록
 4. 교수님이 주신 K02A406.pem 파일을 다운로드하고, 그 위치에 [dist.zip](http://dist.zip) 파일을 둔다. 
 
-    ![HTTPS%20ac6be6a1ca48484ca5ef7d76831f44e7.png](.\images\HTTPS%20ac6be6a1ca48484ca5ef7d76831f44e7.png)
+    ![HTTPS%20ac6be6a1ca48484ca5ef7d76831f44e7.png](..\images\HTTPS%20ac6be6a1ca48484ca5ef7d76831f44e7.png)
 
 5. 내 **로컬**, 위의 폴더에서 bash 창 열고 우분투에 접속
 
@@ -310,14 +310,14 @@ sudo systemctl status nginx
 
 - 사진 참고 1
 
-![HTTPS%20ac6be6a1ca48484ca5ef7d76831f44e7/nginx.png](.\images\nginx.png)
+![HTTPS%20ac6be6a1ca48484ca5ef7d76831f44e7/nginx.png](..\images\nginx.png)
 
 - active 초록색 뜨고 있으면 잘 되고 있는 것
 
-![HTTPS%20ac6be6a1ca48484ca5ef7d76831f44e7/nginx2.png](.\images\nginx2.png)
+![HTTPS%20ac6be6a1ca48484ca5ef7d76831f44e7/nginx2.png](..\images\nginx2.png)
 
 - 종료 버튼 누르고 종료하면 되는데 머라머라 경고창이 아래처럼 떠도 그냥 ok 누르면 됨!
 
     다른 경고창이 뜬다면 나도 모름.. 일단 캡쳐하십시오...
 
-    ![HTTPS%20ac6be6a1ca48484ca5ef7d76831f44e7/ok.png](.\images\ok.png)
+    ![HTTPS%20ac6be6a1ca48484ca5ef7d76831f44e7/ok.png](..\images\ok.png)

@@ -1,15 +1,15 @@
-import pymysql.cursors
-from bs4 import BeautifulSoup
-import urllib.request
-from dotenv import load_dotenv
 import json
 import requests
 import time
 import datetime
-
 import os
 import sys
 import io
+import pymysql.cursors
+import urllib.request
+from dotenv import load_dotenv
+from pyvirtualdisplay import Display
+from bs4 import BeautifulSoup
 
 sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding='utf-8')
@@ -75,12 +75,17 @@ def cinemaLoop():
     global conn
     global not_found
 
-    with open('cinemas.json', 'r', encoding='UTF-8-sig') as fr:
+    path = os.path.join(BASE_DIR, 'cinemas.json')
+    with open(path, 'r', encoding='UTF-8-sig') as fr:
         cinema_list = json.load(fr)
 
     conn = pymysql.connect(host=SQL_INFO['HOST'], port=SQL_INFO['PORT'], user=SQL_INFO['USER'], password=SQL_INFO['PW'], db=SQL_INFO['DB'], charset='utf8mb4')
     cursor = conn.cursor(pymysql.cursors.DictCursor)
-    chromedriver_dir=r'/home/ubuntu/chromedriver.exe'
+
+    display = Display(visible=0, size=(1024, 768))
+    display.start()
+
+    chromedriver_dir=r'/home/ubuntu/chromedriver'
     driver = webdriver.Chrome(chromedriver_dir)
 
     not_found = []
@@ -95,7 +100,9 @@ def cinemaLoop():
 
     conn.close()
     driver.quit()
-    with open('10_seat_notfound.json', 'w', encoding='UTF-8') as fp:
+    print('크롬드라이버 끝내고 루프 1회 작업 끝')
+    path2 = os.path.join(BASE_DIR, '10_seat_notfound.json')
+    with open(path2, 'w', encoding='UTF-8') as fp:
         json.dump(not_found, fp, ensure_ascii=False, indent=4)
 
 def updateCGV(cinema_info):
